@@ -52,8 +52,8 @@ function Login() {
               color: 'white.700',
               textAlign: 'center',
             }}>
-            Participate in any ongoing contests, beat your opponents, earn real
-            money. Earn some extra by sharing the word.
+            Participate in any ongoing contests, beat your opponents, earn real money. Earn some
+            extra by sharing the word.
           </Center>
           <Center
             mb="5"
@@ -93,10 +93,7 @@ function Footer() {
         <Image source={require('../../images/feed-icon.png')} alt="feed" />
       </Box>
       <Box style={styles.iconImage}>
-        <Image
-          source={require('../../images/leaderboard-icon.png')}
-          alt="leaderboard"
-        />
+        <Image source={require('../../images/leaderboard-icon.png')} alt="leaderboard" />
       </Box>
       <Box style={styles.iconImage}>
         <Image source={require('../../images/clip-icon.png')} alt="clip" />
@@ -105,10 +102,7 @@ function Footer() {
         <Image source={require('../../images/noti-icon.png')} alt="noti" />
       </Box>
       <Box style={styles.iconImage}>
-        <Image
-          source={require('../../images/profile-icon.png')}
-          alt="profile"
-        />
+        <Image source={require('../../images/profile-icon.png')} alt="profile" />
       </Box>
     </Flex>
   );
@@ -118,10 +112,7 @@ function SocialIcons() {
   return (
     <HStack pb="10" pt="10" space="10" justifyContent="center">
       <Image source={require('../../images/fb-icon.png')} alt="facebook" />
-      <Image
-        source={require('../../images/instagram-icon.png')}
-        alt="instagram"
-      />
+      <Image source={require('../../images/instagram-icon.png')} alt="instagram" />
       <Image source={require('../../images/google-icon.png')} alt="google" />
     </HStack>
   );
@@ -164,10 +155,7 @@ function LoginForm() {
       <Box>
         <HStack space={3} justifyContent="center" alignItems="center">
           <Box>
-            <Image
-              source={require('../../images/profile-icon.png')}
-              alt="profile"
-            />
+            <Image source={require('../../images/profile-icon.png')} alt="profile" />
             <Text color="white.700" underline onPress={onPressSignup}>
               Sign Up
             </Text>
@@ -184,11 +172,7 @@ function LoginForm() {
                 value={phone}
                 onChangeText={onChangePhone}
               />
-              {showCheckIcon ? (
-                <CheckIcon size="7" ml="2" color="white.700" />
-              ) : (
-                false
-              )}
+              {showCheckIcon ? <CheckIcon size="7" ml="2" color="white.700" /> : false}
             </HStack>
             {showOtpInput ? (
               <HStack width="100%" alignItems="center">
@@ -209,11 +193,7 @@ function LoginForm() {
                   ml="2"
                   borderWidth="1"
                   borderColor="white.700">
-                  <ChevronRightIcon
-                    size="5"
-                    color="white.700"
-                    onPress={onClickGo}
-                  />
+                  <ChevronRightIcon size="5" color="white.700" onPress={onClickGo} />
                 </Center>
               </HStack>
             ) : (
