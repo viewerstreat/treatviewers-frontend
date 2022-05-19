@@ -10,10 +10,12 @@ import {
   HStack,
   Image,
   Input,
+  Pressable,
   Stack,
   Text,
 } from 'native-base';
 import {ImageBackground, StyleSheet} from 'react-native';
+import {LoginManager} from 'react-native-fbsdk-next';
 
 function Login() {
   return (
@@ -109,9 +111,35 @@ function Footer() {
 }
 
 function SocialIcons() {
+  const loginFb = async () => {
+    console.log('Login with FB called');
+    try {
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      console.log(result);
+    } catch (err) {
+      console.log('error occurred', err);
+    }
+
+    // LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+    //   function (result) {
+    //     if (result.isCancelled) {
+    //       alert('Login Cancelled ' + JSON.stringify(result));
+    //     } else {
+    //       alert('Login success with  permisssions: ' + result.grantedPermissions.toString());
+    //       alert('Login Success ' + result.toString());
+    //     }
+    //   },
+    //   function (error) {
+    //     alert('Login failed with error: ' + error);
+    //   },
+    // );
+  };
+
   return (
     <HStack pb="10" pt="10" space="10" justifyContent="center">
-      <Image source={require('../../images/fb-icon.png')} alt="facebook" />
+      <Pressable onPress={loginFb}>
+        <Image source={require('../../images/fb-icon.png')} alt="facebook" />
+      </Pressable>
       <Image source={require('../../images/instagram-icon.png')} alt="instagram" />
       <Image source={require('../../images/google-icon.png')} alt="google" />
     </HStack>
