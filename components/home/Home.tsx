@@ -21,8 +21,8 @@ function SettingsScreen() {
 }
 
 const Tab = createBottomTabNavigator();
-const getScreenOptions = ({route}) => ({
-  tabBarIcon: ({focused, color, size}) => {
+const getScreenOptions = ({route}: {route: any}) => ({
+  tabBarIcon: ({color, size}: {color: string; size: number}) => {
     if (route.name === 'Feed') {
       return <MaterialIcons name="folder-special" size={size} color={color} />;
     }
