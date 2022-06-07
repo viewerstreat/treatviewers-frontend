@@ -3,14 +3,7 @@ import {Text, View, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
-
-function FeedScreen() {
-  return (
-    <View style={styles.container}>
-      <Text>Feed!</Text>
-    </View>
-  );
-}
+import FeedScreen from '../feed/FeedScreen';
 
 function SettingsScreen() {
   return (

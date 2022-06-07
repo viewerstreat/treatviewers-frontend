@@ -21,6 +21,8 @@ target 'TreatViewers' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'SRSRadialGradient', :path => '../node_modules/react-native-radial-gradient'
+
   target 'TreatViewersTests' do
     inherit! :complete
     # Pods for testing
