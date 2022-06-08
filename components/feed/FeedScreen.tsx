@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import OngoingCarousel from './OngoingCarousel';
+import InviteFriend from './InviteFriend';
 
 function FeedScreen() {
   return (
@@ -11,6 +12,7 @@ function FeedScreen() {
       end={{x: 0.5, y: 1}}
       style={styles.container}>
       <OngoingCarousel />
+      <InviteFriend />
     </LinearGradient>
   );
 }
