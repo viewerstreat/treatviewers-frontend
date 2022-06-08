@@ -32,7 +32,13 @@ const getScreenOptions = ({route}: {route: any}) => ({
       return <MaterialIcons name="account-circle" size={size} color={color} />;
     }
   },
-  tabBarStyle: {backgroundColor: '#182A46'},
+  tabBarStyle: {
+    backgroundColor: '#182A46',
+    paddingBottom: 10,
+    paddingTop: 10,
+    height: 65,
+    borderTopColor: '#182A46',
+  },
   tabBarActiveTintColor: '#F83836',
   tabBarInactiveTintColor: '#FFFFFA',
   headerStyle: {backgroundColor: '#182A46'},

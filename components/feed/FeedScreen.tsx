@@ -1,18 +1,18 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import OngoingCarousel from './OngoingCarousel';
-import InviteFriend from './InviteFriend';
+// import OngoingCarousel from './OngoingCarousel';
+// import InviteFriend from './InviteFriend';
+import OngoingContest from './OngoingContest';
 
 function FeedScreen() {
   return (
     <LinearGradient
       colors={['#F83836', '#182A46']}
-      start={{x: 0.5, y: 0}}
-      end={{x: 0.5, y: 1}}
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 1}}
       style={styles.container}>
-      <OngoingCarousel />
-      <InviteFriend />
+      <OngoingContest />
     </LinearGradient>
   );
 }

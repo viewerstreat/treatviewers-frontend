@@ -96,6 +96,7 @@ function OngoingCarousel() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.h1Txt}>Ongoing Movie Quizzes</Text>
       <Carousel
         ref={carouselRef}
         sliderWidth={screenWidth}
@@ -120,7 +121,15 @@ function OngoingCarousel() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
+    // paddingTop: 10,
+  },
+  h1Txt: {
+    backgroundColor: '#FFFFFA',
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingVertical: 10,
+    marginBottom: 10,
   },
   item: {
     width: screenWidth * 0.7,

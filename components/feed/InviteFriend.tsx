@@ -37,6 +37,7 @@ function InviteFriend() {
 const styles = StyleSheet.create({
   wrapper: {
     marginTop: 20,
+    marginBottom: 20,
     backgroundColor: '#FFFFFA',
     padding: 10,
   },
