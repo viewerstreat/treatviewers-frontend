@@ -1,11 +1,13 @@
 import React, {useEffect} from 'react';
-import {View, Text, FlatList, StyleSheet, Image} from 'react-native';
+import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {useDispatch} from 'react-redux';
 // import {useTypedSelector} from '../../hooks/useTypeSelector';
 import OngoingCarousel from './OngoingCarousel';
 import InviteFriend from './InviteFriend';
 import {getOngoingContests} from '../../redux/action';
 import {useTypedSelector} from '../../redux/store';
+import {OngoingContest} from '../../redux/reducer';
+import OngoingContestCard from './OngoingContestCard';
 
 function OngoingContestHeaderSection() {
   return <Text style={styles.h1Txt}>Ongoing Contests</Text>;
@@ -21,7 +23,7 @@ function ListHeader() {
   );
 }
 
-function OngoingContest() {
+function OngoingContestSection() {
   const dispatch = useDispatch();
   const {contests, loading, error} = useTypedSelector(state => state.ongoingContests);
   const getData = async () => {
@@ -43,24 +45,12 @@ function OngoingContest() {
     );
   }
 
-  return (
-    <FlatList
-      ListHeaderComponent={ListHeader}
-      data={contests}
-      renderItem={({item}) => {
-        console.log('rendering item with key: ', item);
-        return (
-          <View>
-            <Text style={styles.item}>{item.key}</Text>
-            <Image
-              style={{height: 300, resizeMode: 'contain'}}
-              source={{uri: 'https://upload.wikimedia.org/wikipedia/en/f/f2/Kahaani_poster.jpg'}}
-            />
-          </View>
-        );
-      }}
-    />
-  );
+  const _renderItem = ({item}: {item: OngoingContest}) => {
+    console.log('rendering item with key: ', item.key);
+    return <OngoingContestCard data={item} />;
+  };
+
+  return <FlatList ListHeaderComponent={ListHeader} data={contests} renderItem={_renderItem} />;
 }
 
 const styles = StyleSheet.create({
@@ -84,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OngoingContest;
+export default OngoingContestSection;

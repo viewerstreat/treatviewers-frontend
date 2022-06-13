@@ -5,7 +5,8 @@
     "sponsoredBy": "QUIZZ APP",
     "topPrize": "₹10000",
     "prizeRatio": "3:5",
-    "entryFee": "10"
+    "entryFee": "10",
+    "timeRemaining": "6d 15Hrs"
   },
   {
     "key": 2,
@@ -13,7 +14,8 @@
     "sponsoredBy": "QUIZZ APP",
     "topPrize": "₹10000",
     "prizeRatio": "3:5",
-    "entryFee": "10"
+    "entryFee": "10",
+    "timeRemaining": "6d 15Hrs"
   },
   {
     "key": 3,
@@ -21,7 +23,8 @@
     "sponsoredBy": "QUIZZ APP",
     "topPrize": "₹10000",
     "prizeRatio": "3:5",
-    "entryFee": "10"
+    "entryFee": "10",
+    "timeRemaining": "6d 15Hrs"
   },
   {
     "key": 4,
@@ -29,6 +32,7 @@
     "sponsoredBy": "QUIZZ APP",
     "topPrize": "₹10000",
     "prizeRatio": "3:5",
-    "entryFee": "10"
+    "entryFee": "10",
+    "timeRemaining": "6d 15Hrs"
   }
 ]

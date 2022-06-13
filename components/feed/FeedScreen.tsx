@@ -1,9 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-// import OngoingCarousel from './OngoingCarousel';
-// import InviteFriend from './InviteFriend';
-import OngoingContest from './OngoingContest';
+import OngoingContestSection from './OngoingContestSection';
 
 function FeedScreen() {
   return (
@@ -12,7 +10,7 @@ function FeedScreen() {
       start={{x: 0, y: 0}}
       end={{x: 1, y: 1}}
       style={styles.container}>
-      <OngoingContest />
+      <OngoingContestSection />
     </LinearGradient>
   );
 }

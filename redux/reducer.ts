@@ -8,6 +8,7 @@ export interface OngoingContest {
   topPrize: string;
   prizeRatio: string;
   entryFee: number;
+  timeRemaining: string;
 }
 
 export interface OngoingContestState {
