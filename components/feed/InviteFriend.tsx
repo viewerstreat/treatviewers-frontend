@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Share} from 'react-native';
+import {COLOR_BLACK, COLOR_BROWN, COLOR_GREY, COLOR_WHITE} from '../../utils/constants';
 
 const SHARE_TXT_MSG =
   'Treat Viewers is an awesome app where you can participate in simple quizzes and win exciting prizes';
@@ -22,13 +23,12 @@ function InviteFriend() {
 
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.h1Txt}>Invite Friends</Text>
       <Text style={styles.pTxt}>
-        Refer your friends and win exciting prizes. Play together with your friends.
+        Refer your friends to play the contests together and earn bonus points upto ₹100.
       </Text>
 
       <TouchableOpacity style={styles.btn} onPress={onPress}>
-        <Text style={styles.btnTxt}>Invite</Text>
+        <Text style={styles.btnTxt}>Invite Friends</Text>
       </TouchableOpacity>
     </View>
   );
@@ -36,21 +36,18 @@ function InviteFriend() {
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 20,
-    backgroundColor: '#FFFFFA',
-    padding: 10,
-  },
-  h1Txt: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
+    backgroundColor: COLOR_WHITE,
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   pTxt: {
     marginTop: 10,
-    alignSelf: 'center',
     width: '60%',
-    textAlign: 'center',
+    color: COLOR_BLACK,
+    fontWeight: 'bold',
   },
   btn: {
     marginTop: 10,
@@ -59,12 +56,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F83836',
-    borderRadius: 10,
+    backgroundColor: COLOR_BROWN,
+    borderRadius: 30,
   },
   btnTxt: {
-    color: '#FFFFFA',
+    color: COLOR_GREY,
     fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 

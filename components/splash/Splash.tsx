@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   wrapper: {
-    // backgroundColor: 'yellow',
     paddingBottom: 50,
   },
   txt: {

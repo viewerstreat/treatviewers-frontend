@@ -1,10 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, Dimensions, StyleSheet, Platform, TouchableOpacity} from 'react-native';
-import Carousel, {
-  AdditionalParallaxProps,
-  Pagination,
-  ParallaxImage,
-} from 'react-native-snap-carousel';
+import {View, Text, Dimensions, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
+import {COLOR_RED, COLOR_WHITE} from '../../utils/constants';
 
 interface ItemPropType {
   title: string;
@@ -59,53 +56,39 @@ function OngoingCarousel() {
       if (carouselRef.current) {
         carouselRef.current.startAutoplay();
       }
-    }, 300);
+    }, 50);
   });
 
   const clickViewDetails = (index: number) => {
     console.log('pressed view details', index);
   };
 
-  const renderItem = (
-    {item, index}: {item: ItemPropType; index: number},
-    parallaxProps: AdditionalParallaxProps,
-  ) => {
+  const _renderItem = ({item, index}: {item: ItemPropType; index: number}) => {
     return (
       <View style={styles.item}>
-        <ParallaxImage
-          source={{uri: item.imageUrl}}
-          containerStyle={styles.imageContainer}
-          showSpinner={true}
-          style={styles.image}
-          parallaxFactor={0.4}
-          {...parallaxProps}
-        />
-        <View style={styles.btnContainer}>
-          <TouchableOpacity onPress={() => clickViewDetails(index)}>
-            <Text style={styles.viewDetailsBtn}>View Details</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title} numberOfLines={2}>
-            Time Remaining: {item.timeRemaining}
-          </Text>
-        </View>
+        <TouchableOpacity onPress={() => clickViewDetails(index)}>
+          <Image source={{uri: item.imageUrl}} style={styles.image} />
+          <View style={styles.titleContainer}>
+            <Text style={styles.title} numberOfLines={2}>
+              Time Remaining: {item.timeRemaining}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.h1Txt}>Ongoing Movie Quizzes</Text>
       <Carousel
         ref={carouselRef}
         sliderWidth={screenWidth}
         sliderHeight={screenWidth}
-        itemWidth={screenWidth * 0.7}
+        itemWidth={screenWidth * 0.6}
         data={entries}
-        renderItem={renderItem}
+        renderItem={_renderItem}
         onSnapToItem={index => setActiveSlide(index)}
-        hasParallaxImages={true}
+        loop={true}
       />
       <Pagination
         dotsLength={entries.length}
@@ -121,7 +104,7 @@ function OngoingCarousel() {
 
 const styles = StyleSheet.create({
   container: {
-    // paddingTop: 10,
+    paddingTop: 20,
   },
   h1Txt: {
     backgroundColor: '#FFFFFA',
@@ -135,35 +118,18 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.7,
     height: screenWidth * 0.8,
   },
-  imageContainer: {
-    flex: 1,
-    marginBottom: Platform.select({ios: 0, android: 1}), // Prevent a random Android rendering issue
-    backgroundColor: 'transparent',
-    borderRadius: 10,
-  },
   image: {
-    ...StyleSheet.absoluteFillObject,
+    height: '90%',
     resizeMode: 'contain',
   },
   titleContainer: {
     alignItems: 'center',
   },
   title: {
-    backgroundColor: '#FFFFFA',
-    borderRadius: 1,
-    fontSize: 11,
-    paddingHorizontal: 2,
-  },
-  btnContainer: {
-    alignItems: 'center',
-  },
-  viewDetailsBtn: {
-    color: '#FFFFFA',
-    fontSize: 16,
+    color: COLOR_WHITE,
   },
   paginationContainer: {
-    marginTop: 5,
-    backgroundColor: '#FFFFFA',
+    backgroundColor: COLOR_WHITE,
     paddingTop: 5,
     paddingBottom: 5,
   },
@@ -171,7 +137,7 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#F83836',
+    backgroundColor: COLOR_RED,
   },
 });
 

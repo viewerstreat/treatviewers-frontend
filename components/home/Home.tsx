@@ -5,6 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FeedScreen from '../feed/FeedScreen';
 import AppHeader from '../AppHeader';
+import {COLOR_BROWN, COLOR_RED, COLOR_WHITE} from '../../utils/constants';
 
 function SettingsScreen() {
   return (
@@ -34,16 +35,15 @@ const getScreenOptions = ({route}: {route: any}) => ({
     }
   },
   tabBarStyle: {
-    backgroundColor: '#182A46',
+    backgroundColor: COLOR_BROWN,
     paddingBottom: 10,
     paddingTop: 10,
     height: 65,
-    borderTopColor: '#182A46',
+    borderTopColor: COLOR_BROWN,
   },
-  tabBarActiveTintColor: '#F83836',
-  tabBarInactiveTintColor: '#FFFFFA',
-  headerStyle: {backgroundColor: '#182A46'},
-  headerTintColor: '#FFFFFA',
+  tabBarActiveTintColor: COLOR_WHITE,
+  tabBarInactiveTintColor: COLOR_RED,
+  headerTintColor: COLOR_WHITE,
 });
 
 function Home() {
