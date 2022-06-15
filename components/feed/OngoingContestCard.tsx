@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, ToastAndroid, TouchableOpacity, View} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {OngoingContestsData} from '../../redux/ongoingContestsSlice';
 import {COLOR_BLACK, COLOR_BROWN, COLOR_WHITE} from '../../utils/constants';
@@ -11,6 +11,7 @@ interface OngoingContestCardProps {
 function OngoingContestCard(props: OngoingContestCardProps) {
   const onClick = () => {
     console.log('onClick pressed');
+    ToastAndroid.showWithGravity(`Card No ${props.data.key}`, ToastAndroid.SHORT, ToastAndroid.TOP);
   };
   return (
     <View style={styles.card}>

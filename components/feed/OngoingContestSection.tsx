@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import {View, Text, FlatList, StyleSheet, ActivityIndicator} from 'react-native';
 import OngoingCarousel from './OngoingCarousel';
 import InviteFriend from './InviteFriend';
 import OngoingContestCard from './OngoingContestCard';
@@ -28,7 +28,7 @@ function OngoingContestSection() {
   if (loading) {
     return (
       <View>
-        <Text>Loading...</Text>
+        <ActivityIndicator color={COLOR_WHITE} size="large" />
       </View>
     );
   }
