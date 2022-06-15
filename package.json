@@ -13,6 +13,7 @@
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
+    "@reduxjs/toolkit": "^1.8.2",
     "@types/react-native-snap-carousel": "^3.8.5",
     "@types/react-native-vector-icons": "^6.4.10",
     "native-base": "^3.4.5",
@@ -26,9 +27,7 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^12.3.0",
     "react-native-vector-icons": "^9.1.0",
-    "react-redux": "^8.0.2",
-    "redux": "^4.2.0",
-    "redux-thunk": "^2.4.1"
+    "react-redux": "^8.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

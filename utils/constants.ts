@@ -5,3 +5,4 @@ export const COLOR_BROWN = '#5C3439';
 export const COLOR_YELLOW = '#EEAA33';
 export const COLOR_GREY = '#DADADA';
 export const COLOR_BLACK = '#363636';
+export const COLOR_DARK_BROWN = '#300D13';

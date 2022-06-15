@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   pTxt: {
-    marginTop: 10,
     width: '60%',
     color: COLOR_BLACK,
     fontWeight: 'bold',

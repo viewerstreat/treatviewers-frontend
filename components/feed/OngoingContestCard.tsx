@@ -1,10 +1,11 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import {OngoingContest} from '../../redux/reducer';
+import {OngoingContestsData} from '../../redux/ongoingContestsSlice';
+import {COLOR_BLACK, COLOR_BROWN, COLOR_WHITE} from '../../utils/constants';
 
 interface OngoingContestCardProps {
-  data: OngoingContest;
+  data: OngoingContestsData;
 }
 
 function OngoingContestCard(props: OngoingContestCardProps) {
@@ -25,13 +26,13 @@ function OngoingContestCard(props: OngoingContestCardProps) {
           <Text style={styles.smallTxt}>Prize Ratio: {props.data.prizeRatio}</Text>
         </View>
         <View style={styles.iconWrapper}>
-          <TouchableOpacity style={styles.btnWrapper} onPress={onClick}>
+          <TouchableOpacity onPress={onClick}>
             <AntIcon name="rightcircleo" size={30} />
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.timeRemainingTxt}>
-        <Text>Time Remaining: {props.data.timeRemaining}</Text>
+        <Text style={styles.whiteTxt}>Time Remaining: {props.data.timeRemaining}</Text>
       </View>
     </View>
   );
@@ -39,7 +40,7 @@ function OngoingContestCard(props: OngoingContestCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFFFFA',
+    backgroundColor: COLOR_WHITE,
     marginVertical: 15,
     width: '85%',
     alignSelf: 'center',
@@ -50,19 +51,16 @@ const styles = StyleSheet.create({
   h2Txt: {
     textAlign: 'center',
     fontSize: 18,
-    fontWeight: 'bold',
+    color: COLOR_BLACK,
   },
   tableWrapper: {
-    // backgroundColor: 'yellow',
     flexDirection: 'row',
     marginTop: 15,
   },
   tableCell1: {
-    // backgroundColor: 'red',
     width: '42%',
   },
   tableCell2: {
-    // backgroundColor: 'blue',
     width: '42%',
   },
   smallTxt: {
@@ -75,16 +73,16 @@ const styles = StyleSheet.create({
     width: '16%',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'red',
-  },
-  btnWrapper: {
-    // backgroundColor: 'blue',
   },
   timeRemainingTxt: {
-    backgroundColor: '#F83836',
+    backgroundColor: COLOR_BROWN,
     borderRadius: 5,
     alignItems: 'flex-end',
     paddingHorizontal: 10,
+    color: COLOR_WHITE,
+  },
+  whiteTxt: {
+    color: COLOR_WHITE,
   },
 });
 

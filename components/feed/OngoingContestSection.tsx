@@ -1,13 +1,12 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
-import {useDispatch} from 'react-redux';
-// import {useTypedSelector} from '../../hooks/useTypeSelector';
 import OngoingCarousel from './OngoingCarousel';
 import InviteFriend from './InviteFriend';
-import {getOngoingContests} from '../../redux/action';
-import {useTypedSelector} from '../../redux/store';
-import {OngoingContest} from '../../redux/reducer';
 import OngoingContestCard from './OngoingContestCard';
+import {RootState} from '../../redux/store';
+import {useAppSelector} from '../../redux/useTypedSelectorHook';
+import {OngoingContestsData} from '../../redux/ongoingContestsSlice';
+import {COLOR_WHITE} from '../../utils/constants';
 
 function OngoingContestHeaderSection() {
   return <Text style={styles.h1Txt}>Ongoing Contests</Text>;
@@ -24,19 +23,8 @@ function ListHeader() {
 }
 
 function OngoingContestSection() {
-  const dispatch = useDispatch();
-  const {contests, loading, error} = useTypedSelector(state => state.ongoingContests);
-  const getData = async () => {
-    dispatch(getOngoingContests());
-  };
+  const {values, loading} = useAppSelector((state: RootState) => state.ongoingContests);
 
-  useEffect(() => {
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  if (error) {
-    console.log(error);
-  }
   if (loading) {
     return (
       <View>
@@ -45,32 +33,20 @@ function OngoingContestSection() {
     );
   }
 
-  const _renderItem = ({item}: {item: OngoingContest}) => {
+  const _renderItem = ({item}: {item: OngoingContestsData}) => {
     console.log('rendering item with key: ', item.key);
     return <OngoingContestCard data={item} />;
   };
 
-  return <FlatList ListHeaderComponent={ListHeader} data={contests} renderItem={_renderItem} />;
+  return <FlatList ListHeaderComponent={ListHeader} data={values} renderItem={_renderItem} />;
 }
 
 const styles = StyleSheet.create({
   h1Txt: {
-    backgroundColor: '#FFFFFA',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    paddingVertical: 10,
-  },
-  listWrapper: {
-    // minHeight: 200,
-    // backgroundColor: 'blue',
-  },
-  item: {
-    padding: 10,
-    color: '#FFFFFA',
-    textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#d3d3d3',
+    color: COLOR_WHITE,
   },
 });
 

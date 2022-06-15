@@ -1,11 +1,16 @@
-import {TypedUseSelectorHook, useSelector, useDispatch} from 'react-redux';
-import {createStore, applyMiddleware, AnyAction} from 'redux';
-import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
-import reducers, {RootState} from './reducer';
+import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit';
+import ongoingContestsSlice from './ongoingContestsSlice';
+export const store = configureStore({
+  reducer: {
+    ongoingContests: ongoingContestsSlice.reducer,
+  },
+});
 
-export const store = createStore(reducers, {}, applyMiddleware(thunk));
 export type AppDispatch = typeof store.dispatch;
-export type TypedDispatch = ThunkDispatch<RootState, any, AnyAction>;
-export type TypedThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
-export const useTypedDispatch = () => useDispatch<TypedDispatch>();
-export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;

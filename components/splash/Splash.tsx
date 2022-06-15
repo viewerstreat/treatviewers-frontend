@@ -4,10 +4,13 @@ import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SPLASH_TIMEOUT} from '../../utils/config';
 import {RootStackParamList} from '../../App';
 import {COLOR_RED, COLOR_WHITE} from '../../utils/constants';
+import {useAppDispatch} from '../../redux/useTypedSelectorHook';
+import {loadMockData} from '../../redux/ongoingContestsSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
 
 function Splash(props: Props) {
+  const dispatch = useAppDispatch();
   const animation = useRef(new Animated.Value(-500)).current;
   const [authLoaded, setAuthLoaded] = useState(false);
   useEffect(() => {
@@ -23,6 +26,11 @@ function Splash(props: Props) {
       duration: 2000,
       useNativeDriver: true,
     }).start();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    dispatch(loadMockData());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
