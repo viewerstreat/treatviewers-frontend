@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FeedScreen from '../feed/FeedScreen';
+import AppHeader from '../AppHeader';
 
 function SettingsScreen() {
   return (
@@ -48,11 +49,15 @@ const getScreenOptions = ({route}: {route: any}) => ({
 function Home() {
   return (
     <Tab.Navigator screenOptions={getScreenOptions}>
-      <Tab.Screen name="Feed" component={FeedScreen} />
-      <Tab.Screen name="Leaderboard" component={SettingsScreen} />
-      <Tab.Screen name="Clips" component={SettingsScreen} />
-      <Tab.Screen name="Notifications" component={SettingsScreen} options={{tabBarBadge: 3}} />
-      <Tab.Screen name="Profile" component={SettingsScreen} />
+      <Tab.Screen name="Feed" component={FeedScreen} options={{header: AppHeader}} />
+      <Tab.Screen name="Leaderboard" component={SettingsScreen} options={{header: AppHeader}} />
+      <Tab.Screen name="Clips" component={SettingsScreen} options={{header: AppHeader}} />
+      <Tab.Screen
+        name="Notifications"
+        component={SettingsScreen}
+        options={{tabBarBadge: 3, header: AppHeader}}
+      />
+      <Tab.Screen name="Profile" component={SettingsScreen} options={{header: AppHeader}} />
     </Tab.Navigator>
   );
 }

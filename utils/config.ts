@@ -1,1 +1,1 @@
-export const SPLASH_TIMEOUT = 3000;
+export const SPLASH_TIMEOUT = 500;
