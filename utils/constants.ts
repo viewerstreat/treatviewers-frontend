@@ -6,3 +6,4 @@ export const COLOR_YELLOW = '#EEAA33';
 export const COLOR_GREY = '#DADADA';
 export const COLOR_BLACK = '#363636';
 export const COLOR_DARK_BROWN = '#300D13';
+export const COLOR_LIGHT_BROWN = '#8A5E63';

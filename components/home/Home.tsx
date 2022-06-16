@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FeedScreen from '../feed/FeedScreen';
+import Leaderboards from '../leaderboards/Leaderboards';
 import AppHeader from '../AppHeader';
 import {COLOR_BROWN, COLOR_RED, COLOR_WHITE} from '../../utils/constants';
 
@@ -50,7 +51,7 @@ function Home() {
   return (
     <Tab.Navigator screenOptions={getScreenOptions}>
       <Tab.Screen name="Feed" component={FeedScreen} options={{header: AppHeader}} />
-      <Tab.Screen name="Leaderboard" component={SettingsScreen} options={{header: AppHeader}} />
+      <Tab.Screen name="Leaderboard" component={Leaderboards} options={{header: AppHeader}} />
       <Tab.Screen name="Clips" component={SettingsScreen} options={{header: AppHeader}} />
       <Tab.Screen
         name="Notifications"
