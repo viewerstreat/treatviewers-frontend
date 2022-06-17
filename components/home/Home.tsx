@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FeedScreen from '../feed/FeedScreen';
 import Leaderboards from '../leaderboards/Leaderboards';
@@ -20,7 +21,7 @@ const Tab = createBottomTabNavigator();
 const getScreenOptions = ({route}: {route: any}) => ({
   tabBarIcon: ({color, size}: {color: string; size: number}) => {
     if (route.name === 'Feed') {
-      return <MaterialIcons name="folder-special" size={size} color={color} />;
+      return <MaterialCommunityIcons name="bucket-outline" size={size} color={color} />;
     }
     if (route.name === 'Leaderboard') {
       return <MaterialIcons name="leaderboard" size={size} color={color} />;

@@ -22,3 +22,15 @@ export const formatCurrency = (num: number): string => {
   }
   return s;
 };
+
+export const formatTimeTaken = (dur: number): string => {
+  const hrs = Math.floor(dur / 3600);
+  const mins = Math.floor((dur % 3600) / 60);
+  const secs = (dur % 3600) % 60;
+  let s = '';
+  if (hrs > 0) {
+    s = `${hrs}h`;
+  }
+  s = `${s} ${mins}m ${secs}s`;
+  return s.trim();
+};

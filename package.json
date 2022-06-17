@@ -16,7 +16,6 @@
     "@reduxjs/toolkit": "^1.8.2",
     "@types/react-native-snap-carousel": "^3.8.5",
     "@types/react-native-vector-icons": "^6.4.10",
-    "native-base": "^3.4.5",
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-fbsdk-next": "^8.0.5",

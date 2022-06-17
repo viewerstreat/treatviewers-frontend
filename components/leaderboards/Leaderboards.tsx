@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, ScrollView} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import YourResults from './YourResults';
@@ -7,6 +7,7 @@ import {COLOR_BLACK, COLOR_LIGHT_BROWN, COLOR_RED, COLOR_WHITE} from '../../util
 import {formatCurrency} from '../../utils/utils';
 
 interface LeaderboardsDataType {
+  key: number;
   rank: number;
   name: string;
   contestsWon: number;
@@ -15,18 +16,21 @@ interface LeaderboardsDataType {
 
 const values: LeaderboardsDataType[] = [
   {
+    key: 1,
     rank: 1,
     name: 'Sibaprasad Maiti',
     contestsWon: 12,
     earned: 126340,
   },
   {
+    key: 2,
     rank: 2,
     name: 'Sibaprasad Maiti',
     contestsWon: 12,
     earned: 126340,
   },
   {
+    key: 3,
     rank: 3,
     name: 'Sibaprasad Maiti',
     contestsWon: 12,
@@ -36,8 +40,8 @@ const values: LeaderboardsDataType[] = [
 
 function Leaderboards() {
   const resetsIn = '22d 14Hrs';
-  const _renderItem = ({item}: {item: LeaderboardsDataType}) => (
-    <View style={styles.tableRow}>
+  const _renderTableItem = (item: LeaderboardsDataType) => (
+    <View key={item.key} style={styles.tableRow}>
       <Text style={[styles.rowTxt, styles.rankCell]}>{item.rank}</Text>
       <Text style={[styles.rowTxt, styles.nameCell]}>{item.name}</Text>
       <Text style={[styles.rowTxt, styles.contestsWonCell]}>{item.contestsWon}</Text>
@@ -50,7 +54,7 @@ function Leaderboards() {
   };
 
   return (
-    <View>
+    <ScrollView style={styles.page}>
       <Text style={styles.h1Txt}>Leaderboards</Text>
       <LinearGradient
         colors={[COLOR_LIGHT_BROWN, COLOR_RED, COLOR_LIGHT_BROWN]}
@@ -63,7 +67,7 @@ function Leaderboards() {
             <Text style={[styles.headerTxt, styles.contestsWonCell]}>Contests Won</Text>
             <Text style={[styles.headerTxt, styles.earnedCell]}>Earned</Text>
           </View>
-          <FlatList data={values} renderItem={_renderItem} />
+          <View>{values.map(item => _renderTableItem(item))}</View>
           <View style={styles.bottomRow}>
             <View style={styles.loadIconWrapper}>
               <TouchableOpacity onPress={loadMore}>
@@ -74,17 +78,20 @@ function Leaderboards() {
           </View>
         </View>
       </LinearGradient>
-      <Text style={styles.h1Txt}>Your Results</Text>
       <YourResults />
-    </View>
+      <View style={styles.blank} />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  page: {
+    // paddingBottom: 50,
+  },
   h1Txt: {
     fontSize: 24,
     fontWeight: 'bold',
-    paddingVertical: 20,
+    paddingVertical: 15,
     textAlign: 'center',
     color: COLOR_BLACK,
   },
@@ -150,6 +157,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: COLOR_RED,
     borderRadius: 5,
+  },
+  blank: {
+    height: 50,
   },
 });
 

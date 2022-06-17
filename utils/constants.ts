@@ -7,3 +7,4 @@ export const COLOR_GREY = '#DADADA';
 export const COLOR_BLACK = '#363636';
 export const COLOR_DARK_BROWN = '#300D13';
 export const COLOR_LIGHT_BROWN = '#8A5E63';
+export const COLOR_GREEN = '#4CAF50';
