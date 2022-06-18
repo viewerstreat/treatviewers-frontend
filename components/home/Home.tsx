@@ -4,10 +4,11 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
+import {COLOR_BROWN, COLOR_RED, COLOR_WHITE} from '../../utils/constants';
+import AppHeader from '../AppHeader';
 import FeedScreen from '../feed/FeedScreen';
 import Leaderboards from '../leaderboards/Leaderboards';
-import AppHeader from '../AppHeader';
-import {COLOR_BROWN, COLOR_RED, COLOR_WHITE} from '../../utils/constants';
+import ClipsScreen from '../clips/ClipsScreen';
 
 function SettingsScreen() {
   return (
@@ -53,7 +54,7 @@ function Home() {
     <Tab.Navigator screenOptions={getScreenOptions}>
       <Tab.Screen name="Feed" component={FeedScreen} options={{header: AppHeader}} />
       <Tab.Screen name="Leaderboard" component={Leaderboards} options={{header: AppHeader}} />
-      <Tab.Screen name="Clips" component={SettingsScreen} options={{header: AppHeader}} />
+      <Tab.Screen name="Clips" component={ClipsScreen} options={{header: AppHeader}} />
       <Tab.Screen
         name="Notifications"
         component={SettingsScreen}
