@@ -27,7 +27,7 @@ const ongoingContestsSlice = createSlice({
   initialState,
   reducers: {
     loadMockData: state => {
-      const mockData = require('../mockData.json');
+      const mockData = require('../__mock__/mockData.json');
       state.values = mockData;
     },
   },

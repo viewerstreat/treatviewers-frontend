@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Orientation from 'react-native-orientation-locker';
+// import Orientation from 'react-native-orientation-locker';
 import {COLOR_BROWN, COLOR_RED} from '../../utils/constants';
 import OngoingContestSection from './OngoingContestSection';
 
 function FeedScreen() {
-  Orientation.lockToPortrait();
+  // Orientation.lockToPortrait();
   return (
     <LinearGradient
       colors={[COLOR_RED, COLOR_BROWN, COLOR_RED]}

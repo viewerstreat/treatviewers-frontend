@@ -1,19 +1,19 @@
 import React, {useState, useRef} from 'react';
-import {StyleSheet, View, Platform, Dimensions} from 'react-native';
+import {StyleSheet, View, Platform} from 'react-native';
 import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
-import Video, {OnLoadData, OnProgressData} from 'react-native-video';
 // import Orientation from 'react-native-orientation-locker';
+import Video, {OnLoadData, OnProgressData} from 'react-native-video';
 import {COLOR_RED} from '../../utils/constants';
 
-const screenHeight = Dimensions.get('screen').height;
-const screenWidth = Dimensions.get('screen').width;
+// const screenHeight = Dimensions.get('screen').height;
+// const screenWidth = Dimensions.get('screen').width;
 
 interface VideoPlayerProps {
   onFullScreen: () => void;
 }
 
 const VideoPlayer = (props: VideoPlayerProps) => {
-  const video = require('../../assets/oceans.mp4');
+  const video = require('../../assets/movie.mp4');
   // We will use this hook to get video current time and change it throw the player bar.
   const videoPlayer = useRef<Video>(null);
   /**
@@ -74,14 +74,19 @@ const VideoPlayer = (props: VideoPlayerProps) => {
    * For example we could set a preview image while this is happening.
    */
   const onLoad = (data: OnLoadData) => {
+    console.log('onLoad', data);
     setDuration(Math.round(data.duration));
     setIsLoading(false);
   };
 
-  const onLoadStart = () => setIsLoading(true);
+  const onLoadStart = () => {
+    console.log('onLoadStart');
+    setIsLoading(true);
+  };
 
   // This function is triggered when the player reaches the end of the media.
   const onEnd = () => {
+    console.log('onEnd');
     setPlayerState(PLAYER_STATES.ENDED);
     setCurrentTime(duration);
   };
@@ -116,6 +121,8 @@ const VideoPlayer = (props: VideoPlayerProps) => {
         paused={paused}
         ref={videoPlayer}
         resizeMode={'cover'}
+        controls={false}
+        hideShutterView={true}
         source={video}
         style={styles.backgroundVideo}
       />
@@ -147,15 +154,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   mediaControls: {
-    width: screenHeight - 170,
+    width: '100%',
     height: '100%',
-    flex: 1,
-    alignSelf:
-      Platform.OS === 'android' ? (screenHeight < 800 ? 'center' : 'flex-start') : 'center',
-  },
-  backgroundVideoFullScreen: {
-    height: screenHeight,
-    width: screenWidth,
   },
 });
 

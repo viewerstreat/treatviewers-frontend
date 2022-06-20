@@ -3,7 +3,7 @@ import {ImageBackground, StyleSheet, Animated, Text, Easing} from 'react-native'
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SPLASH_TIMEOUT} from '../../utils/config';
 import {RootStackParamList} from '../../App';
-import {COLOR_RED, COLOR_WHITE} from '../../utils/constants';
+import {COLOR_BROWN, COLOR_RED, COLOR_WHITE} from '../../utils/constants';
 import {useAppDispatch} from '../../redux/useTypedSelectorHook';
 import {loadMockData} from '../../redux/ongoingContestsSlice';
 
@@ -69,6 +69,10 @@ const styles = StyleSheet.create({
   txt: {
     fontSize: 48,
     fontWeight: 'bold',
+    backgroundColor: COLOR_BROWN,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
   },
   redText: {
     color: COLOR_RED,
