@@ -8,8 +8,8 @@ import {store} from './redux/store';
 import Home from './components/home/Home';
 import Splash from './components/splash/Splash';
 import FullscreenVideo from './components/fullscreen/FullscreenVideo';
-import {COLOR_DARK_BROWN, PATH_FULLSCREEN, PATH_HOME, PATH_SPLASH} from './utils/constants';
 import {VideoParams} from './components/clips/VideoPlayer';
+import {COLOR_DARK_BROWN, PATH_FULLSCREEN, PATH_HOME, PATH_SPLASH} from './utils/constants';
 
 export type RootStackParamList = {
   Splash: undefined;

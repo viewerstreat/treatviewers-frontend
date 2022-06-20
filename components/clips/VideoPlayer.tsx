@@ -83,13 +83,7 @@ const VideoPlayer = (props: VideoPlayerProps) => {
   };
 
   const onFullScreen = () => {
-    const params: VideoParams = {
-      isLocalAsset: props.videoParams.isLocalAsset,
-      localVideo: props.videoParams.localVideo,
-      videoUrl: props.videoParams.videoUrl,
-      posterUrl: props.videoParams.posterUrl,
-    };
-    props.onFullScreen(params);
+    props.onFullScreen(props.videoParams);
   };
 
   const videoStyle = {
