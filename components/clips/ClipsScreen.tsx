@@ -1,27 +1,35 @@
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-// import Orientation from 'react-native-orientation-locker';
 import {RootStackParamList} from '../../App';
-import VideoPlayer from './VideoPlayer';
+import VideoPlayer, {VideoParams} from './VideoPlayer';
+import {PATH_FULLSCREEN} from '../../utils/constants';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 function ClipsScreen(props: Props) {
-  // Orientation.lockToPortrait();
-
-  const onPress = () => {
-    props.navigation.push('Fullscreen');
+  const onPress = (params: VideoParams) => {
+    props.navigation.push(PATH_FULLSCREEN, params);
   };
 
+  const videoUrl = '../../assets/movie.mp4';
+  const posterUrl = 'https://baconmockup.com/300/200/';
+
   return (
-    <View style={{flex: 1}}>
-      <VideoPlayer onFullScreen={onPress} />
-      <TouchableOpacity onPress={onPress}>
-        <Text>Full Screen</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <VideoPlayer
+        onFullScreen={onPress}
+        videoParams={{isLocalAsset: true, localVideo: require(videoUrl), posterUrl}}
+        style={{}}
+      />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default ClipsScreen;

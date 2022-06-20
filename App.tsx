@@ -8,12 +8,13 @@ import {store} from './redux/store';
 import Home from './components/home/Home';
 import Splash from './components/splash/Splash';
 import FullscreenVideo from './components/fullscreen/FullscreenVideo';
-import {COLOR_DARK_BROWN} from './utils/constants';
+import {COLOR_DARK_BROWN, PATH_FULLSCREEN, PATH_HOME, PATH_SPLASH} from './utils/constants';
+import {VideoParams} from './components/clips/VideoPlayer';
 
 export type RootStackParamList = {
   Splash: undefined;
   Home: undefined;
-  Fullscreen: undefined;
+  Fullscreen: VideoParams;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -25,11 +26,11 @@ export default function App() {
       <NavigationContainer>
         <StatusBar animated={true} backgroundColor={COLOR_DARK_BROWN} />
         <View style={styles.wrapper}>
-          <RootStack.Navigator initialRouteName="Splash">
-            <RootStack.Screen name="Splash" options={{header: noHeader}} component={Splash} />
-            <RootStack.Screen name="Home" options={{header: noHeader}} component={Home} />
+          <RootStack.Navigator initialRouteName={PATH_SPLASH}>
+            <RootStack.Screen name={PATH_SPLASH} options={{header: noHeader}} component={Splash} />
+            <RootStack.Screen name={PATH_HOME} options={{header: noHeader}} component={Home} />
             <RootStack.Screen
-              name="Fullscreen"
+              name={PATH_FULLSCREEN}
               options={{header: noHeader}}
               component={FullscreenVideo}
             />

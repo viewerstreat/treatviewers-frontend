@@ -7,21 +7,17 @@ import Orientation from 'react-native-orientation-locker';
 import {COLOR_RED} from '../../utils/constants';
 import {RootStackParamList} from '../../App';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Fullscreen'>;
 
-function FullscreenVideo(props: Props) {
+function FullscreenVideo({navigation, route: {params}}: Props) {
   StatusBar.setHidden(true, 'none');
   Orientation.lockToLandscape();
-  const video = require('../../assets/oceans.mp4');
   const videoPlayer = useRef<Video>(null);
-
   const [duration, setDuration] = useState(0);
   const [paused, setPaused] = useState(true);
-
   const [currentTime, setCurrentTime] = useState(0);
   const [playerState, setPlayerState] = useState(PLAYER_STATES.PAUSED);
   const [isLoading, setIsLoading] = useState(true);
-
   const onSeek = (seek: number) => {
     if (videoPlayer?.current) {
       videoPlayer.current.seek(seek);
@@ -59,23 +55,19 @@ function FullscreenVideo(props: Props) {
     setPlayerState(PLAYER_STATES.ENDED);
     setCurrentTime(duration);
   };
-  // const [isFullScreen, setIsFullScreen] = useState(false);
+
   const onFullScreen = () => {
     StatusBar.setHidden(false, 'slide');
     Orientation.lockToPortrait();
-    props.navigation.pop();
+    navigation.pop();
   };
 
   useEffect(() => {
     const backAction = () => {
-      StatusBar.setHidden(false, 'slide');
-      Orientation.lockToPortrait();
-      props.navigation.pop();
+      onFullScreen();
       return true;
     };
-
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-
     return () => backHandler.remove();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -83,7 +75,7 @@ function FullscreenVideo(props: Props) {
   return (
     <View style={styles.container}>
       <Video
-        poster="https://baconmockup.com/300/200/"
+        poster={params.posterUrl}
         onEnd={onEnd}
         onLoad={onLoad}
         onLoadStart={onLoadStart}
@@ -92,8 +84,8 @@ function FullscreenVideo(props: Props) {
         paused={paused}
         ref={videoPlayer}
         resizeMode={'cover'}
-        source={video}
-        style={styles.backgroundVideoFullScreen}
+        source={params.isLocalAsset ? params.localVideo : {uri: params.videoUrl}}
+        style={styles.videoStyle}
       />
       <MediaControls
         isFullScreen={true}
@@ -125,7 +117,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  backgroundVideoFullScreen: {
+  videoStyle: {
     height: '100%',
     width: '100%',
   },

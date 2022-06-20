@@ -1,29 +1,26 @@
 import React, {useState, useRef} from 'react';
-import {StyleSheet, View, Platform} from 'react-native';
+import {View, Platform} from 'react-native';
 import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
-// import Orientation from 'react-native-orientation-locker';
 import Video, {OnLoadData, OnProgressData} from 'react-native-video';
 import {COLOR_RED} from '../../utils/constants';
 
-// const screenHeight = Dimensions.get('screen').height;
-// const screenWidth = Dimensions.get('screen').width;
+export interface VideoParams {
+  isLocalAsset: boolean;
+  videoUrl?: string;
+  localVideo?: any;
+  posterUrl: string;
+}
 
 interface VideoPlayerProps {
-  onFullScreen: () => void;
+  videoParams: VideoParams;
+  onFullScreen: (params: VideoParams) => void;
+  style: {[k: string]: string | number};
 }
 
 const VideoPlayer = (props: VideoPlayerProps) => {
-  const video = require('../../assets/movie.mp4');
-  // We will use this hook to get video current time and change it throw the player bar.
   const videoPlayer = useRef<Video>(null);
-  /**
-   * The following useState hooks are created to control the vide duration, if the video
-   * is paused or not, the current time video, if the player is PLAYING/PAUSED/ENDED and if the video
-   * is loading.
-   */
   const [duration, setDuration] = useState(0);
   const [paused, setPaused] = useState(true);
-
   const [currentTime, setCurrentTime] = useState(0);
   const [playerState, setPlayerState] = useState(PLAYER_STATES.PAUSED);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,14 +37,13 @@ const VideoPlayer = (props: VideoPlayerProps) => {
 
   // This function is triggered when the play/pause button is pressed.
   const onPaused = (newState: number) => {
-    setPaused(!paused);
+    setPaused(newState === PLAYER_STATES.PAUSED);
     setPlayerState(newState);
   };
 
-  /**
-   * This function is triggered when the replay button is pressed.
-   * There is a minmial bug on Android devices that does not allow the player to replay the video if changing the state to PLAYING, so we have to use the 'Platform' to fix that.
-   */
+  // This function is triggered when the replay button is pressed.
+  // There is a minmial bug on Android devices that does not allow the player to replay the video
+  // if changing the state to PLAYING, so we have to use the 'Platform' to fix that.
   const onReplay = () => {
     if (videoPlayer?.current) {
       videoPlayer.current.seek(0);
@@ -69,62 +65,59 @@ const VideoPlayer = (props: VideoPlayerProps) => {
     }
   };
 
-  /**
-   * This function and the next one allow us doing something while the video is loading.
-   * For example we could set a preview image while this is happening.
-   */
+  // This function is called when the video is loaded.
   const onLoad = (data: OnLoadData) => {
-    console.log('onLoad', data);
     setDuration(Math.round(data.duration));
     setIsLoading(false);
   };
 
+  // This function is called when the video loading starts
   const onLoadStart = () => {
-    console.log('onLoadStart');
     setIsLoading(true);
   };
 
   // This function is triggered when the player reaches the end of the media.
   const onEnd = () => {
-    console.log('onEnd');
     setPlayerState(PLAYER_STATES.ENDED);
     setCurrentTime(duration);
   };
 
-  // useState hook to check if the video player is on fullscreen mode
-
-  // const [isFullScreen, setIsFullScreen] = useState(false);
-
-  // This function is triggered when the user press on the fullscreen button or to come back from the fullscreen mode.
   const onFullScreen = () => {
-    // if (!isFullScreen) {
-    //   Orientation.lockToLandscape();
-    // } else {
-    //   if (Platform.OS === 'ios') {
-    //     Orientation.lockToPortrait();
-    //   }
-    //   Orientation.lockToPortrait();
-    // }
-    // setIsFullScreen(!isFullScreen);
-    props.onFullScreen();
+    const params: VideoParams = {
+      isLocalAsset: props.videoParams.isLocalAsset,
+      localVideo: props.videoParams.localVideo,
+      videoUrl: props.videoParams.videoUrl,
+      posterUrl: props.videoParams.posterUrl,
+    };
+    props.onFullScreen(params);
+  };
+
+  const videoStyle = {
+    width: '100%',
+    height: 250,
+    ...props.style,
   };
 
   return (
     <View>
       <Video
-        poster="https://baconmockup.com/300/200/"
-        onEnd={onEnd}
-        onLoad={onLoad}
-        onLoadStart={onLoadStart}
-        posterResizeMode={'cover'}
-        onProgress={onProgress}
-        paused={paused}
         ref={videoPlayer}
+        source={
+          props.videoParams.isLocalAsset
+            ? props.videoParams.localVideo
+            : {uri: props.videoParams.videoUrl}
+        }
+        poster={props.videoParams.posterUrl}
+        paused={paused}
+        onLoadStart={onLoadStart}
+        onLoad={onLoad}
+        onProgress={onProgress}
+        onEnd={onEnd}
+        posterResizeMode={'cover'}
         resizeMode={'cover'}
         controls={false}
         hideShutterView={true}
-        source={video}
-        style={styles.backgroundVideo}
+        style={videoStyle}
       />
       <MediaControls
         isFullScreen={false}
@@ -147,16 +140,5 @@ const VideoPlayer = (props: VideoPlayerProps) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  backgroundVideo: {
-    height: 250,
-    width: '100%',
-  },
-  mediaControls: {
-    width: '100%',
-    height: '100%',
-  },
-});
 
 export default VideoPlayer;
