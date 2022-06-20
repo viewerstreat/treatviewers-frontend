@@ -1,22 +1,19 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, View, Platform, Dimensions, BackHandler, StatusBar} from 'react-native';
+import {StyleSheet, View, Platform, BackHandler, StatusBar} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
 import Video, {OnLoadData, OnProgressData} from 'react-native-video';
-import Orientation, {LANDSCAPE, OrientationLocker} from 'react-native-orientation-locker';
+import Orientation from 'react-native-orientation-locker';
 import {COLOR_RED} from '../../utils/constants';
 import {RootStackParamList} from '../../App';
-
-const screenHeight = Dimensions.get('screen').height;
-// const screenWidth = Dimensions.get('screen').width;
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 function FullscreenVideo(props: Props) {
   StatusBar.setHidden(true, 'none');
+  Orientation.lockToLandscape();
   const video = require('../../assets/oceans.mp4');
   const videoPlayer = useRef<Video>(null);
-  // Orientation.lockToLandscape();
 
   const [duration, setDuration] = useState(0);
   const [paused, setPaused] = useState(true);
@@ -67,11 +64,6 @@ function FullscreenVideo(props: Props) {
     StatusBar.setHidden(false, 'slide');
     Orientation.lockToPortrait();
     props.navigation.pop();
-    // if (!isFullScreen) {
-    // } else {
-    //   Orientation.lockToLandscape();
-    // }
-    // setIsFullScreen(!isFullScreen);
   };
 
   useEffect(() => {
@@ -89,64 +81,53 @@ function FullscreenVideo(props: Props) {
   }, []);
 
   return (
-    <>
-      <OrientationLocker
-        orientation={LANDSCAPE}
-        onChange={orientation => console.log('onChange', orientation)}
-        onDeviceChange={orientation => console.log('onDeviceChange', orientation)}
+    <View style={styles.container}>
+      <Video
+        poster="https://baconmockup.com/300/200/"
+        onEnd={onEnd}
+        onLoad={onLoad}
+        onLoadStart={onLoadStart}
+        posterResizeMode={'cover'}
+        onProgress={onProgress}
+        paused={paused}
+        ref={videoPlayer}
+        resizeMode={'cover'}
+        source={video}
+        style={styles.backgroundVideoFullScreen}
       />
-      <View style={{margin: 50}}>
-        <Video
-          poster="https://baconmockup.com/300/200/"
-          onEnd={onEnd}
-          onLoad={onLoad}
-          onLoadStart={onLoadStart}
-          posterResizeMode={'cover'}
-          onProgress={onProgress}
-          paused={paused}
-          ref={videoPlayer}
-          resizeMode={'cover'}
-          source={video}
-          style={styles.backgroundVideoFullScreen}
-        />
-        <MediaControls
-          isFullScreen={true}
-          duration={duration}
-          isLoading={isLoading}
-          progress={currentTime}
-          onFullScreen={onFullScreen}
-          onPaused={onPaused}
-          onReplay={onReplay}
-          onSeek={onSeek}
-          onSeeking={onSeeking}
-          mainColor={COLOR_RED}
-          playerState={playerState}
-          containerStyle={{}}
-          sliderStyle={{containerStyle: styles.mediaControls, thumbStyle: {}, trackStyle: {}}}>
-          <MediaControls.Toolbar>
-            <View />
-          </MediaControls.Toolbar>
-        </MediaControls>
-      </View>
-    </>
+      <MediaControls
+        isFullScreen={true}
+        duration={duration}
+        isLoading={isLoading}
+        progress={currentTime}
+        onFullScreen={onFullScreen}
+        onPaused={onPaused}
+        onReplay={onReplay}
+        onSeek={onSeek}
+        onSeeking={onSeeking}
+        mainColor={COLOR_RED}
+        playerState={playerState}
+        containerStyle={{}}
+        sliderStyle={{containerStyle: styles.mediaControls, thumbStyle: {}, trackStyle: {}}}>
+        <MediaControls.Toolbar>
+          <View />
+        </MediaControls.Toolbar>
+      </MediaControls>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  backgroundVideo: {
-    height: screenHeight,
-    width: '100%',
+  container: {
+    flex: 1,
   },
   mediaControls: {
-    width: screenHeight - 170,
+    width: '100%',
     height: '100%',
-    flex: 1,
-    alignSelf:
-      Platform.OS === 'android' ? (screenHeight < 800 ? 'center' : 'flex-start') : 'center',
   },
   backgroundVideoFullScreen: {
-    height: 200,
-    width: 500,
+    height: '100%',
+    width: '100%',
   },
 });
 
