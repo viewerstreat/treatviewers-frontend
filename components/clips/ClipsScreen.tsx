@@ -12,14 +12,14 @@ function ClipsScreen(props: Props) {
     props.navigation.push(PATH_FULLSCREEN, params);
   };
 
-  const videoUrl = '../../assets/movie.mp4';
-  const posterUrl = 'https://baconmockup.com/300/200/';
+  const videoUrl = 'http://3.6.92.237:8080/mixkit-countryside-meadow-4075.mp4';
+  const posterUrl = 'http://3.6.92.237:8080/poster1.png';
 
   return (
     <View style={styles.container}>
       <VideoPlayer
         onFullScreen={onPress}
-        videoParams={{isLocalAsset: true, localVideo: require(videoUrl), posterUrl}}
+        videoParams={{isLocalAsset: false, videoUrl, posterUrl}}
         style={{}}
       />
     </View>

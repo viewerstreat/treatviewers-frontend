@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TreatViewers</string>
+    <string name="app_name">trailsbuddy</string>
     <string name="facebook_app_id">335871305341857</string>
     <string name="fb_login_protocol_scheme">fb335871305341857</string>
     <string name="facebook_client_token">5ea8e35c130ca9fa39f4508c15abdc7d</string>
