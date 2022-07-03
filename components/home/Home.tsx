@@ -18,6 +18,8 @@ import AppHeader from '../AppHeader';
 import FeedScreen from '../feed/FeedScreen';
 import Leaderboards from '../leaderboards/Leaderboards';
 import ClipsScreen from '../clips/ClipsScreen';
+import Login from '../login/Login';
+import ProfileContainer from '../profile/ProfileContainer';
 
 function SettingsScreen() {
   return (
@@ -69,7 +71,7 @@ function Home() {
         component={SettingsScreen}
         options={{tabBarBadge: 3, header: AppHeader}}
       />
-      <Tab.Screen name={PATH_PROFILE} component={SettingsScreen} options={{header: AppHeader}} />
+      <Tab.Screen name={PATH_PROFILE} component={ProfileContainer} options={{header: AppHeader}} />
     </Tab.Navigator>
   );
 }
