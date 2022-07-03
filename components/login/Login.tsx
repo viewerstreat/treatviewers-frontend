@@ -19,7 +19,7 @@ const Login = () => {
   }
   return (
       <ImageBackground style={styles.container} imageStyle= 
-      {{opacity:0.7}} source={require('../../images/bg.png')}>
+      {{opacity:0.9}} source={require('../../images/bg.png')}>
         {
           loginState == 1 ?
           <LoginOTP ChangeNumber={ChangeNumber}/>:

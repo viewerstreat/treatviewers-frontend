@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Switch } from 'react-native'
 import React, { useState } from 'react'
-import { COLOR_BROWN, COLOR_GREY, COLOR_LIGHT_BROWN, COLOR_RED, COLOR_WHITE } from '../../utils/constants'
+import { COLOR_BLACK, COLOR_BROWN, COLOR_GREY, COLOR_LIGHT_BROWN, COLOR_RED, COLOR_WHITE } from '../../utils/constants'
 import MoviesClipsList from './MoviesClipsList';
 
 
@@ -8,8 +8,20 @@ const Faviouraties = () => {
   const[faviourite,Setfaviourite]=useState<number>(1);
   return (
     <View style={{flex: 1}}>
-      <View style={{justifyContent:'center',alignItems:'center', height: 50}}>
+      <View style={{justifyContent:'center',alignItems:'center', height: 50, flexDirection:'row'}}>
         <Text style={{fontWeight: '600', color: COLOR_WHITE}}>Recently Added</Text>
+        <Switch
+        style={{
+        transform: [{ scaleX: .8 }, { scaleY: .8 }],
+        borderColor: 'blue',
+        borderWidth: 1}}
+        // trackColor={{ false: COLOR_RED, true: "#81b0ff" }}
+        thumbColor={COLOR_BROWN}
+        ios_backgroundColor="#3e3e3e"
+        // onValueChange={toggleSwitch}
+        value={false}
+      />
+       <Text style={{fontWeight: '600', color: COLOR_WHITE}}>All</Text>
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'center',alignItems: 'center', width: '100%'}}>
             <ToggleButton text={'Movies'} id={1} press={Setfaviourite} SelectionItem={faviourite} />
