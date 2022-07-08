@@ -5,7 +5,10 @@ import OTPInputView from '@twotalltotems/react-native-otp-input';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { useFocusEffect } from '@react-navigation/native';
 import { OTP_TIMER } from '../../utils/config';
+import { RootState } from '../../redux/store';
+import { useAppSelector } from '../../redux/useTypedSelectorHook';
 const LoginOTP = ({ChangeNumber}: LoginOTPProps) => {
+  const {intermidiatePhone} = useAppSelector((state: RootState) => state.userState);
     const [otp, setOtp] = useState<string>();
     const [timer, setTimer] = useState<number>(0);
     useFocusEffect(
@@ -35,7 +38,7 @@ const LoginOTP = ({ChangeNumber}: LoginOTPProps) => {
   return (
     <View style={styles.container}>
         <View>
-            <Text style={styles.lableTop}>OTP has been send to 8013320216</Text>
+            <Text style={styles.lableTop}>OTP has been send to {intermidiatePhone}</Text>
         </View>
          <OTPInputView
             style={{height: 100,marginLeft:10}}

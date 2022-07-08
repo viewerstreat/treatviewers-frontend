@@ -21,6 +21,5 @@ export interface UserCreatePayload{
     name: string;
     email: string;
     phone: string;
-    profilePic: string;
 }
   
