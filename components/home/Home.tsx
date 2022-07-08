@@ -71,7 +71,7 @@ function Home() {
         component={SettingsScreen}
         options={{tabBarBadge: 3, header: AppHeader}}
       />
-      <Tab.Screen name={PATH_PROFILE} component={ProfileContainer} options={{header: AppHeader}} />
+      <Tab.Screen name={PATH_PROFILE} component={Login} options={{header: AppHeader}} />
     </Tab.Navigator>
   );
 }

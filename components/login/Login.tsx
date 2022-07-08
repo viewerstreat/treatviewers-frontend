@@ -4,26 +4,27 @@ import { ScrollView } from 'react-native-gesture-handler'
 import LoginForm from './LoginForm'
 import LoginOTP from './LoginOTP'
 import { useFocusEffect } from '@react-navigation/native'
+import Registration from './Registration'
+import { useAppDispatch, useAppSelector } from '../../redux/useTypedSelectorHook'
+import { RootState } from '../../redux/store'
+import { userRegLogState } from '../../redux/userSlice'
 
 const Login = () => {
-  const[loginState,SetLoginState]=useState<number>(0);
+  const dispatch = useAppDispatch();
+  const {loginState} = useAppSelector((state: RootState) => state.userState);
   useFocusEffect(
     React.useCallback(() => {
-      SetLoginState(0)
+      dispatch(userRegLogState(0))
     },[]))
-  const ButtonClickGenerateOtp=()=>{
-    SetLoginState(1)
-  }
-  const ChangeNumber=()=>{
-    SetLoginState(0)
-  }
   return (
       <ImageBackground style={styles.container} imageStyle= 
       {{opacity:0.9}} source={require('../../images/bg.png')}>
         {
           loginState == 1 ?
-          <LoginOTP ChangeNumber={ChangeNumber}/>:
-          <LoginForm ButtonClick={ButtonClickGenerateOtp} />
+          <LoginOTP />:
+          loginState == 2 ?
+          <Registration />:
+          <LoginForm />
         }        
       </ImageBackground>
   )

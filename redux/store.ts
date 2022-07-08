@@ -1,8 +1,10 @@
 import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit';
 import ongoingContestsSlice from './ongoingContestsSlice';
+import UserSlice from './userSlice';
 export const store = configureStore({
   reducer: {
     ongoingContests: ongoingContestsSlice.reducer,
+    userState: UserSlice.reducer
   },
 });
 
