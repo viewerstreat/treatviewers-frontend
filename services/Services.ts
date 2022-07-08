@@ -8,8 +8,10 @@ export const serviceClient = new RestService({
 export const GenerateOTP = (payload: number) => {
     return serviceClient.get(Url.GenerateOTP +"?phone="+payload);
   };
-export const CreateUser = (payload: UserCreatePayload) => {
-    return serviceClient.get(Url.GenerateOTP +"?phone="+payload);
+export const CreateUser = (payload: UserCreatePayload) => { 
+    console.log(payload,Url.CreateUser);
+       
+    return serviceClient.post(Url.CreateUser, payload);
 };
 
 
