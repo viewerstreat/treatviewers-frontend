@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { COLOR_BLACK, COLOR_WHITE, COLOR_GREY, COLOR_BROWN } from '../../utils/constants'
@@ -24,28 +24,34 @@ const Registration = () => {
       });
       const onSubmit=(data:any)=>{
         if(!!data){
-            CreateUser({
-                email: data.email,
-                name: data.name,
-                phone: data.phone,
-            }).then(response=>{
-                if(!!response){
-                    console.log(response); 
-                    dispatch(userRegLogState({value: 1, phone: data.phone}))
-                }
-            }).catch(err=>{
-                console.log(err.response.data);
-                
-            })
+            if(!data.name){
+                ToastAndroid.show('Name required.',3000)
+            }else if(!!data.email && !data.email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){
+                ToastAndroid.show('Invalid email.',3000)
+            }else{
+                CreateUser({
+                    email: data.email,
+                    name: data.name,
+                    phone: data.phone,
+                }).then(response=>{
+                    if(!!response){
+                        dispatch(userRegLogState({value: 1, phone: data.phone}))
+                    }
+                }).catch(err=>{
+                    console.log(err.response.data);
+                    
+                })
+            }
         }
       }
       useEffect(()=>{
-        console.log(intermidiatePhone);
-        
         if(!!intermidiatePhone){
             setValue('phone', intermidiatePhone)
         }
       },[intermidiatePhone])
+      const back=()=>{
+        dispatch(userRegLogState({value: 0, phone: undefined}))
+      }
   return (
     <View style={styles.container}>
     <View style={styles.textInputContainer}>
@@ -88,9 +94,14 @@ const Registration = () => {
         placeholder={'Name'} ></TextInput>
     )} />
     </View>
+    <View style={{flexDirection: 'row',width: '100%', justifyContent: 'space-around'}}>
+    <TouchableOpacity style={styles.button} onPress={()=>back()}>
+    <FeatherIcon name="arrow-left-circle" size={50} color={COLOR_WHITE} />
+    </TouchableOpacity>
     <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
     <FeatherIcon name="arrow-right-circle" size={50} color={COLOR_WHITE} />
     </TouchableOpacity>
+    </View>
 </View>
   )
 }

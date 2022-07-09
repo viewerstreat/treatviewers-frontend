@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import { COLOR_BROWN, COLOR_GREY, COLOR_WHITE } from '../../utils/constants';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
@@ -6,8 +6,11 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import { useFocusEffect } from '@react-navigation/native';
 import { OTP_TIMER } from '../../utils/config';
 import { RootState } from '../../redux/store';
-import { useAppSelector } from '../../redux/useTypedSelectorHook';
-const LoginOTP = ({ChangeNumber}: LoginOTPProps) => {
+import { useAppDispatch, useAppSelector } from '../../redux/useTypedSelectorHook';
+import { GenerateOTP } from '../../services/Services';
+import { userRegLogState } from '../../redux/userSlice';
+const LoginOTP = ({}: LoginOTPProps) => {
+  const dispatch = useAppDispatch();
   const {intermidiatePhone} = useAppSelector((state: RootState) => state.userState);
     const [otp, setOtp] = useState<string>();
     const [timer, setTimer] = useState<number>(0);
@@ -35,6 +38,29 @@ const LoginOTP = ({ChangeNumber}: LoginOTPProps) => {
     const startTimer = async () => {
       setTimer(10);
     };
+    const Resend=()=>{
+      if(!!intermidiatePhone){
+        GenerateOTP(+intermidiatePhone).then(response=>{
+          if(!!response){
+            ToastAndroid.show('OTP successfully send',3000)
+          }
+        }).catch(err=>{
+          //to do
+        })
+      }
+
+    }
+    const ChangeNumber=()=>{
+      dispatch(userRegLogState({value: 0, phone: undefined}))
+    }
+    const VlidateOTP=()=>{
+      if(!!otp && otp.length< 6){
+        ToastAndroid.show('Invalid OTP.',3000)
+      }else {
+        console.log(otp);
+        
+      }
+    }
   return (
     <View style={styles.container}>
         <View>
@@ -70,6 +96,7 @@ const LoginOTP = ({ChangeNumber}: LoginOTPProps) => {
               if (timer <= 0) {
                 setTimer(10);
                 startTimer();
+                Resend()
               }
             }}>
             <Text
@@ -95,7 +122,7 @@ const LoginOTP = ({ChangeNumber}: LoginOTPProps) => {
           <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=> ChangeNumber()}>
             <Text style={[styles.lableTop,{textDecorationLine: 'underline'}]}>Change Number</Text>
           </TouchableOpacity>
-           <TouchableOpacity style={styles.button}>
+           <TouchableOpacity style={styles.button} onPress={()=> VlidateOTP()}>
         <FeatherIcon name="arrow-right-circle" size={50} color={COLOR_WHITE} />
         </TouchableOpacity>
     </View>
@@ -133,5 +160,4 @@ const styles = StyleSheet.create({
     }
   })
   interface LoginOTPProps {
-    ChangeNumber?: any;
   }

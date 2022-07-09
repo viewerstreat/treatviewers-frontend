@@ -24,7 +24,7 @@ const LoginForm = ({}:LoginFormProps) => {
       });
       const onSubmit=(data:any)=>{
         if(!!data.phone && data.phone.length == 10){
-            GenerateOTP(data).then(RES=>{
+            GenerateOTP(+data.phone).then(RES=>{ 
                 dispatch(userRegLogState({value: 1, phone: data.phone}))
             }).catch(err=>{
                 if(err.response.status == 404){
