@@ -3,7 +3,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export interface userState {
   loading: boolean;
-  error: boolean;
+  error?: string;
   loginState: number;
   intermidiatePhone: string| undefined;
   user_detail?: UserDetails;
@@ -12,7 +12,7 @@ export interface userState {
 const initialState: userState = {
   loginState: 0,
   loading: false,
-  error: false,
+  error: undefined,
   intermidiatePhone: undefined,
   user_detail: undefined
 };
@@ -27,11 +27,20 @@ const UserSlice = createSlice({
     },
     userDetailUpdate: (state, action: PayloadAction<UserDetails>) => {
       state.user_detail = action.payload;
-    }
-  },
+    },
+    errorUpdate: (state, action: PayloadAction<string| undefined>) => {
+      state.error = action.payload;
+    },
+    loadingUpdate: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    userLogout: (state) => {
+      state.user_detail = undefined;
+    },
+  }
 });
 
-export const {userRegLogState} = UserSlice.actions;
+export const {userRegLogState,userDetailUpdate,loadingUpdate,errorUpdate,userLogout} = UserSlice.actions;
 export default UserSlice;
 
 

@@ -7,8 +7,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import { OTP_TIMER } from '../../utils/config';
 import { RootState } from '../../redux/store';
 import { useAppDispatch, useAppSelector } from '../../redux/useTypedSelectorHook';
-import { GenerateOTP } from '../../services/Services';
-import { userRegLogState } from '../../redux/userSlice';
+import { GenerateOTP, VerifyOTP } from '../../services/Services';
+import { errorUpdate, loadingUpdate, userDetailUpdate, userRegLogState } from '../../redux/userSlice';
+import { updateToken } from '../../redux/tokenSlice';
 const LoginOTP = ({}: LoginOTPProps) => {
   const dispatch = useAppDispatch();
   const {intermidiatePhone} = useAppSelector((state: RootState) => state.userState);
@@ -40,12 +41,15 @@ const LoginOTP = ({}: LoginOTPProps) => {
     };
     const Resend=()=>{
       if(!!intermidiatePhone){
+        dispatch(loadingUpdate(true));
         GenerateOTP(+intermidiatePhone).then(response=>{
+          dispatch(loadingUpdate(false));
           if(!!response){
             ToastAndroid.show('OTP successfully send',3000)
           }
         }).catch(err=>{
-          //to do
+          dispatch(loadingUpdate(false));
+          dispatch(errorUpdate(err?.response?.data?.message))
         })
       }
 
@@ -56,8 +60,24 @@ const LoginOTP = ({}: LoginOTPProps) => {
     const VlidateOTP=()=>{
       if(!!otp && otp.length< 6){
         ToastAndroid.show('Invalid OTP.',3000)
-      }else {
-        console.log(otp);
+      }else if(!!otp && !!intermidiatePhone){
+        dispatch(loadingUpdate(true));
+        VerifyOTP({
+          otp: otp.toString(),
+          phone: +intermidiatePhone
+        }).then(
+          response=>{   
+            dispatch(loadingUpdate(false));  
+            if(!!response && !!response.data){
+              dispatch(userDetailUpdate(response.data.data));
+              dispatch(updateToken(response.data.token));
+              dispatch(userRegLogState({value: 0, phone: undefined}));
+            }
+          }
+        ).catch(error=>{          
+          dispatch(errorUpdate(error?.response?.data?.message))
+          dispatch(loadingUpdate(false));
+        })
         
       }
     }
@@ -161,3 +181,4 @@ const styles = StyleSheet.create({
   })
   interface LoginOTPProps {
   }
+

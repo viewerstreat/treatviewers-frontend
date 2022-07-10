@@ -7,7 +7,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import { useAppDispatch, useAppSelector } from '../../redux/useTypedSelectorHook';
 import { RootState } from '../../redux/store';
 import { CreateUser } from '../../services/Services';
-import { userRegLogState } from '../../redux/userSlice';
+import { errorUpdate, loadingUpdate, userRegLogState } from '../../redux/userSlice';
 const Registration = () => {
     const dispatch = useAppDispatch();
     const {intermidiatePhone} = useAppSelector((state: RootState) => state.userState);
@@ -26,19 +26,22 @@ const Registration = () => {
         if(!!data){
             if(!data.name){
                 ToastAndroid.show('Name required.',3000)
-            }else if(!!data.email && !data.email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){
+            }else if(!!data.email && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)) ){
                 ToastAndroid.show('Invalid email.',3000)
             }else{
+                dispatch(loadingUpdate(true));
                 CreateUser({
                     email: data.email,
                     name: data.name,
                     phone: data.phone,
                 }).then(response=>{
+                    dispatch(loadingUpdate(false));
                     if(!!response){
                         dispatch(userRegLogState({value: 1, phone: data.phone}))
                     }
                 }).catch(err=>{
-                    console.log(err.response.data);
+                    dispatch(loadingUpdate(false));
+                    dispatch(errorUpdate(err?.response?.data?.message))
                     
                 })
             }

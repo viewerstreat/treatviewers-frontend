@@ -7,22 +7,7 @@ import MoviesClipsList from './MoviesClipsList';
 const Faviouraties = () => {
   const[faviourite,Setfaviourite]=useState<number>(1);
   return (
-    <View style={{flex: 1}}>
-      <View style={{justifyContent:'center',alignItems:'center', height: 50, flexDirection:'row'}}>
-        <Text style={{fontWeight: '600', color: COLOR_WHITE}}>Recently Added</Text>
-        <Switch
-        style={{
-        transform: [{ scaleX: .8 }, { scaleY: .8 }],
-        borderColor: 'blue',
-        borderWidth: 1}}
-        // trackColor={{ false: COLOR_RED, true: "#81b0ff" }}
-        thumbColor={COLOR_BROWN}
-        ios_backgroundColor="#3e3e3e"
-        // onValueChange={toggleSwitch}
-        value={false}
-      />
-       <Text style={{fontWeight: '600', color: COLOR_WHITE}}>All</Text>
-      </View>
+    <View style={{flex: 1, marginTop: 15}}>
       <View style={{flexDirection: 'row', justifyContent: 'center',alignItems: 'center', width: '100%'}}>
             <ToggleButton text={'Movies'} id={1} press={Setfaviourite} SelectionItem={faviourite} />
             <View style={{width: 2,height:15, backgroundColor: COLOR_GREY,marginRight: 20}}></View>

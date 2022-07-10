@@ -7,7 +7,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import { Controller, useForm } from 'react-hook-form';
 import { GenerateOTP } from '../../services/Services';
 import { useAppDispatch } from '../../redux/useTypedSelectorHook';
-import { userRegLogState } from '../../redux/userSlice';
+import { loadingUpdate, userRegLogState } from '../../redux/userSlice';
 
 const LoginForm = ({}:LoginFormProps) => {
     const dispatch = useAppDispatch();
@@ -24,10 +24,13 @@ const LoginForm = ({}:LoginFormProps) => {
       });
       const onSubmit=(data:any)=>{
         if(!!data.phone && data.phone.length == 10){
+            dispatch(loadingUpdate(true));
             GenerateOTP(+data.phone).then(RES=>{ 
+                dispatch(loadingUpdate(false));
                 dispatch(userRegLogState({value: 1, phone: data.phone}))
             }).catch(err=>{
                 if(err.response.status == 404){
+                    dispatch(loadingUpdate(false));
                     dispatch(userRegLogState({value: 2, phone: data.phone}))
                 }
             })

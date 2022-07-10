@@ -1,5 +1,5 @@
-import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import React, { useEffect } from 'react';
+import {Text, View, StyleSheet, ToastAndroid} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,6 +20,10 @@ import Leaderboards from '../leaderboards/Leaderboards';
 import ClipsScreen from '../clips/ClipsScreen';
 import Login from '../login/Login';
 import ProfileContainer from '../profile/ProfileContainer';
+import { useAppDispatch, useAppSelector } from '../../redux/useTypedSelectorHook';
+import { RootState } from '../../redux/store';
+import { errorUpdate } from '../../redux/userSlice';
+import SpinnerView from '../spinner';
 
 function SettingsScreen() {
   return (
@@ -61,7 +65,16 @@ const getScreenOptions = ({route}: {route: any}) => ({
 });
 
 function Home() {
+  const dispatch = useAppDispatch();
+  const {user_detail,error} = useAppSelector((state: RootState) => state.userState);
+  useEffect(()=>{
+    if(!!error){
+      ToastAndroid.show(error, 3000);
+      dispatch(errorUpdate(undefined))
+    }
+  },[error])
   return (
+    <>
     <Tab.Navigator screenOptions={getScreenOptions}>
       <Tab.Screen name={PATH_FEED} component={FeedScreen} options={{header: AppHeader}} />
       <Tab.Screen name={PATH_LEADERBOARD} component={Leaderboards} options={{header: AppHeader}} />
@@ -71,8 +84,10 @@ function Home() {
         component={SettingsScreen}
         options={{tabBarBadge: 3, header: AppHeader}}
       />
-      <Tab.Screen name={PATH_PROFILE} component={Login} options={{header: AppHeader}} />
+      <Tab.Screen name={PATH_PROFILE} component={!!user_detail?ProfileContainer:Login} options={{header: AppHeader}} />
     </Tab.Navigator>
+    <SpinnerView />
+    </>
   );
 }
 

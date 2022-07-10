@@ -2,7 +2,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { COLOR_BROWN, COLOR_GREY, COLOR_LIGHT_BROWN, COLOR_RED, COLOR_WHITE } from '../../utils/constants'
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import { useAppSelector } from '../../redux/useTypedSelectorHook';
+import { RootState } from '../../redux/store';
 const ProfileTopSection = ({OnSelectedItem,SelectionItem}:ProfileTopProps) => {
+  const {user_detail} = useAppSelector((state: RootState) => state.userState);
   return (
     <View style={[{flex: 1,borderStartColor: COLOR_WHITE},styles.container]}>
         <View style={{height: '20%', justifyContent:'flex-end', alignItems:'flex-end', width: '100%', marginRight: 10, flexDirection: 'row'}}>
@@ -22,7 +25,7 @@ const ProfileTopSection = ({OnSelectedItem,SelectionItem}:ProfileTopProps) => {
       </View>
     </View>
       <View style={{height: '10%'}}>
-            <Text style={styles.UidText}> Sudipta Das</Text>
+            <Text style={styles.UidText}> {user_detail?.name}</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-evenly',alignItems: 'center', width: '100%',height: '25%'}}>
             <ToggleButton text={'Faviourites'} id={1} press={OnSelectedItem} SelectionItem={SelectionItem} />
