@@ -24,3 +24,40 @@ Also modify the `node_modules/react-native-video/android-exoplayer/build.gradle`
 `Rename componentWillMount to UNSAFE_componentWillMount to suppress this warning in non-strict mode.`
 
 Update the `node_modules/react-native-slider/src/Slider.js` and `node_modules/react-native-slider/lib/Slider.js`. Replace `componentWillMount` with `UNSAFE_componentWillMount` and `componentWillReceiveProps` with `UNSAFE_componentWillReceiveProps` in all places.
+
+### Changes required for package `react-native-upi-pay`
+
+- Link the package.
+
+```
+npx react-native link react-native-upi-pay
+```
+
+- Add typescript definition for the package. Add a new file `node_modules/react-native-upi-pay/index.d.ts`.
+  Add the below content inside it.
+
+```
+declare module RNUpiPayment {
+    interface UpiConfig {
+        vpa: string;
+        amount: string;
+        payeeName: string;
+        transactionRef: string;
+        transactionNote: string;
+    }
+    type Fn = (data: any) => void;
+    function initializePayment(config: UpiConfig, success: Fn, failure: Fn): void;
+}
+
+export default RNUpiPayment;
+```
+
+- Open the file `node_modules/react-native-upi-pay/android/build.gradle`.
+  Modify below two lines as shown below -
+
+```
+dependencies {
+    implementation 'com.facebook.react:react-native:+'
+    implementation 'com.google.code.gson:gson:2.8.0'
+}
+```
