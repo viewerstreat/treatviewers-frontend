@@ -19,10 +19,34 @@ import FeedScreen from '../feed/FeedScreen';
 import Leaderboards from '../leaderboards/Leaderboards';
 import ClipsScreen from '../clips/ClipsScreen';
 
+import RNUpiPayment from 'react-native-upi-pay';
+
 function SettingsScreen() {
+  // function failureCallback() {
+  //   console.log('failureCallback');
+  // }
+
+  function pay() {
+    RNUpiPayment.initializePayment(
+      {
+        vpa: '7980420791@ibl',
+        payeeName: 'Sibaprasad Maiti',
+        amount: '1',
+        transactionRef: 'agsf-213-kojk-32',
+        transactionNote: 'Trailsbuddy transaction',
+      },
+      data => {
+        console.log('success', data);
+      },
+      data => {
+        console.log('failure', data);
+      },
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Settings!</Text>
+      <Text onPress={pay}>Settings!</Text>
     </View>
   );
 }
