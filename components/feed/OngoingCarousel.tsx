@@ -1,30 +1,22 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {View, Text, Dimensions, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
+import {OngoingCarouselData} from '../../redux/ongoingCarouselSlice';
+import {RootState} from '../../redux/store';
+import {useAppSelector} from '../../redux/useTypedSelectorHook';
 import {COLOR_RED, COLOR_WHITE} from '../../utils/constants';
-import ENTRIES1 from '../../__mock__/entriesData.json';
-
-interface ItemPropType {
-  title: string;
-  timeRemaining: string;
-  imageUrl: string;
-}
 
 const {width: screenWidth} = Dimensions.get('window');
 function OngoingCarousel() {
-  const [entries, setEntries] = useState([] as ItemPropType[]);
+  const {values} = useAppSelector((state: RootState) => state.ongoingCarousel);
   const [activeSlide, setActiveSlide] = useState(0);
   const carouselRef = useRef<any>(null);
-
-  useEffect(() => {
-    setEntries(ENTRIES1);
-  }, []);
 
   const clickViewDetails = (index: number) => {
     console.log('pressed view details', index);
   };
 
-  const _renderItem = ({item, index}: {item: ItemPropType; index: number}) => {
+  const _renderItem = ({item, index}: {item: OngoingCarouselData; index: number}) => {
     return (
       <View style={styles.item}>
         <TouchableOpacity onPress={() => clickViewDetails(index)}>
@@ -45,8 +37,8 @@ function OngoingCarousel() {
         ref={carouselRef}
         sliderWidth={screenWidth}
         sliderHeight={screenWidth}
-        itemWidth={screenWidth * 0.6}
-        data={entries}
+        itemWidth={screenWidth * 0.7}
+        data={values}
         renderItem={_renderItem}
         onSnapToItem={index => setActiveSlide(index)}
         loop={true}
@@ -54,7 +46,7 @@ function OngoingCarousel() {
         autoplayInterval={4000}
       />
       <Pagination
-        dotsLength={entries.length}
+        dotsLength={values.length}
         activeDotIndex={activeSlide}
         containerStyle={styles.paginationContainer}
         dotStyle={styles.paginationDot}

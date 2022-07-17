@@ -1,8 +1,10 @@
 import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit';
+import ongoingCarouselSlice from './ongoingCarouselSlice';
 import ongoingContestsSlice from './ongoingContestsSlice';
 export const store = configureStore({
   reducer: {
     ongoingContests: ongoingContestsSlice.reducer,
+    ongoingCarousel: ongoingCarouselSlice.reducer,
   },
 });
 
