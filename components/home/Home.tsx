@@ -1,5 +1,5 @@
-import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {Text, View, StyleSheet, ToastAndroid} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,6 +18,14 @@ import AppHeader from '../AppHeader';
 import FeedScreen from '../feed/FeedScreen';
 import Leaderboards from '../leaderboards/Leaderboards';
 import ClipsScreen from '../clips/ClipsScreen';
+import Login from '../login/Login';
+import ProfileContainer from '../profile/ProfileContainer';
+import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
+import {RootState} from '../../redux/store';
+import {errorUpdate, userDetailUpdate, userLogout} from '../../redux/userSlice';
+import SpinnerView from '../spinner';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {RenewToken} from '../../services/Services';
 
 import RNUpiPayment from 'react-native-upi-pay';
 
@@ -32,7 +40,7 @@ function SettingsScreen() {
         vpa: '7980420791@ibl',
         payeeName: 'Sibaprasad Maiti',
         amount: '1',
-        transactionRef: 'agsf-213-kojk-32',
+        transactionRef: 'agsf-214-kojk-32',
         transactionNote: 'Trailsbuddy transaction',
       },
       data => {
@@ -83,18 +91,79 @@ const getScreenOptions = ({route}: {route: any}) => ({
 });
 
 function Home() {
+  const dispatch = useAppDispatch();
+  const {user_detail, error} = useAppSelector((state: RootState) => state.userState);
+  const {token} = useAppSelector((state: RootState) => state.tokenSlice);
+  useEffect(() => {
+    if (!!error) {
+      ToastAndroid.show(error, 3000);
+      dispatch(errorUpdate(undefined));
+    }
+  }, [error]);
+  const retrieveUserData = async () => {
+    RenewToken()
+      .then(response => {
+        if (!!response && !!response.data) {
+          dispatch(userDetailUpdate(response.data.data));
+        }
+      })
+      .catch(err => {
+        dispatch(userLogout());
+        AsyncStorage.multiRemove(['userData', 'token']);
+      });
+  };
+  useEffect(() => {
+    retrieveUserData();
+  }, []);
+  useEffect(() => {
+    const setuserData = async () => {
+      await AsyncStorage.setItem('userData', JSON.stringify(user_detail));
+    };
+    if (!!user_detail) {
+      setuserData();
+    }
+  }, [user_detail]);
+  useEffect(() => {
+    const setuserData = async (tokn: string) => {
+      await AsyncStorage.setItem('token', tokn);
+    };
+    if (!!token) {
+      setuserData(token);
+    }
+  }, [token]);
+  useEffect(() => {
+    const settoken = async () => {
+      if (token) {
+        await AsyncStorage.setItem('token', token);
+      }
+    };
+    if (!!token) {
+      settoken();
+    }
+  }, [token]);
   return (
-    <Tab.Navigator screenOptions={getScreenOptions}>
-      <Tab.Screen name={PATH_FEED} component={FeedScreen} options={{header: AppHeader}} />
-      <Tab.Screen name={PATH_LEADERBOARD} component={Leaderboards} options={{header: AppHeader}} />
-      <Tab.Screen name={PATH_CLIPS} component={ClipsScreen} options={{header: AppHeader}} />
-      <Tab.Screen
-        name={PATH_NOTIFICATIONS}
-        component={SettingsScreen}
-        options={{tabBarBadge: 3, header: AppHeader}}
-      />
-      <Tab.Screen name={PATH_PROFILE} component={SettingsScreen} options={{header: AppHeader}} />
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator screenOptions={getScreenOptions}>
+        <Tab.Screen name={PATH_FEED} component={FeedScreen} options={{header: AppHeader}} />
+        <Tab.Screen
+          name={PATH_LEADERBOARD}
+          component={Leaderboards}
+          options={{header: AppHeader}}
+        />
+        <Tab.Screen name={PATH_CLIPS} component={ClipsScreen} options={{header: AppHeader}} />
+        <Tab.Screen
+          name={PATH_NOTIFICATIONS}
+          component={SettingsScreen}
+          options={{tabBarBadge: 3, header: AppHeader}}
+        />
+        <Tab.Screen
+          name={PATH_PROFILE}
+          component={!!user_detail ? ProfileContainer : Login}
+          options={{header: AppHeader}}
+        />
+      </Tab.Navigator>
+      <SpinnerView />
+    </>
   );
 }
 
