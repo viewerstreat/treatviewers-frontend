@@ -5,12 +5,13 @@ import Accounts from './Accounts';
 import Payments from './Payments';
 import { useAppDispatch } from '../../redux/useTypedSelectorHook';
 import { userLogout } from '../../redux/userSlice';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Settings = () => {
   const[settings,Setsettings]=useState<number>(1);
   const dispatch = useAppDispatch();
   const Logout=()=>{
     dispatch(userLogout())
+    AsyncStorage.multiRemove(['userData', 'token']);
   }
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>

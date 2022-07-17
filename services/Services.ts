@@ -12,10 +12,12 @@ export const CreateUser = (payload: UserCreatePayload) => {
     return serviceClient.post(Url.CreateUser, payload);
 };
 
-export const VerifyOTP=(payload: VerifyOTPPayload)=>{  
-  console.log(Url.VerifyOTPUrl + '?phone='+payload.phone+'&otp='+payload.otp);
-  
+export const VerifyOTP=(payload: VerifyOTPPayload)=>{    
   return serviceClient.get(Url.VerifyOTPUrl + '?phone='+payload.phone+'&otp='+payload.otp)
+}
+
+export const RenewToken=()=>{
+  return serviceClient.get(Url.RenewTokenUrl)
 }
 
 

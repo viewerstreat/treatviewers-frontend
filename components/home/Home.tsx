@@ -22,9 +22,11 @@ import Login from '../login/Login';
 import ProfileContainer from '../profile/ProfileContainer';
 import { useAppDispatch, useAppSelector } from '../../redux/useTypedSelectorHook';
 import { RootState } from '../../redux/store';
-import { errorUpdate } from '../../redux/userSlice';
+import { errorUpdate, userDetailUpdate, userLogout } from '../../redux/userSlice';
 import SpinnerView from '../spinner';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { updateToken } from '../../redux/tokenSlice';
+import { RenewToken } from '../../services/Services';
 function SettingsScreen() {
   return (
     <View style={styles.container}>
@@ -67,12 +69,52 @@ const getScreenOptions = ({route}: {route: any}) => ({
 function Home() {
   const dispatch = useAppDispatch();
   const {user_detail,error} = useAppSelector((state: RootState) => state.userState);
+  const {token} = useAppSelector((state: RootState) => state.tokenSlice);
   useEffect(()=>{
     if(!!error){
       ToastAndroid.show(error, 3000);
       dispatch(errorUpdate(undefined))
     }
   },[error])
+  const retrieveUserData = async () => {
+    RenewToken().then(response=>{
+      if(!!response && !!response.data){
+        dispatch(userDetailUpdate(response.data.data));
+      }
+    }).catch(err=>{
+      dispatch(userLogout())
+      AsyncStorage.multiRemove(['userData', 'token']);
+    })
+  };
+  useEffect(()=>{
+      retrieveUserData()
+  },[])
+  useEffect(()=>{
+    const setuserData=async ()=>{      
+      await AsyncStorage.setItem('userData', JSON.stringify(user_detail));
+    }
+    if(!!user_detail){
+      setuserData()
+    }
+  },[user_detail])
+  useEffect(()=>{
+    const setuserData=async (tokn: string)=>{      
+      await AsyncStorage.setItem('token', tokn);
+    }
+    if(!!token){
+      setuserData(token)
+    }
+  },[token])
+  useEffect(()=>{
+    const settoken=async ()=>{
+      if(token){
+        await AsyncStorage.setItem('token', token);
+      }
+    }
+    if(!!token){
+      settoken()
+    }
+  },[token])
   return (
     <>
     <Tab.Navigator screenOptions={getScreenOptions}>

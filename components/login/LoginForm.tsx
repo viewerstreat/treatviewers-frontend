@@ -29,7 +29,9 @@ const LoginForm = ({}:LoginFormProps) => {
                 dispatch(loadingUpdate(false));
                 dispatch(userRegLogState({value: 1, phone: data.phone}))
             }).catch(err=>{
-                if(err.response.status == 404){
+                console.log(err);
+                
+                if(!!err && !!err.response && err.response.status == 404){
                     dispatch(loadingUpdate(false));
                     dispatch(userRegLogState({value: 2, phone: data.phone}))
                 }

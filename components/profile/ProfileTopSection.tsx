@@ -9,7 +9,7 @@ const ProfileTopSection = ({OnSelectedItem,SelectionItem}:ProfileTopProps) => {
   return (
     <View style={[{flex: 1,borderStartColor: COLOR_WHITE},styles.container]}>
         <View style={{height: '20%', justifyContent:'flex-end', alignItems:'flex-end', width: '100%', marginRight: 10, flexDirection: 'row'}}>
-            <Text style={styles.UidText}> UID: 708654</Text>
+            <Text style={styles.UidText}> UID: {user_detail?.id}</Text>
           <TouchableOpacity onPress={()=>{}}>
             <FeatherIcon name="copy" size={25} color={COLOR_RED} />
           </TouchableOpacity>
