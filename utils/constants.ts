@@ -13,6 +13,7 @@ export const PATH_SPLASH = 'Splash';
 export const PATH_HOME = 'Home';
 export const PATH_FULLSCREEN = 'Fullscreen';
 export const PATH_FEED = 'Feed';
+export const PATH_FEED_SCREEN = 'FeedScreen';
 export const PATH_LEADERBOARD = 'Leaderboard';
 export const PATH_CLIPS = 'Clips';
 export const PATH_NOTIFICATIONS = 'Notifications';

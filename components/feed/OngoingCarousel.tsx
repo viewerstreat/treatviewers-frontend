@@ -1,17 +1,16 @@
 import React, {useRef, useState} from 'react';
 import {View, Text, Dimensions, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {OngoingCarouselData} from '../../redux/ongoingCarouselSlice';
 import {RootState} from '../../redux/store';
 import {useAppSelector} from '../../redux/useTypedSelectorHook';
 import {COLOR_RED, COLOR_WHITE, PATH_MOVIE_DETAILS} from '../../utils/constants';
-// import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../App';
+import {FeedStackParamList} from './FeedScreen';
 
 const {width: screenWidth} = Dimensions.get('window');
-type Props = StackNavigationProp<RootStackParamList, 'Home'>;
+type Props = StackNavigationProp<FeedStackParamList, 'FeedScreen'>;
 
 function OngoingCarousel() {
   const navigation = useNavigation<Props>();
@@ -20,10 +19,9 @@ function OngoingCarousel() {
   const carouselRef = useRef<any>(null);
 
   const clickViewDetails = (index: number) => {
-    console.log('pressed view details', index);
+    console.log('pressed view details', index, values);
     const val = values[index];
     console.log('opening movie details page', val);
-    // navigation.navigation.push(PATH_MOVIE_DETAILS);
     navigation.navigate(PATH_MOVIE_DETAILS, {_id: val._id});
   };
 

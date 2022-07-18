@@ -1,18 +1,14 @@
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../App';
+import {FeedStackParamList} from '../feed/FeedScreen';
 
-export interface MovieDetailsRouteParams {
-  _id: string;
-}
-
-type Props = NativeStackScreenProps<RootStackParamList, 'MovieDetails'>;
+type Props = NativeStackScreenProps<FeedStackParamList, 'MovieDetails'>;
 function MovieDetails(props: Props) {
-  console.log('movie details route params _id', props.route.params._id);
   return (
     <View style={styles.container}>
       <Text>Movie Details</Text>
+      <Text>{props.route.params._id}</Text>
     </View>
   );
 }

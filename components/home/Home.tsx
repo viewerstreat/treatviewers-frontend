@@ -15,7 +15,7 @@ import {
   PATH_PROFILE,
 } from '../../utils/constants';
 import AppHeader from '../AppHeader';
-import FeedScreen from '../feed/FeedScreen';
+import FeedStackScreen from '../feed/FeedScreen';
 import Leaderboards from '../leaderboards/Leaderboards';
 import ClipsScreen from '../clips/ClipsScreen';
 import Login from '../login/Login';
@@ -62,7 +62,7 @@ function SettingsScreen() {
 const Tab = createBottomTabNavigator();
 const getScreenOptions = ({route}: {route: any}) => ({
   tabBarIcon: ({color, size}: {color: string; size: number}) => {
-    if (route.name === 'Feed') {
+    if (route.name === PATH_FEED) {
       return <MaterialCommunityIcons name="bucket-outline" size={size} color={color} />;
     }
     if (route.name === PATH_LEADERBOARD) {
@@ -145,7 +145,7 @@ function Home() {
   return (
     <>
       <Tab.Navigator screenOptions={getScreenOptions}>
-        <Tab.Screen name={PATH_FEED} component={FeedScreen} options={{header: AppHeader}} />
+        <Tab.Screen name={PATH_FEED} component={FeedStackScreen} options={{header: AppHeader}} />
         <Tab.Screen
           name={PATH_LEADERBOARD}
           component={Leaderboards}
