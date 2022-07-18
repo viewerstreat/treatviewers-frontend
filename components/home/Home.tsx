@@ -33,14 +33,14 @@ function SettingsScreen() {
   // function failureCallback() {
   //   console.log('failureCallback');
   // }
-
+  // vpa: '7980420791@ibl',
   function pay() {
     RNUpiPayment.initializePayment(
       {
-        vpa: '7980420791@ibl',
+        vpa: '9051337003@upi',
         payeeName: 'Sibaprasad Maiti',
         amount: '1',
-        transactionRef: 'agsf-214-kojk-32',
+        transactionRef: '0013-312-110',
         transactionNote: 'Trailsbuddy transaction',
       },
       data => {
@@ -54,7 +54,7 @@ function SettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text onPress={pay}>Settings!</Text>
+      <Text onPress={pay}>Pay Here!</Text>
     </View>
   );
 }

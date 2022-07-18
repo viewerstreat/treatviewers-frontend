@@ -1,4 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {FetchMovies} from '../services/Services';
 
 export interface OngoingCarouselData {
   title: string;
@@ -18,16 +19,6 @@ const initialState: OngoingCarouselState = {
   error: false,
 };
 
-type ResponseSchema = {
-  success: boolean;
-  data: {
-    name: string;
-    bannerImageUrl: string;
-    moviePromotionExpiry: number;
-  }[];
-  message: string;
-};
-
 const getTimeRemaining = (time: number): string => {
   const currTime = new Date().getTime();
   const duration = time - currTime;
@@ -38,18 +29,16 @@ const getTimeRemaining = (time: number): string => {
 };
 
 export const loadOngoingCarousel = createAsyncThunk('ongoingCarousel/load', async () => {
-  const url = 'https://trailsbuddy-api.herokuapp.com/api/v1/movie';
-  const res = await fetch(url);
-  const response: ResponseSchema = await res.json();
-  if (!response.success) {
-    throw new Error(response.message);
+  const {data} = await FetchMovies();
+  if (!data.success) {
+    throw new Error(data.message);
   }
-  const data: OngoingCarouselData[] = response.data.map(e => ({
+  const result: OngoingCarouselData[] = data.data.map(e => ({
     title: e.name,
     imageUrl: e.bannerImageUrl,
     timeRemaining: getTimeRemaining(e.moviePromotionExpiry),
   }));
-  return data;
+  return result;
 });
 
 const ongoingCarouselSlice = createSlice({
