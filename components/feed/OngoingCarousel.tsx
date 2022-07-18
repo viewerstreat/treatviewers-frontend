@@ -1,19 +1,30 @@
 import React, {useRef, useState} from 'react';
 import {View, Text, Dimensions, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {OngoingCarouselData} from '../../redux/ongoingCarouselSlice';
 import {RootState} from '../../redux/store';
 import {useAppSelector} from '../../redux/useTypedSelectorHook';
-import {COLOR_RED, COLOR_WHITE} from '../../utils/constants';
+import {COLOR_RED, COLOR_WHITE, PATH_MOVIE_DETAILS} from '../../utils/constants';
+// import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../App';
 
 const {width: screenWidth} = Dimensions.get('window');
+type Props = StackNavigationProp<RootStackParamList, 'Home'>;
+
 function OngoingCarousel() {
+  const navigation = useNavigation<Props>();
   const {values} = useAppSelector((state: RootState) => state.ongoingCarousel);
   const [activeSlide, setActiveSlide] = useState(0);
   const carouselRef = useRef<any>(null);
 
   const clickViewDetails = (index: number) => {
     console.log('pressed view details', index);
+    const val = values[index];
+    console.log('opening movie details page', val);
+    // navigation.navigation.push(PATH_MOVIE_DETAILS);
+    navigation.navigate(PATH_MOVIE_DETAILS, {_id: val._id});
   };
 
   const _renderItem = ({item, index}: {item: OngoingCarouselData; index: number}) => {

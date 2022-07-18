@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {FetchMovies} from '../services/Services';
 
 export interface OngoingCarouselData {
+  _id: string;
   title: string;
   timeRemaining: string;
   imageUrl: string;
@@ -34,6 +35,7 @@ export const loadOngoingCarousel = createAsyncThunk('ongoingCarousel/load', asyn
     throw new Error(data.message);
   }
   const result: OngoingCarouselData[] = data.data.map(e => ({
+    _id: e._id,
     title: e.name,
     imageUrl: e.bannerImageUrl,
     timeRemaining: getTimeRemaining(e.moviePromotionExpiry),

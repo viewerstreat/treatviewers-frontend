@@ -17,3 +17,4 @@ export const PATH_LEADERBOARD = 'Leaderboard';
 export const PATH_CLIPS = 'Clips';
 export const PATH_NOTIFICATIONS = 'Notifications';
 export const PATH_PROFILE = 'Profile';
+export const PATH_MOVIE_DETAILS = 'MovieDetails';

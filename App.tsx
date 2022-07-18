@@ -9,11 +9,19 @@ import Home from './components/home/Home';
 import Splash from './components/splash/Splash';
 import FullscreenVideo from './components/fullscreen/FullscreenVideo';
 import {VideoParams} from './components/clips/VideoPlayer';
-import {COLOR_DARK_BROWN, PATH_FULLSCREEN, PATH_HOME, PATH_SPLASH} from './utils/constants';
+import MovieDetails, {MovieDetailsRouteParams} from './components/movie/MovieDetails';
+import {
+  COLOR_DARK_BROWN,
+  PATH_FULLSCREEN,
+  PATH_HOME,
+  PATH_MOVIE_DETAILS,
+  PATH_SPLASH,
+} from './utils/constants';
 export type RootStackParamList = {
-  Splash: undefined;
-  Home: undefined;
-  Fullscreen: VideoParams;
+  [PATH_SPLASH]: undefined;
+  [PATH_HOME]: undefined;
+  [PATH_FULLSCREEN]: VideoParams;
+  [PATH_MOVIE_DETAILS]: MovieDetailsRouteParams;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -28,6 +36,11 @@ export default function App() {
           <RootStack.Navigator initialRouteName={PATH_SPLASH}>
             <RootStack.Screen name={PATH_SPLASH} options={{header: noHeader}} component={Splash} />
             <RootStack.Screen name={PATH_HOME} options={{header: noHeader}} component={Home} />
+            <RootStack.Screen
+              name={PATH_MOVIE_DETAILS}
+              options={{header: noHeader}}
+              component={MovieDetails}
+            />
             <RootStack.Screen
               name={PATH_FULLSCREEN}
               options={{header: noHeader}}

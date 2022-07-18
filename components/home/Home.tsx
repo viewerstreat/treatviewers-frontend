@@ -95,11 +95,11 @@ function Home() {
   const {user_detail, error} = useAppSelector((state: RootState) => state.userState);
   const {token} = useAppSelector((state: RootState) => state.tokenSlice);
   useEffect(() => {
-    if (!!error) {
+    if (error) {
       ToastAndroid.show(error, 3000);
       dispatch(errorUpdate(undefined));
     }
-  }, [error]);
+  }, [dispatch, error]);
   const retrieveUserData = async () => {
     RenewToken()
       .then(response => {
@@ -107,19 +107,20 @@ function Home() {
           dispatch(userDetailUpdate(response.data.data));
         }
       })
-      .catch(err => {
+      .catch(_err => {
         dispatch(userLogout());
         AsyncStorage.multiRemove(['userData', 'token']);
       });
   };
   useEffect(() => {
     retrieveUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     const setuserData = async () => {
       await AsyncStorage.setItem('userData', JSON.stringify(user_detail));
     };
-    if (!!user_detail) {
+    if (user_detail) {
       setuserData();
     }
   }, [user_detail]);
@@ -127,7 +128,7 @@ function Home() {
     const setuserData = async (tokn: string) => {
       await AsyncStorage.setItem('token', tokn);
     };
-    if (!!token) {
+    if (token) {
       setuserData(token);
     }
   }, [token]);
@@ -137,7 +138,7 @@ function Home() {
         await AsyncStorage.setItem('token', token);
       }
     };
-    if (!!token) {
+    if (token) {
       settoken();
     }
   }, [token]);
@@ -158,7 +159,7 @@ function Home() {
         />
         <Tab.Screen
           name={PATH_PROFILE}
-          component={!!user_detail ? ProfileContainer : Login}
+          component={user_detail?.id ? ProfileContainer : Login}
           options={{header: AppHeader}}
         />
       </Tab.Navigator>
