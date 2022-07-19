@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {FetchMovies} from '../services/Services';
+import {getTimeRemaining} from '../utils/utils';
 
 export interface OngoingCarouselData {
   _id: string;
@@ -18,15 +19,6 @@ const initialState: OngoingCarouselState = {
   values: [],
   loading: false,
   error: false,
-};
-
-const getTimeRemaining = (time: number): string => {
-  const currTime = new Date().getTime();
-  const duration = time - currTime;
-  const secs = Math.floor(duration / 1000);
-  const hours = Math.floor(secs / 3600);
-  const days = Math.floor(hours / 24);
-  return `${days}d ${hours % 24}hrs`;
 };
 
 export const loadOngoingCarousel = createAsyncThunk('ongoingCarousel/load', async () => {

@@ -9,6 +9,8 @@ export const COLOR_DARK_BROWN = '#300D13';
 export const COLOR_LIGHT_BROWN = '#8A5E63';
 export const COLOR_GREEN = '#4CAF50';
 
+export const INR_SYMBOL = '₹';
+
 export const PATH_SPLASH = 'Splash';
 export const PATH_HOME = 'Home';
 export const PATH_FULLSCREEN = 'Fullscreen';

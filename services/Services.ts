@@ -1,5 +1,11 @@
 import {baseURL, Url} from '../utils/urls';
 import RestService from './rest';
+import {
+  UserCreatePayload,
+  VerifyOTPPayload,
+  MovieResponseSchema,
+  ContestResponseSchema,
+} from './schema';
 
 export const serviceClient = new RestService({
   baseURL: baseURL,
@@ -20,35 +26,10 @@ export const RenewToken = () => {
   return serviceClient.get(Url.RenewTokenUrl);
 };
 
-type ResponseSchema = {
-  success: boolean;
-  data: {
-    _id: string;
-    name: string;
-    description: string;
-    tags: string[];
-    bannerImageUrl: string;
-    videoUrl: string;
-    moviePromotionExpiry: number;
-    viewCount: number;
-    likeCount: number;
-    sponsoredBy: string;
-    sponsoredByLogo?: string;
-    releaseDate: number;
-  }[];
-  message: string;
-};
 export const FetchMovies = () => {
-  return serviceClient.client.get<ResponseSchema>(Url.FetchMovie);
+  return serviceClient.client.get<MovieResponseSchema>(Url.FetchMovie);
 };
 
-// interfaces
-export interface UserCreatePayload {
-  name: string;
-  email: string;
-  phone: string;
-}
-export interface VerifyOTPPayload {
-  phone: number;
-  otp: string;
-}
+export const FetchContests = () => {
+  return serviceClient.client.get<ContestResponseSchema>(Url.FetchContest);
+};
