@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import {Platform, StatusBar, StyleSheet, View} from 'react-native';
+import React from 'react';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Provider} from 'react-redux';
-import {RootState, store} from './redux/store';
+import {store} from './redux/store';
 
 import Home from './components/home/Home';
 import Splash from './components/splash/Splash';
@@ -11,9 +11,9 @@ import FullscreenVideo from './components/fullscreen/FullscreenVideo';
 import {VideoParams} from './components/clips/VideoPlayer';
 import {COLOR_DARK_BROWN, PATH_FULLSCREEN, PATH_HOME, PATH_SPLASH} from './utils/constants';
 export type RootStackParamList = {
-  Splash: undefined;
-  Home: undefined;
-  Fullscreen: VideoParams;
+  [PATH_SPLASH]: undefined;
+  [PATH_HOME]: undefined;
+  [PATH_FULLSCREEN]: VideoParams;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();

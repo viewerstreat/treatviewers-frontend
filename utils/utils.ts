@@ -34,3 +34,12 @@ export const formatTimeTaken = (dur: number): string => {
   s = `${s} ${mins}m ${secs}s`;
   return s.trim();
 };
+
+export const getTimeRemaining = (time: number): string => {
+  const currTime = new Date().getTime();
+  const duration = time - currTime;
+  const secs = Math.floor(duration / 1000);
+  const hours = Math.floor(secs / 3600);
+  const days = Math.floor(hours / 24);
+  return `${days}d ${hours % 24}hrs`;
+};

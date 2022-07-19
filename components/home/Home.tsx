@@ -15,7 +15,7 @@ import {
   PATH_PROFILE,
 } from '../../utils/constants';
 import AppHeader from '../AppHeader';
-import FeedScreen from '../feed/FeedScreen';
+import FeedStackScreen from '../feed/FeedScreen';
 import Leaderboards from '../leaderboards/Leaderboards';
 import ClipsScreen from '../clips/ClipsScreen';
 import Login from '../login/Login';
@@ -33,14 +33,14 @@ function SettingsScreen() {
   // function failureCallback() {
   //   console.log('failureCallback');
   // }
-
+  // vpa: '7980420791@ibl',
   function pay() {
     RNUpiPayment.initializePayment(
       {
-        vpa: '7980420791@ibl',
+        vpa: '9051337003@upi',
         payeeName: 'Sibaprasad Maiti',
         amount: '1',
-        transactionRef: 'agsf-214-kojk-32',
+        transactionRef: '0013-312-110',
         transactionNote: 'Trailsbuddy transaction',
       },
       data => {
@@ -54,7 +54,7 @@ function SettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text onPress={pay}>Settings!</Text>
+      <Text onPress={pay}>Pay Here!</Text>
     </View>
   );
 }
@@ -62,7 +62,7 @@ function SettingsScreen() {
 const Tab = createBottomTabNavigator();
 const getScreenOptions = ({route}: {route: any}) => ({
   tabBarIcon: ({color, size}: {color: string; size: number}) => {
-    if (route.name === 'Feed') {
+    if (route.name === PATH_FEED) {
       return <MaterialCommunityIcons name="bucket-outline" size={size} color={color} />;
     }
     if (route.name === PATH_LEADERBOARD) {
@@ -95,11 +95,11 @@ function Home() {
   const {user_detail, error} = useAppSelector((state: RootState) => state.userState);
   const {token} = useAppSelector((state: RootState) => state.tokenSlice);
   useEffect(() => {
-    if (!!error) {
+    if (error) {
       ToastAndroid.show(error, 3000);
       dispatch(errorUpdate(undefined));
     }
-  }, [error]);
+  }, [dispatch, error]);
   const retrieveUserData = async () => {
     RenewToken()
       .then(response => {
@@ -107,19 +107,20 @@ function Home() {
           dispatch(userDetailUpdate(response.data.data));
         }
       })
-      .catch(err => {
+      .catch(_err => {
         dispatch(userLogout());
         AsyncStorage.multiRemove(['userData', 'token']);
       });
   };
   useEffect(() => {
     retrieveUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     const setuserData = async () => {
       await AsyncStorage.setItem('userData', JSON.stringify(user_detail));
     };
-    if (!!user_detail) {
+    if (user_detail) {
       setuserData();
     }
   }, [user_detail]);
@@ -127,7 +128,7 @@ function Home() {
     const setuserData = async (tokn: string) => {
       await AsyncStorage.setItem('token', tokn);
     };
-    if (!!token) {
+    if (token) {
       setuserData(token);
     }
   }, [token]);
@@ -137,14 +138,14 @@ function Home() {
         await AsyncStorage.setItem('token', token);
       }
     };
-    if (!!token) {
+    if (token) {
       settoken();
     }
   }, [token]);
   return (
     <>
       <Tab.Navigator screenOptions={getScreenOptions}>
-        <Tab.Screen name={PATH_FEED} component={FeedScreen} options={{header: AppHeader}} />
+        <Tab.Screen name={PATH_FEED} component={FeedStackScreen} options={{header: AppHeader}} />
         <Tab.Screen
           name={PATH_LEADERBOARD}
           component={Leaderboards}
@@ -158,7 +159,7 @@ function Home() {
         />
         <Tab.Screen
           name={PATH_PROFILE}
-          component={!!user_detail ? ProfileContainer : Login}
+          component={user_detail?.id ? ProfileContainer : Login}
           options={{header: AppHeader}}
         />
       </Tab.Navigator>
