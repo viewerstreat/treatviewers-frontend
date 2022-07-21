@@ -11,6 +11,13 @@ import {useAppDispatch} from '../../redux/useTypedSelectorHook';
 import {loadingUpdate, userRegLogState} from '../../redux/userSlice';
 
 import {GoogleSignin, statusCodes} from '@react-native-google-signin/google-signin';
+import {
+  LoginManager,
+  Profile,
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager,
+} from 'react-native-fbsdk-next';
 
 const LoginForm = ({}: LoginFormProps) => {
   const dispatch = useAppDispatch();
@@ -68,6 +75,36 @@ const LoginForm = ({}: LoginFormProps) => {
     }
   };
 
+  const _fbSignin = async () => {
+    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+    if (result.isCancelled) {
+      console.log('login cancelled');
+      return;
+    }
+    const currentProfile = await Profile.getCurrentProfile();
+    console.log(currentProfile);
+    const token = await AccessToken.getCurrentAccessToken();
+    console.log(token);
+
+    let req = new GraphRequest(
+      '/me',
+      {
+        httpMethod: 'GET',
+        version: 'v2.5',
+        parameters: {
+          fields: {
+            string: 'email,name,picture',
+          },
+        },
+      },
+      (err, res) => {
+        console.log(err, res);
+      },
+    );
+
+    new GraphRequestManager().addRequest(req).start();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.textInputContainer}>
@@ -93,7 +130,7 @@ const LoginForm = ({}: LoginFormProps) => {
         <FeatherIcon name="arrow-right-circle" size={50} color={COLOR_WHITE} />
       </TouchableOpacity>
       <View style={{marginTop: 30, flexDirection: 'row'}}>
-        <TouchableOpacity style={styles.socialButton}>
+        <TouchableOpacity style={styles.socialButton} onPress={_fbSignin}>
           <FeatherIcon name="facebook" size={30} color={COLOR_WHITE} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton} onPress={_signIn}>
