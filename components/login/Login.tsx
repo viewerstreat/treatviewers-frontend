@@ -1,40 +1,38 @@
-import { View, Text, StyleSheet, ImageBackground } from 'react-native'
-import React, { useState } from 'react'
-import { ScrollView } from 'react-native-gesture-handler'
-import LoginForm from './LoginForm'
-import LoginOTP from './LoginOTP'
-import { useFocusEffect } from '@react-navigation/native'
-import Registration from './Registration'
-import { useAppDispatch, useAppSelector } from '../../redux/useTypedSelectorHook'
-import { RootState } from '../../redux/store'
-import { userRegLogState } from '../../redux/userSlice'
+import {StyleSheet, ImageBackground} from 'react-native';
+import React from 'react';
+import LoginForm from './LoginForm';
+import LoginOTP from './LoginOTP';
+import {useFocusEffect} from '@react-navigation/native';
+import Registration from './Registration';
+import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
+import {RootState} from '../../redux/store';
+import {userRegLogState} from '../../redux/userSlice';
 
 const Login = () => {
   const dispatch = useAppDispatch();
   const {loginState} = useAppSelector((state: RootState) => state.userState);
   useFocusEffect(
     React.useCallback(() => {
-      dispatch(userRegLogState(0))
-    },[]))
+      dispatch(userRegLogState(0));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
   return (
-      <ImageBackground style={styles.container} imageStyle= 
-      {{opacity:0.9}} source={require('../../images/bg.png')}>
-        {
-          loginState == 1 ?
-          <LoginOTP />:
-          loginState == 2 ?
-          <Registration />:
-          <LoginForm />
-        }        
-      </ImageBackground>
-  )
-}
+    <ImageBackground
+      style={styles.container}
+      // eslint-disable-next-line react-native/no-inline-styles
+      imageStyle={{opacity: 0.9}}
+      source={require('../../images/bg.png')}>
+      {loginState === 1 ? <LoginOTP /> : loginState === 2 ? <Registration /> : <LoginForm />}
+    </ImageBackground>
+  );
+};
 
-export default Login
+export default Login;
 const styles = StyleSheet.create({
-  container:{
+  container: {
     height: '100%',
-    justifyContent:'flex-end',
-    alignItems:'center',
-  }
-})
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+});
