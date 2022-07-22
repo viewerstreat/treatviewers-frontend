@@ -18,6 +18,7 @@ import {
   GraphRequest,
   GraphRequestManager,
 } from 'react-native-fbsdk-next';
+import {GOOGLE_WEB_CLIENT_ID} from '../../utils/config';
 
 const LoginForm = ({}: LoginFormProps) => {
   const dispatch = useAppDispatch();
@@ -47,9 +48,9 @@ const LoginForm = ({}: LoginFormProps) => {
 
   useEffect(() => {
     GoogleSignin.configure({
-      scopes: ['email', 'profile', 'openid'], // what API you want to access on behalf of the user, default is email and profile
-      webClientId: '505136473499-bvq1jor87ih2h0g3cc86sg3c6udj9tea.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+      scopes: ['email', 'profile', 'openid'],
+      webClientId: GOOGLE_WEB_CLIENT_ID,
+      offlineAccess: true,
     });
   }, []);
 
