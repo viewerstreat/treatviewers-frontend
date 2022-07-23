@@ -1,16 +1,20 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, ToastAndroid } from 'react-native'
 import React from 'react'
 import { COLOR_BROWN, COLOR_GREY, COLOR_LIGHT_BROWN, COLOR_RED, COLOR_WHITE } from '../../utils/constants'
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { useAppSelector } from '../../redux/useTypedSelectorHook';
 import { RootState } from '../../redux/store';
+import Clipboard from '@react-native-community/clipboard';
 const ProfileTopSection = ({OnSelectedItem,SelectionItem}:ProfileTopProps) => {
   const {user_detail} = useAppSelector((state: RootState) => state.userState);
   return (
     <View style={[{flex: 1,borderStartColor: COLOR_WHITE},styles.container]}>
         <View style={{height: '20%', justifyContent:'flex-end', alignItems:'flex-end', width: '100%', marginRight: 10, flexDirection: 'row'}}>
             <Text style={styles.UidText}> UID: {user_detail?.id}</Text>
-          <TouchableOpacity onPress={()=>{}}>
+          <TouchableOpacity onPress={()=>{
+            !!user_detail?.id && Clipboard.setString(user_detail?.id.toString())
+             ToastAndroid.show('Copied', 1000)
+          }}>
             <FeatherIcon name="copy" size={25} color={COLOR_RED} />
           </TouchableOpacity>
         </View>
@@ -28,7 +32,7 @@ const ProfileTopSection = ({OnSelectedItem,SelectionItem}:ProfileTopProps) => {
             <Text style={styles.UidText}> {user_detail?.name}</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-evenly',alignItems: 'center', width: '100%',height: '25%'}}>
-            <ToggleButton text={'Faviourites'} id={1} press={OnSelectedItem} SelectionItem={SelectionItem} />
+            <ToggleButton text={'Favourites'} id={1} press={OnSelectedItem} SelectionItem={SelectionItem} />
             <ToggleButton text={'Achievements'} id={2} press={OnSelectedItem} SelectionItem={SelectionItem} />
             <ToggleButton text={'Settings'} id={3} press={OnSelectedItem} SelectionItem={SelectionItem} />
         </View>

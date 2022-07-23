@@ -20,7 +20,11 @@ export const RenewToken=()=>{
   return serviceClient.get(Url.RenewTokenUrl)
 }
 
-
+export const FaviouriteGet=(payload: FaviouritesPayload)=>{    
+  return serviceClient.get(Url.FaviouritesUrl + 
+    '?mediaType='+payload.mediaType+'&pageIndex='
+    +payload.pageIndex + '&pageSize='+payload.pageSize)
+}
 
 // interfaces
 export interface UserCreatePayload {
@@ -31,4 +35,10 @@ export interface UserCreatePayload {
 export interface VerifyOTPPayload{
   phone: number;
   otp: string;
+}
+
+export interface FaviouritesPayload {
+  mediaType?: string;
+  pageSize?: number;
+  pageIndex?: number;
 }
