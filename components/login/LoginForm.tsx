@@ -15,8 +15,8 @@ import {
   LoginManager,
   Profile,
   AccessToken,
-  GraphRequest,
-  GraphRequestManager,
+  // GraphRequest,
+  // GraphRequestManager,
 } from 'react-native-fbsdk-next';
 import {GOOGLE_WEB_CLIENT_ID} from '../../utils/config';
 
@@ -77,7 +77,7 @@ const LoginForm = ({}: LoginFormProps) => {
   };
 
   const _fbSignin = async () => {
-    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+    const result = await LoginManager.logInWithPermissions(['public_profile']);
     if (result.isCancelled) {
       console.log('login cancelled');
       return;
@@ -87,23 +87,23 @@ const LoginForm = ({}: LoginFormProps) => {
     const token = await AccessToken.getCurrentAccessToken();
     console.log(token);
 
-    let req = new GraphRequest(
-      '/me',
-      {
-        httpMethod: 'GET',
-        version: 'v2.5',
-        parameters: {
-          fields: {
-            string: 'email,name,picture',
-          },
-        },
-      },
-      (err, res) => {
-        console.log(err, res);
-      },
-    );
+    // let req = new GraphRequest(
+    //   '/me',
+    //   {
+    //     httpMethod: 'GET',
+    //     version: 'v2.5',
+    //     parameters: {
+    //       fields: {
+    //         string: 'email,name,picture',
+    //       },
+    //     },
+    //   },
+    //   (err, res) => {
+    //     console.log(err, res);
+    //   },
+    // );
 
-    new GraphRequestManager().addRequest(req).start();
+    // new GraphRequestManager().addRequest(req).start();
   };
 
   return (
