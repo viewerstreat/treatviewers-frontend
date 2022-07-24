@@ -52,3 +52,8 @@ export type ContestResponseSchema = {
     status: string;
   }[];
 };
+export interface FaviouritesPayload {
+  mediaType?: string;
+  pageSize?: number;
+  pageIndex?: number;
+}
