@@ -1,25 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
 import {View, StyleSheet, TouchableOpacity, ToastAndroid} from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {TextInput} from 'react-native-gesture-handler';
 import {COLOR_BLACK, COLOR_BROWN, COLOR_GREY, COLOR_WHITE} from '../../utils/constants';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {Controller, useForm} from 'react-hook-form';
-import {GenerateOTP} from '../../services/Services';
 import {useAppDispatch} from '../../redux/useTypedSelectorHook';
 import {loadingUpdate, userRegLogState} from '../../redux/userSlice';
+import {signInFb, signInGoogle} from '../../services/socialSignin';
+import {GenerateOTP} from '../../services/Services';
+import {showMessage} from '../../services/misc';
 
-import {GoogleSignin, statusCodes} from '@react-native-google-signin/google-signin';
-import {
-  LoginManager,
-  Profile,
-  AccessToken,
-  // GraphRequest,
-  // GraphRequestManager,
-} from 'react-native-fbsdk-next';
-import {GOOGLE_WEB_CLIENT_ID} from '../../utils/config';
-
+interface LoginFormProps {}
 const LoginForm = ({}: LoginFormProps) => {
   const dispatch = useAppDispatch();
   const {control, handleSubmit} = useForm<any>({
@@ -46,64 +39,29 @@ const LoginForm = ({}: LoginFormProps) => {
     }
   };
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      scopes: ['email', 'profile', 'openid'],
-      webClientId: GOOGLE_WEB_CLIENT_ID,
-      offlineAccess: true,
-    });
-  }, []);
-
-  const _signIn = async () => {
+  const gooleSignIn = async () => {
     try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-    } catch (error: any) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('SIGN_IN_CANCELLED');
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-        console.log('IN_PROGRESS');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-        console.log('PLAY_SERVICES_NOT_AVAILABLE');
-      } else {
-        // some other error happened
-        console.log('OTHERS', error.toString());
+      const idToken = await signInGoogle();
+      console.log('idToken = ', idToken);
+    } catch (error) {
+      if (error instanceof Error) {
+        showMessage(error.message);
       }
     }
   };
 
-  const _fbSignin = async () => {
-    const result = await LoginManager.logInWithPermissions(['public_profile']);
-    if (result.isCancelled) {
-      console.log('login cancelled');
-      return;
+  const fbSignin = async () => {
+    try {
+      const token = await signInFb();
+      console.log('token = ', token);
+      if (!token) {
+        showMessage('Facebook signin failed');
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        showMessage(err.message);
+      }
     }
-    const currentProfile = await Profile.getCurrentProfile();
-    console.log(currentProfile);
-    const token = await AccessToken.getCurrentAccessToken();
-    console.log(token);
-
-    // let req = new GraphRequest(
-    //   '/me',
-    //   {
-    //     httpMethod: 'GET',
-    //     version: 'v2.5',
-    //     parameters: {
-    //       fields: {
-    //         string: 'email,name,picture',
-    //       },
-    //     },
-    //   },
-    //   (err, res) => {
-    //     console.log(err, res);
-    //   },
-    // );
-
-    // new GraphRequestManager().addRequest(req).start();
   };
 
   return (
@@ -131,10 +89,10 @@ const LoginForm = ({}: LoginFormProps) => {
         <FeatherIcon name="arrow-right-circle" size={50} color={COLOR_WHITE} />
       </TouchableOpacity>
       <View style={{marginTop: 30, flexDirection: 'row'}}>
-        <TouchableOpacity style={styles.socialButton} onPress={_fbSignin}>
+        <TouchableOpacity style={styles.socialButton} onPress={fbSignin}>
           <FeatherIcon name="facebook" size={30} color={COLOR_WHITE} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.socialButton} onPress={_signIn}>
+        <TouchableOpacity style={styles.socialButton} onPress={gooleSignIn}>
           <AntIcon name="google" size={30} color={COLOR_WHITE} />
         </TouchableOpacity>
       </View>
@@ -142,8 +100,6 @@ const LoginForm = ({}: LoginFormProps) => {
   );
 };
 
-export default LoginForm;
-interface LoginFormProps {}
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
@@ -176,3 +132,5 @@ const styles = StyleSheet.create({
     margin: 15,
   },
 });
+
+export default LoginForm;

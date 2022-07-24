@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {ImageBackground, StyleSheet, Animated, Text, Easing} from 'react-native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SPLASH_TIMEOUT} from '../../utils/config';
+import {configureGoogle} from '../../services/socialSignin';
 import {RootStackParamList} from '../../App';
 import {COLOR_BROWN, COLOR_RED, COLOR_WHITE} from '../../utils/constants';
 import {useAppDispatch} from '../../redux/useTypedSelectorHook';
@@ -16,6 +17,8 @@ function Splash(props: Props) {
   const [authLoaded, setAuthLoaded] = useState(false);
   useEffect(() => {
     setTimeout(() => {
+      configureGoogle();
+
       setAuthLoaded(true);
     }, SPLASH_TIMEOUT);
   }, []);
