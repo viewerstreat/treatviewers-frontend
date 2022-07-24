@@ -7,8 +7,8 @@ export const store = configureStore({
   reducer: {
     ongoingContests: ongoingContestsSlice.reducer,
     ongoingCarousel: ongoingCarouselSlice.reducer,
-    userState: UserSlice.reducer,
-    tokenSlice: tokenSlice.reducer,
+    user: UserSlice.reducer,
+    token: tokenSlice.reducer,
   },
 });
 

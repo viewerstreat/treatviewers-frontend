@@ -6,5 +6,6 @@ export const Url = {
   RenewTokenUrl: 'api/v1/user/renewToken',
   FetchMovie: 'api/v1/movie',
   FetchContest: 'api/v1/contest',
-  FaviouritesUrl: 'api/v1/favourite'
+  FaviouritesUrl: 'api/v1/favourite',
+  SocialLogin: 'api/v1/user/login',
 };

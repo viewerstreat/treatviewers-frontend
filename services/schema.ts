@@ -4,6 +4,7 @@ export interface UserCreatePayload {
   email: string;
   phone: string;
 }
+
 export interface VerifyOTPPayload {
   phone: number;
   otp: string;
@@ -52,6 +53,7 @@ export type ContestResponseSchema = {
     status: string;
   }[];
 };
+
 export interface FaviouritesPayload {
   mediaType?: string;
   pageSize?: number;

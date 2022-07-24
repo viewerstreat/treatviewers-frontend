@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {View, StyleSheet, TouchableOpacity, ToastAndroid} from 'react-native';
 import React from 'react';
 import {TextInput} from 'react-native-gesture-handler';
@@ -7,17 +6,17 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {Controller, useForm} from 'react-hook-form';
 import {useAppDispatch} from '../../redux/useTypedSelectorHook';
-import {loadingUpdate, userRegLogState} from '../../redux/userSlice';
+import {loadingUpdate, userDetailUpdate, userRegLogState} from '../../redux/userSlice';
 import {signInFb, signInGoogle} from '../../services/socialSignin';
-import {GenerateOTP} from '../../services/Services';
-import {showMessage} from '../../services/misc';
+import {GenerateOTP, SocialLogin} from '../../services/Services';
+import {saveLoginScheme, showMessage} from '../../services/misc';
+import {LOGIN_SCHEME} from '../../definitions/user';
+import {updateToken} from '../../redux/tokenSlice';
 
 interface LoginFormProps {}
 const LoginForm = ({}: LoginFormProps) => {
   const dispatch = useAppDispatch();
-  const {control, handleSubmit} = useForm<any>({
-    mode: 'all',
-  });
+  const {control, handleSubmit} = useForm<any>({mode: 'all'});
   const onSubmit = (data: any) => {
     if (!!data.phone && data.phone.length === 10) {
       dispatch(loadingUpdate(true));
@@ -42,7 +41,16 @@ const LoginForm = ({}: LoginFormProps) => {
   const gooleSignIn = async () => {
     try {
       const idToken = await signInGoogle();
-      console.log('idToken = ', idToken);
+      dispatch(loadingUpdate(true));
+      const {data} = await SocialLogin({loginScheme: LOGIN_SCHEME.GOOGLE, idToken});
+      if (!data.success) {
+        showMessage('Unable to login!');
+        return;
+      }
+      saveLoginScheme(LOGIN_SCHEME.GOOGLE);
+      dispatch(userDetailUpdate(data.data));
+      dispatch(updateToken(data.token));
+      dispatch(loadingUpdate(false));
     } catch (error) {
       if (error instanceof Error) {
         showMessage(error.message);
@@ -52,11 +60,16 @@ const LoginForm = ({}: LoginFormProps) => {
 
   const fbSignin = async () => {
     try {
-      const token = await signInFb();
-      console.log('token = ', token);
-      if (!token) {
+      const fbToken = await signInFb();
+      dispatch(loadingUpdate(true));
+      if (!fbToken) {
         showMessage('Facebook signin failed');
       }
+      const {data} = await SocialLogin({loginScheme: LOGIN_SCHEME.FACEBOOK, fbToken});
+      saveLoginScheme(LOGIN_SCHEME.FACEBOOK);
+      dispatch(userDetailUpdate(data.data));
+      dispatch(updateToken(data.token));
+      dispatch(loadingUpdate(false));
     } catch (err) {
       if (err instanceof Error) {
         showMessage(err.message);
@@ -88,7 +101,7 @@ const LoginForm = ({}: LoginFormProps) => {
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <FeatherIcon name="arrow-right-circle" size={50} color={COLOR_WHITE} />
       </TouchableOpacity>
-      <View style={{marginTop: 30, flexDirection: 'row'}}>
+      <View style={styles.wrapper}>
         <TouchableOpacity style={styles.socialButton} onPress={fbSignin}>
           <FeatherIcon name="facebook" size={30} color={COLOR_WHITE} />
         </TouchableOpacity>
@@ -123,6 +136,10 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
+  },
+  wrapper: {
+    marginTop: 30,
+    flexDirection: 'row',
   },
   socialButton: {
     borderWidth: 4,

@@ -10,6 +10,8 @@ export const COLOR_LIGHT_BROWN = '#8A5E63';
 export const COLOR_GREEN = '#4CAF50';
 
 export const INR_SYMBOL = '₹';
+export const KEY_REFRESH_TOKEN = 'REFRESH_TOKEN';
+export const KEY_LOGIN_SCHEME = 'LOGIN_SCHEME';
 
 export const PATH_SPLASH = 'Splash';
 export const PATH_HOME = 'Home';

@@ -1,13 +1,13 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-
+import {FaviouriteSchema, UserSchema} from '../definitions/user';
 
 export interface userState {
   loading: boolean;
   error?: string;
   loginState: number;
-  intermidiatePhone: string| undefined;
-  user_detail?: UserDetails;
-  faviourites: Faviourites[]
+  intermidiatePhone: string | undefined;
+  userDetail?: UserSchema;
+  faviourites: FaviouriteSchema[];
 }
 
 const initialState: userState = {
@@ -15,8 +15,8 @@ const initialState: userState = {
   loading: false,
   error: undefined,
   intermidiatePhone: undefined,
-  user_detail: undefined,
-  faviourites:[]
+  userDetail: undefined,
+  faviourites: [],
 };
 
 const UserSlice = createSlice({
@@ -27,43 +27,30 @@ const UserSlice = createSlice({
       state.loginState = action.payload.value;
       state.intermidiatePhone = action.payload.phone;
     },
-    userDetailUpdate: (state, action: PayloadAction<UserDetails>) => {
-      state.user_detail = action.payload;
+    userDetailUpdate: (state, action: PayloadAction<UserSchema>) => {
+      state.userDetail = action.payload;
     },
-    errorUpdate: (state, action: PayloadAction<string| undefined>) => {
+    errorUpdate: (state, action: PayloadAction<string | undefined>) => {
       state.error = action.payload;
     },
     loadingUpdate: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
-    userLogout: (state) => {
-      state.user_detail = undefined;
+    userLogout: state => {
+      state.userDetail = undefined;
     },
-    FavouritesUpdate: (state, action: PayloadAction<Faviourites[]>) => {
+    FavouritesUpdate: (state, action: PayloadAction<FaviouriteSchema[]>) => {
       state.faviourites = action.payload;
     },
-  }
+  },
 });
 
-export const {userRegLogState,userDetailUpdate,loadingUpdate,errorUpdate,userLogout,FavouritesUpdate} = UserSlice.actions;
+export const {
+  userRegLogState,
+  userDetailUpdate,
+  loadingUpdate,
+  errorUpdate,
+  userLogout,
+  FavouritesUpdate,
+} = UserSlice.actions;
 export default UserSlice;
-
-
-export interface UserDetails {
-  id: number
-  name: string
-  email: string
-  phone: string
-  profilePic: string
-  isActive: boolean
-  hasUsedReferralCode: boolean
-  referralCode: string
-  referredBy: string
-}
-export interface Faviourites {
-  mediaType: string
-  userId: number
-  mediaId: string
-  mediaName: string
-  bannerImageUrl: string
-}

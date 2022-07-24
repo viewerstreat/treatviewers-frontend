@@ -6,27 +6,42 @@ import {useFocusEffect} from '@react-navigation/native';
 import {FaviouriteGet} from '../../services/Services';
 import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
 import {RootState} from '../../redux/store';
-import {errorUpdate, Faviourites, FavouritesUpdate, loadingUpdate} from '../../redux/userSlice';
+import {errorUpdate, FavouritesUpdate, loadingUpdate} from '../../redux/userSlice';
 import {PAGE_SIZE_FAV} from '../../utils/config';
+import {FaviouriteSchema} from '../../definitions/user';
+
+const ToggleButton = (props: any) => {
+  return (
+    <TouchableOpacity
+      style={[
+        styles.ToggleButton,
+        {backgroundColor: props.id === props.SelectionItem ? COLOR_GREY : COLOR_RED},
+      ]}
+      onPress={() => props.press(props.id)}>
+      <Text style={styles.toggleBtnTxt}> {props.text}</Text>
+    </TouchableOpacity>
+  );
+};
 
 const Faviouraties = () => {
   const [faviourite, Setfaviourite] = useState<number>(1);
   const [pageIndex, SetpageIndex] = useState<number>(0);
   const [hasdata, Sethasdata] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const {faviourites} = useAppSelector((state: RootState) => state.userState);
+  const {faviourites} = useAppSelector((state: RootState) => state.user);
+
   useFocusEffect(
     React.useCallback(() => {
       SetpageIndex(0);
       Sethasdata(false);
       dispatch(loadingUpdate(true));
       FaviouriteGet({
-        mediaType: faviourite == 1 ? 'movie' : 'clip',
+        mediaType: faviourite === 1 ? 'movie' : 'clip',
         pageIndex: 0,
         pageSize: PAGE_SIZE_FAV,
       })
         .then(response => {
-          if (!!response.data?.data) {
+          if (response.data?.data) {
             if (response.data.data.length > 0) {
               dispatch(FavouritesUpdate(response.data.data));
               Sethasdata(true);
@@ -38,7 +53,7 @@ const Faviouraties = () => {
           dispatch(errorUpdate(error?.response?.data?.message));
           dispatch(loadingUpdate(false));
         });
-    }, [faviourite]),
+    }, [dispatch, faviourite]),
   );
 
   const fatchMoreData = () => {
@@ -50,7 +65,7 @@ const Faviouraties = () => {
         pageSize: PAGE_SIZE_FAV,
       })
         .then(response => {
-          if (!!response.data?.data) {
+          if (response.data?.data) {
             if (response.data.data.length > 0) {
               dispatch(FavouritesUpdate([...faviourites, ...response.data.data]));
             } else {
@@ -66,26 +81,21 @@ const Faviouraties = () => {
       SetpageIndex(pageIndex + 1);
     }
   };
-  const ItemClick = (item: Faviourites) => {
+
+  const ItemClick = (item: FaviouriteSchema) => {
     console.log(item);
   };
+
   return (
-    <View style={{flex: 1, marginTop: 15}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          marginBottom: 5,
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-        }}>
+    <View style={styles.container}>
+      <View style={styles.wrapper}>
         <ToggleButton text={'Movies'} id={1} press={Setfaviourite} SelectionItem={faviourite} />
-        <View style={{width: 2, height: 15, backgroundColor: COLOR_GREY, marginRight: 20}}></View>
+        <View style={styles.blank} />
         <ToggleButton text={'Clips'} id={2} press={Setfaviourite} SelectionItem={faviourite} />
       </View>
       {faviourites.length > 0 && (
         <FlatList
-          style={{flex: 1}}
+          style={styles.list}
           data={faviourites}
           onEndReached={() => fatchMoreData()}
           numColumns={3}
@@ -100,9 +110,24 @@ const Faviouraties = () => {
   );
 };
 
-export default Faviouraties;
-
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 15,
+  },
+  wrapper: {
+    flexDirection: 'row',
+    marginBottom: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  blank: {
+    width: 2,
+    height: 15,
+    backgroundColor: COLOR_GREY,
+    marginRight: 20,
+  },
   ToggleButton: {
     padding: 5,
     borderRadius: 10,
@@ -111,16 +136,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 20,
   },
+  toggleBtnTxt: {
+    color: COLOR_WHITE,
+    fontWeight: '500',
+  },
+  list: {
+    flex: 1,
+  },
 });
-const ToggleButton = (props: any) => {
-  return (
-    <TouchableOpacity
-      style={[
-        styles.ToggleButton,
-        {backgroundColor: props.id == props.SelectionItem ? COLOR_GREY : COLOR_RED},
-      ]}
-      onPress={() => props.press(props.id)}>
-      <Text style={{color: COLOR_WHITE, fontWeight: '500'}}> {props.text}</Text>
-    </TouchableOpacity>
-  );
-};
+
+export default Faviouraties;

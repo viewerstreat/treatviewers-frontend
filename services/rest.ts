@@ -1,37 +1,28 @@
 import axios, {AxiosRequestConfig, AxiosInstance} from 'axios';
-import {RootState} from '../redux/store';
-import {useAppSelector} from '../redux/useTypedSelectorHook';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {store} from '../redux/store';
+
 export default class RestService {
   client: AxiosInstance;
+
   constructor(config: AxiosRequestConfig) {
     this.client = axios.create(config);
-    this.client.interceptors.request.use(
-      async config => {
-        const token = await getToken();
-        if (token) {
-          config.headers['Authorization'] = 'Bearer ' + token;
+
+    const reqHandler = (cfg: AxiosRequestConfig) => {
+      const token = store.getState().token.token;
+      if (token) {
+        if (!cfg.headers) {
+          cfg.headers = {};
         }
-        console.log('Request: ', config.url, config.headers?.Authorization, config.data);
-        return config;
-      },
-      error => {
-        return Promise.reject(error);
-      },
-    );
-    this.client.interceptors.response.use(
-      async response => {
-        console.log('Response: ', config.url, response.data);
-        if (response?.data?.token) {
-          await setToken(response?.data?.token);
-          this.client.defaults.headers.common['Authorization'] = response?.data?.token;
-        }
-        return response;
-      },
-      async error => {
-        return Promise.reject(error);
-      },
-    );
+        cfg.headers.Authorization = `Bearer ${token}`;
+      }
+      return cfg;
+    };
+
+    const errorHandler = (err: any) => {
+      return Promise.reject(err);
+    };
+
+    this.client.interceptors.request.use(reqHandler, errorHandler);
   }
 
   get(endpoint: string) {
@@ -42,11 +33,3 @@ export default class RestService {
     return this.client.post<any>(endpoint, payload);
   }
 }
-
-const getToken = async (): Promise<string | null> => {
-  return await AsyncStorage.getItem('token');
-};
-
-const setToken = async (token: string) => {
-  return await AsyncStorage.setItem('token', token);
-};

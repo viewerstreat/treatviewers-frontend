@@ -10,7 +10,7 @@ import {userRegLogState} from '../../redux/userSlice';
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const {loginState} = useAppSelector((state: RootState) => state.userState);
+  const {loginState} = useAppSelector((state: RootState) => state.user);
   useFocusEffect(
     React.useCallback(() => {
       dispatch(userRegLogState(0));
@@ -20,19 +20,22 @@ const Login = () => {
   return (
     <ImageBackground
       style={styles.container}
-      // eslint-disable-next-line react-native/no-inline-styles
-      imageStyle={{opacity: 0.9}}
+      imageStyle={styles.imageStyle}
       source={require('../../images/bg.png')}>
       {loginState === 1 ? <LoginOTP /> : loginState === 2 ? <Registration /> : <LoginForm />}
     </ImageBackground>
   );
 };
 
-export default Login;
 const styles = StyleSheet.create({
   container: {
     height: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
+  imageStyle: {
+    opacity: 0.9,
+  },
 });
+
+export default Login;
