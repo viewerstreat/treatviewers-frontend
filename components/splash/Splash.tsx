@@ -5,7 +5,8 @@ import {SPLASH_TIMEOUT} from '../../utils/config';
 import {RootStackParamList} from '../../App';
 import {COLOR_BROWN, COLOR_RED, COLOR_WHITE} from '../../utils/constants';
 import {useAppDispatch} from '../../redux/useTypedSelectorHook';
-import {loadMockData} from '../../redux/ongoingContestsSlice';
+import {loadOngoingCarousel} from '../../redux/ongoingCarouselSlice';
+import {loadContests} from '../../redux/ongoingContestsSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
 
@@ -30,7 +31,8 @@ function Splash(props: Props) {
   }, []);
 
   useEffect(() => {
-    dispatch(loadMockData());
+    dispatch(loadContests());
+    dispatch(loadOngoingCarousel());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

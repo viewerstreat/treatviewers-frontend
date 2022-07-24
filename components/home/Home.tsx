@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {Text, View, StyleSheet, ToastAndroid} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -15,22 +15,46 @@ import {
   PATH_PROFILE,
 } from '../../utils/constants';
 import AppHeader from '../AppHeader';
-import FeedScreen from '../feed/FeedScreen';
+import FeedStackScreen from '../feed/FeedScreen';
 import Leaderboards from '../leaderboards/Leaderboards';
 import ClipsScreen from '../clips/ClipsScreen';
 import Login from '../login/Login';
 import ProfileContainer from '../profile/ProfileContainer';
-import { useAppDispatch, useAppSelector } from '../../redux/useTypedSelectorHook';
-import { RootState } from '../../redux/store';
-import { errorUpdate, userDetailUpdate, userLogout } from '../../redux/userSlice';
+import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
+import {RootState} from '../../redux/store';
+import {errorUpdate, userDetailUpdate, userLogout} from '../../redux/userSlice';
 import SpinnerView from '../spinner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { updateToken } from '../../redux/tokenSlice';
-import { RenewToken } from '../../services/Services';
+import {RenewToken} from '../../services/Services';
+
+import RNUpiPayment from 'react-native-upi-pay';
+
 function SettingsScreen() {
+  // function failureCallback() {
+  //   console.log('failureCallback');
+  // }
+  // vpa: '7980420791@ibl',
+  function pay() {
+    RNUpiPayment.initializePayment(
+      {
+        vpa: '9051337003@upi',
+        payeeName: 'Sibaprasad Maiti',
+        amount: '1',
+        transactionRef: '0013-312-110',
+        transactionNote: 'Trailsbuddy transaction',
+      },
+      data => {
+        console.log('success', data);
+      },
+      data => {
+        console.log('failure', data);
+      },
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Settings!</Text>
+      <Text onPress={pay}>Pay Here!</Text>
     </View>
   );
 }
@@ -38,7 +62,7 @@ function SettingsScreen() {
 const Tab = createBottomTabNavigator();
 const getScreenOptions = ({route}: {route: any}) => ({
   tabBarIcon: ({color, size}: {color: string; size: number}) => {
-    if (route.name === 'Feed') {
+    if (route.name === PATH_FEED) {
       return <MaterialCommunityIcons name="bucket-outline" size={size} color={color} />;
     }
     if (route.name === PATH_LEADERBOARD) {
@@ -68,67 +92,78 @@ const getScreenOptions = ({route}: {route: any}) => ({
 
 function Home() {
   const dispatch = useAppDispatch();
-  const {user_detail,error} = useAppSelector((state: RootState) => state.userState);
+  const {user_detail, error} = useAppSelector((state: RootState) => state.userState);
   const {token} = useAppSelector((state: RootState) => state.tokenSlice);
-  useEffect(()=>{
-    if(!!error){
+  useEffect(() => {
+    if (error) {
       ToastAndroid.show(error, 3000);
-      dispatch(errorUpdate(undefined))
+      dispatch(errorUpdate(undefined));
     }
-  },[error])
+  }, [dispatch, error]);
   const retrieveUserData = async () => {
-    RenewToken().then(response=>{
-      if(!!response && !!response.data){
-        dispatch(userDetailUpdate(response.data.data));
-      }
-    }).catch(err=>{
-      dispatch(userLogout())
-      AsyncStorage.multiRemove(['userData', 'token']);
-    })
+    RenewToken()
+      .then(response => {
+        if (!!response && !!response.data) {
+          dispatch(userDetailUpdate(response.data.data));
+        }
+      })
+      .catch(_err => {
+        dispatch(userLogout());
+        AsyncStorage.multiRemove(['userData', 'token']);
+      });
   };
-  useEffect(()=>{
-      retrieveUserData()
-  },[])
-  useEffect(()=>{
-    const setuserData=async ()=>{      
+  useEffect(() => {
+    retrieveUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    const setuserData = async () => {
       await AsyncStorage.setItem('userData', JSON.stringify(user_detail));
+    };
+    if (user_detail) {
+      setuserData();
     }
-    if(!!user_detail){
-      setuserData()
-    }
-  },[user_detail])
-  useEffect(()=>{
-    const setuserData=async (tokn: string)=>{      
+  }, [user_detail]);
+  useEffect(() => {
+    const setuserData = async (tokn: string) => {
       await AsyncStorage.setItem('token', tokn);
+    };
+    if (token) {
+      setuserData(token);
     }
-    if(!!token){
-      setuserData(token)
-    }
-  },[token])
-  useEffect(()=>{
-    const settoken=async ()=>{
-      if(token){
+  }, [token]);
+  useEffect(() => {
+    const settoken = async () => {
+      if (token) {
         await AsyncStorage.setItem('token', token);
       }
+    };
+    if (token) {
+      settoken();
     }
-    if(!!token){
-      settoken()
-    }
-  },[token])
+  }, [token]);
   return (
     <>
-    <Tab.Navigator screenOptions={getScreenOptions}>
-      <Tab.Screen name={PATH_FEED} component={FeedScreen} options={{header: AppHeader}} />
-      <Tab.Screen name={PATH_LEADERBOARD} component={Leaderboards} options={{header: AppHeader}} />
-      <Tab.Screen name={PATH_CLIPS} component={ClipsScreen} options={{header: AppHeader}} />
-      <Tab.Screen
-        name={PATH_NOTIFICATIONS}
-        component={SettingsScreen}
-        options={{tabBarBadge: 3, header: AppHeader}}
-      />
-      <Tab.Screen name={PATH_PROFILE} component={!!user_detail?ProfileContainer:Login} options={{header: AppHeader}} />
-    </Tab.Navigator>
-    <SpinnerView />
+      <Tab.Navigator screenOptions={getScreenOptions}>
+        <Tab.Screen name={PATH_FEED} component={FeedStackScreen} options={{header: AppHeader}} />
+        <Tab.Screen
+          name={PATH_LEADERBOARD}
+          component={Leaderboards}
+          options={{header: AppHeader}}
+        />
+        <Tab.Screen name={PATH_CLIPS} component={ClipsScreen} options={{header: AppHeader}} />
+        <Tab.Screen
+          name={PATH_NOTIFICATIONS}
+          component={SettingsScreen}
+          options={{tabBarBadge: 3, header: AppHeader}}
+        />
+        <Tab.Screen
+          name={PATH_PROFILE}
+          component={user_detail?.id ? ProfileContainer : Login}
+          options={{header: AppHeader}}
+        />
+      </Tab.Navigator>
+      <SpinnerView />
     </>
   );
 }
