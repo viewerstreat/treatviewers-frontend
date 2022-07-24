@@ -1,10 +1,11 @@
 import {baseURL, Url} from '../utils/urls';
 import RestService from './rest';
 import {
-  UserCreatePayload,
-  VerifyOTPPayload,
   MovieResponseSchema,
   ContestResponseSchema,
+  UserCreatePayload,
+  VerifyOTPPayload,
+  FaviouritesPayload,
 } from './schema';
 
 export const serviceClient = new RestService({
@@ -26,6 +27,11 @@ export const RenewToken = () => {
   return serviceClient.get(Url.RenewTokenUrl);
 };
 
+export const FaviouriteGet=(payload: FaviouritesPayload)=>{    
+  return serviceClient.get(Url.FaviouritesUrl + 
+    '?mediaType='+payload.mediaType+'&pageIndex='
+    +payload.pageIndex + '&pageSize='+payload.pageSize)
+}
 export const FetchMovies = () => {
   return serviceClient.client.get<MovieResponseSchema>(Url.FetchMovie);
 };

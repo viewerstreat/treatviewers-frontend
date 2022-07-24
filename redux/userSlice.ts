@@ -7,6 +7,7 @@ export interface userState {
   loginState: number;
   intermidiatePhone: string| undefined;
   user_detail?: UserDetails;
+  faviourites: Faviourites[]
 }
 
 const initialState: userState = {
@@ -14,7 +15,8 @@ const initialState: userState = {
   loading: false,
   error: undefined,
   intermidiatePhone: undefined,
-  user_detail: undefined
+  user_detail: undefined,
+  faviourites:[]
 };
 
 const UserSlice = createSlice({
@@ -37,10 +39,13 @@ const UserSlice = createSlice({
     userLogout: (state) => {
       state.user_detail = undefined;
     },
+    FavouritesUpdate: (state, action: PayloadAction<Faviourites[]>) => {
+      state.faviourites = action.payload;
+    },
   }
 });
 
-export const {userRegLogState,userDetailUpdate,loadingUpdate,errorUpdate,userLogout} = UserSlice.actions;
+export const {userRegLogState,userDetailUpdate,loadingUpdate,errorUpdate,userLogout,FavouritesUpdate} = UserSlice.actions;
 export default UserSlice;
 
 
@@ -54,4 +59,11 @@ export interface UserDetails {
   hasUsedReferralCode: boolean
   referralCode: string
   referredBy: string
+}
+export interface Faviourites {
+  mediaType: string
+  userId: number
+  mediaId: string
+  mediaName: string
+  bannerImageUrl: string
 }
