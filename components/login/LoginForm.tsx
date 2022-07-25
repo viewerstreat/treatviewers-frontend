@@ -1,5 +1,5 @@
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {COLOR_BLACK, COLOR_BROWN, COLOR_GREY, COLOR_WHITE} from '../../utils/constants';
 import AntIcon from 'react-native-vector-icons/AntDesign';
@@ -27,8 +27,7 @@ const LoginForm = ({}: LoginFormProps) => {
         })
         .catch(err => {
           console.log(err);
-
-          if (!!err && !!err.response && err.response.status === 404) {
+          if (err && err.response && err.response.status === 404) {
             dispatch(loadingUpdate(false));
             dispatch(userRegLogState({value: 2, phone: data.phone}));
           }
@@ -53,7 +52,7 @@ const LoginForm = ({}: LoginFormProps) => {
       dispatch(loadingUpdate(false));
     } catch (error) {
       if (error instanceof Error) {
-        showMessage(error.message);
+        showMessage('Unable to login!');
       }
     }
   };
@@ -72,7 +71,7 @@ const LoginForm = ({}: LoginFormProps) => {
       dispatch(loadingUpdate(false));
     } catch (err) {
       if (err instanceof Error) {
-        showMessage(err.message);
+        showMessage('Unable to login!');
       }
     }
   };

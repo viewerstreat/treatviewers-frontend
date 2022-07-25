@@ -11,7 +11,7 @@ import {updateRefreshToken, updateToken} from '../../redux/tokenSlice';
 import {userDetailUpdate} from '../../redux/userSlice';
 import {loadOngoingCarousel} from '../../redux/ongoingCarouselSlice';
 import {loadContests} from '../../redux/ongoingContestsSlice';
-import {getLoginScheme, getRefreshToken} from '../../services/misc';
+import {getLoginScheme, getRefreshToken, saveRefreshToken} from '../../services/misc';
 import {COLOR_BROWN, COLOR_RED, COLOR_WHITE, PATH_HOME} from '../../utils/constants';
 import {LOGIN_SCHEME} from '../../definitions/user';
 import {sleep} from '../../utils/utils';
@@ -66,11 +66,14 @@ const renewLogin = async (dispatch: AppDispatch) => {
     if (!refreshToken) {
       return;
     }
+    console.log(refreshToken);
     const {data} = await RenewToken({loginScheme: LOGIN_SCHEME.OTP_BASED, refreshToken});
+    console.log(data);
     if (data.success) {
       dispatch(updateToken(data.token));
       dispatch(updateRefreshToken(data.refreshToken));
       dispatch(userDetailUpdate(data.data));
+      await saveRefreshToken(data.refreshToken);
     }
   } catch (err) {}
 };

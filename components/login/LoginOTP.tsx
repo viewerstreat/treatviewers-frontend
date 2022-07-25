@@ -79,11 +79,12 @@ const LoginOTP = () => {
       })
         .then(response => {
           dispatch(loadingUpdate(false));
-          if (!!response && !!response.data) {
+          if (response && response.data) {
             dispatch(userDetailUpdate(response.data.data));
             dispatch(updateToken(response.data.token));
             dispatch(updateRefreshToken(response.data.refreshToken));
             dispatch(userRegLogState({value: 0, phone: undefined}));
+            console.log(response.data.refreshToken);
             saveRefreshToken(response.data.refreshToken);
             saveLoginScheme(LOGIN_SCHEME.OTP_BASED);
           }
@@ -91,6 +92,7 @@ const LoginOTP = () => {
         .catch(error => {
           dispatch(errorUpdate(error?.response?.data?.message));
           dispatch(loadingUpdate(false));
+          showMessage('Invalid OTP');
         });
     }
   };

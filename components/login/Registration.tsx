@@ -19,16 +19,20 @@ const Registration = () => {
       showMessage('Name required.');
       return;
     }
-    if (data.email && isValidEmail(data.email)) {
+    if (data.email && !isValidEmail(data.email)) {
       showMessage('Invalid email.');
       return;
     }
 
     dispatch(loadingUpdate(true));
     try {
+      console.log({name: data.name, phone: data.phone, email: data.email});
       await CreateUser({name: data.name, phone: data.phone, email: data.email});
       dispatch(loadingUpdate(false));
+      dispatch(userRegLogState({value: 1, phone: data.phone}));
     } catch (err: any) {
+      console.log(err);
+      console.log(err?.response?.data?.message);
       dispatch(loadingUpdate(false));
       dispatch(errorUpdate(err?.response?.data?.message));
       showMessage('Not able to signup.');

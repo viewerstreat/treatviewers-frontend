@@ -3,15 +3,13 @@ import {View, Text, StyleSheet} from 'react-native';
 import Spinner from 'react-native-spinkit';
 import {COLOR_WHITE} from '../../utils/constants';
 import {useAppSelector} from '../../redux/useTypedSelectorHook';
-import {RootState} from '../../redux/store';
 
 const SpinnerView = () => {
-  const {loading} = useAppSelector((state: RootState) => state.user);
-
+  const {loading} = useAppSelector(state => state.user);
   return loading ? (
     <View style={styles.spinnerContainer}>
       <View>
-        <Spinner color={COLOR_WHITE} size={120} type="9CubeGrid" isVisible={loading} />
+        <Spinner color={COLOR_WHITE} size={120} type="ThreeBounce" isVisible={loading} />
       </View>
       <Text style={[styles.loadingText]}>Loading...</Text>
     </View>
