@@ -43,3 +43,11 @@ export const getTimeRemaining = (time: number): string => {
   const days = Math.floor(hours / 24);
   return `${days}d ${hours % 24}hrs`;
 };
+
+export const sleep = (duration: number): Promise<void> =>
+  new Promise(resolve => setTimeout(resolve, duration));
+
+export const isValidEmail = (email: string): boolean => {
+  const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+  return reg.test(email);
+};

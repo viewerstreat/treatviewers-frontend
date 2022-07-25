@@ -34,7 +34,7 @@ function SettingsScreen() {
   function pay() {
     RNUpiPayment.initializePayment(
       {
-        vpa: '9051337003@upi',
+        vpa: '7980420791@ibl',
         payeeName: 'Sibaprasad Maiti',
         amount: '1',
         transactionRef: '0013-312-110',

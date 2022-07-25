@@ -1,5 +1,26 @@
 # trailsbuddy
 
+## Code Style Guidelines
+1. Variables, functions etc. should be followed `camelCase` naming convention. While `variable` and `function` starts with lower case letter, `interface`, `class`, `type` name starts with upper case letter. Do not use variable with `_` (`snake_case`). Exception is functional components. Even if it is a function, it should follow the naming convention of a class. 
+2. `Constants` are named with all upper case letters with `_` seperator. `enum`, `type` can have same style as well. 
+3. Typically all file names should start with lower case letter except the `Component` files. 
+3. Use `prettier` extension with `Format On Save` option. `.prettierrc` file is already added to the project.
+4. Remove all unused imports and unused variables. 
+5. Do not use `Redundant double negation`. [eslintno-extra-boolean-cast](https://eslint.org/docs/latest/rules/no-extra-boolean-cast)
+6. Do not use `typescript` type as `any` unless there is no better way around. 
+7. Do not use inline style.
+
+
+
+
+
+
+
+
+
+
+
+
 ### To force exoplayer in `react-native-video` modify the `android/settings.gradle` file like below -
 
 ```

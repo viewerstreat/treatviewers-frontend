@@ -5,17 +5,15 @@ import LoginOTP from './LoginOTP';
 import {useFocusEffect} from '@react-navigation/native';
 import Registration from './Registration';
 import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
-import {RootState} from '../../redux/store';
 import {userRegLogState} from '../../redux/userSlice';
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const {loginState} = useAppSelector((state: RootState) => state.user);
+  const {loginState} = useAppSelector(state => state.user);
   useFocusEffect(
     React.useCallback(() => {
       dispatch(userRegLogState(0));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
+    }, [dispatch]),
   );
   return (
     <ImageBackground

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {FetchContests} from '../services/Services';
+import {FetchContests} from '../services/backend';
 import {INR_SYMBOL} from '../utils/constants';
 import {getTimeRemaining} from '../utils/utils';
 

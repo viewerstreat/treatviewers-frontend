@@ -50,3 +50,20 @@ export interface RenewTokenResponse {
   token: string;
   refreshToken: string;
 }
+
+export interface UserCreatePayload {
+  name: string;
+  phone: string;
+  email?: string;
+}
+
+export interface VerifyOTPPayload {
+  phone: number;
+  otp: string;
+}
+
+export interface FaviouritesPayload {
+  mediaType?: string;
+  pageSize?: number;
+  pageIndex?: number;
+}

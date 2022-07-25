@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {COLOR_GREY, COLOR_RED, COLOR_WHITE} from '../../utils/constants';
 import MoviesClips from './MoviesClips';
 import {useFocusEffect} from '@react-navigation/native';
-import {FaviouriteGet} from '../../services/Services';
+import {FaviouriteGet} from '../../services/backend';
 import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
 import {RootState} from '../../redux/store';
 import {errorUpdate, FavouritesUpdate, loadingUpdate} from '../../redux/userSlice';

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {FetchMovies} from '../services/Services';
+import {FetchMovies} from '../services/backend';
 import {getTimeRemaining} from '../utils/utils';
 
 export interface OngoingCarouselData {

@@ -1,32 +1,31 @@
 import {baseURL, Url} from '../utils/urls';
 import RestService from './rest';
 import {
+  FaviouritesPayload,
   LoginPayload,
   LoginResponseSchema,
   RenewTokenPayload,
   RenewTokenResponse,
-} from '../definitions/user';
-import {
-  MovieResponseSchema,
-  ContestResponseSchema,
   UserCreatePayload,
   VerifyOTPPayload,
-  FaviouritesPayload,
-} from './schema';
+} from '../definitions/user';
+import {MovieResponseSchema} from '../definitions/movie';
+import {ContestResponseSchema} from '../definitions/contest';
 
 export const serviceClient = new RestService({baseURL: baseURL});
 const getClient = () => serviceClient.client;
 
 export const GenerateOTP = (phone: number) => {
   const url = `${Url.GenerateOTP}?phone=${phone}`;
-  return serviceClient.get(url);
+  return getClient().get(url);
 };
 export const CreateUser = (payload: UserCreatePayload) => {
-  return serviceClient.post(Url.CreateUser, payload);
+  return getClient().post(Url.CreateUser, payload);
 };
 
-export const VerifyOTP = (payload: VerifyOTPPayload) => {
-  return serviceClient.get(Url.VerifyOTPUrl + '?phone=' + payload.phone + '&otp=' + payload.otp);
+export const VerifyOTP = ({phone, otp}: VerifyOTPPayload) => {
+  const url = `${Url.VerifyOTPUrl}?phone=${phone}&otp=${otp}`;
+  return getClient().get(url);
 };
 
 export const RenewToken = (payload: RenewTokenPayload) => {

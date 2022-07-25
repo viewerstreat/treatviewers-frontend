@@ -7,7 +7,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {OTP_TIMER} from '../../utils/config';
 import {RootState} from '../../redux/store';
 import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
-import {GenerateOTP, VerifyOTP} from '../../services/Services';
+import {GenerateOTP, VerifyOTP} from '../../services/backend';
 import {errorUpdate, loadingUpdate, userDetailUpdate, userRegLogState} from '../../redux/userSlice';
 import {updateRefreshToken, updateToken} from '../../redux/tokenSlice';
 import {saveLoginScheme, saveRefreshToken, showMessage} from '../../services/misc';

@@ -8,11 +8,11 @@ import Settings from './Settings';
 import LinearGradient from 'react-native-linear-gradient';
 
 const ProfileContainer = () => {
-  const [section, SetSelection] = useState<number>(1);
+  const [section, setSelection] = useState<number>(1);
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <ProfileTopSection OnSelectedItem={SetSelection} SelectionItem={section} />
+        <ProfileTopSection OnSelectedItem={setSelection} SelectionItem={section} />
       </View>
       <LinearGradient
         colors={[COLOR_RED, COLOR_BROWN, COLOR_RED]}

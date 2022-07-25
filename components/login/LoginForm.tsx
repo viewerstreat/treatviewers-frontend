@@ -1,4 +1,4 @@
-import {View, StyleSheet, TouchableOpacity, ToastAndroid} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {TextInput} from 'react-native-gesture-handler';
 import {COLOR_BLACK, COLOR_BROWN, COLOR_GREY, COLOR_WHITE} from '../../utils/constants';
@@ -8,7 +8,7 @@ import {Controller, useForm} from 'react-hook-form';
 import {useAppDispatch} from '../../redux/useTypedSelectorHook';
 import {loadingUpdate, userDetailUpdate, userRegLogState} from '../../redux/userSlice';
 import {signInFb, signInGoogle} from '../../services/socialSignin';
-import {GenerateOTP, SocialLogin} from '../../services/Services';
+import {GenerateOTP, SocialLogin} from '../../services/backend';
 import {saveLoginScheme, showMessage} from '../../services/misc';
 import {LOGIN_SCHEME} from '../../definitions/user';
 import {updateToken} from '../../redux/tokenSlice';
@@ -34,7 +34,7 @@ const LoginForm = ({}: LoginFormProps) => {
           }
         });
     } else {
-      ToastAndroid.show('Invalid Phone Number', 3000);
+      showMessage('Invalid Phone Number');
     }
   };
 
