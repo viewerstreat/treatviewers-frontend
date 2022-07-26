@@ -9,6 +9,7 @@
 5. Do not use `Redundant double negation`. [eslintno-extra-boolean-cast](https://eslint.org/docs/latest/rules/no-extra-boolean-cast)
 6. Do not use `typescript` type as `any` unless there is no better way around. 
 7. Do not use inline style.
+8. Expected '===' and instead saw '=='. eslint eqeqeq
 
 
 

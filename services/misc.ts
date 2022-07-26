@@ -37,3 +37,7 @@ export const getLoginScheme = async (): Promise<string | null> => {
 export const saveLoginScheme = async (loginScheme: LOGIN_SCHEME) => {
   await AsyncStorage.setItem(KEY_LOGIN_SCHEME, loginScheme);
 };
+
+export const cleanUpStorage = async () => {
+  await AsyncStorage.multiRemove([KEY_LOGIN_SCHEME, KEY_REFRESH_TOKEN]);
+};
