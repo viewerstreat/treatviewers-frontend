@@ -25,7 +25,7 @@ export const CreateUser = (payload: UserCreatePayload) => {
 
 export const VerifyOTP = ({phone, otp}: VerifyOTPPayload) => {
   const url = `${Url.VerifyOTPUrl}?phone=${phone}&otp=${otp}`;
-  return getClient().get(url);
+  return getClient().get<RenewTokenResponse>(url);
 };
 
 export const RenewToken = (payload: RenewTokenPayload) => {

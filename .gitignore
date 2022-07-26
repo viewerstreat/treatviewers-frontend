@@ -62,3 +62,4 @@ buck-out/
 
 .vscode
 .vim 
+node_modules

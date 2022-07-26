@@ -7,11 +7,10 @@ import {RootStackParamList} from '../../App';
 import {SPLASH_TIMEOUT} from '../../utils/config';
 import {AppDispatch} from '../../redux/store';
 import {RenewToken} from '../../services/backend';
-import {updateRefreshToken, updateToken} from '../../redux/tokenSlice';
-import {userDetailUpdate} from '../../redux/userSlice';
+import {updateTokenThunk} from '../../redux/tokenSlice';
 import {loadOngoingCarousel} from '../../redux/ongoingCarouselSlice';
 import {loadContests} from '../../redux/ongoingContestsSlice';
-import {getLoginScheme, getRefreshToken, saveRefreshToken} from '../../services/misc';
+import {getLoginScheme, getRefreshToken} from '../../services/misc';
 import {COLOR_BROWN, COLOR_RED, COLOR_WHITE, PATH_HOME} from '../../utils/constants';
 import {LOGIN_SCHEME} from '../../definitions/user';
 import {sleep} from '../../utils/utils';
@@ -27,9 +26,7 @@ const renewGoogleSignin = async (dispatch: AppDispatch) => {
     }
     const {data} = await RenewToken({loginScheme: LOGIN_SCHEME.GOOGLE, idToken});
     if (data.success) {
-      dispatch(updateToken(data.token));
-      dispatch(updateRefreshToken(data.refreshToken));
-      dispatch(userDetailUpdate(data.data));
+      dispatch(updateTokenThunk(data));
     }
   } catch (err) {}
 };
@@ -47,13 +44,9 @@ const renewFbSignin = async (dispatch: AppDispatch) => {
     const {data} = await RenewToken({loginScheme: LOGIN_SCHEME.FACEBOOK, fbToken});
     console.log('data is', data);
     if (data.success) {
-      dispatch(updateToken(data.token));
-      dispatch(updateRefreshToken(data.refreshToken));
-      dispatch(userDetailUpdate(data.data));
+      dispatch(updateTokenThunk(data));
     }
-  } catch (err) {
-    console.log('fbToken refresh error', err);
-  }
+  } catch (err) {}
 };
 
 // get refreshToken from async storage
@@ -70,10 +63,7 @@ const renewLogin = async (dispatch: AppDispatch) => {
     const {data} = await RenewToken({loginScheme: LOGIN_SCHEME.OTP_BASED, refreshToken});
     console.log(data);
     if (data.success) {
-      dispatch(updateToken(data.token));
-      dispatch(updateRefreshToken(data.refreshToken));
-      dispatch(userDetailUpdate(data.data));
-      await saveRefreshToken(data.refreshToken);
+      dispatch(updateTokenThunk(data));
     }
   } catch (err) {}
 };
@@ -85,10 +75,9 @@ function Splash(props: Props) {
   const [authLoaded, setAuthLoaded] = useState(false);
 
   // load user details and token based on loginScheme
-  const loadAuth = async () => {
+  const getFreshToken = async () => {
     try {
       const loginScheme = await getLoginScheme();
-      console.log('loginScheme is', loginScheme);
       if (!loginScheme) {
         return;
       }
@@ -130,7 +119,7 @@ function Splash(props: Props) {
     configureGoogle();
     startAnimation();
     loadData();
-    await Promise.all([sleep(SPLASH_TIMEOUT), loadAuth()]);
+    await Promise.all([sleep(SPLASH_TIMEOUT), getFreshToken()]);
     setAuthLoaded(true);
   };
 

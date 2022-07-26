@@ -1,7 +1,8 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {RenewTokenPayload} from '../definitions/user';
+import {RenewTokenPayload, RenewTokenResponse} from '../definitions/user';
 import {RenewToken} from '../services/backend';
 import {saveRefreshToken} from '../services/misc';
+import {AppThunk} from './store';
 import {userDetailUpdate} from './userSlice';
 
 export interface TokenState {
@@ -38,6 +39,17 @@ export const renewTokenAction = createAsyncThunk<RenewTokenRet, RenewTokenPayloa
     }
   },
 );
+
+export const updateTokenThunk =
+  (param: RenewTokenResponse): AppThunk =>
+  async (dispatch, _getState) => {
+    dispatch(userDetailUpdate(param.data));
+    dispatch(updateToken(param.token));
+    if (param.refreshToken) {
+      dispatch(updateRefreshToken(param.refreshToken));
+      await saveRefreshToken(param.refreshToken);
+    }
+  };
 
 const tokenSlice = createSlice({
   name: 'tokenSlice',

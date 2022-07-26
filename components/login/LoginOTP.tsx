@@ -8,9 +8,9 @@ import {OTP_TIMER} from '../../utils/config';
 import {RootState} from '../../redux/store';
 import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
 import {GenerateOTP, VerifyOTP} from '../../services/backend';
-import {errorUpdate, loadingUpdate, userDetailUpdate, userRegLogState} from '../../redux/userSlice';
-import {updateRefreshToken, updateToken} from '../../redux/tokenSlice';
-import {saveLoginScheme, saveRefreshToken, showMessage} from '../../services/misc';
+import {errorUpdate, loadingUpdate, userRegLogState} from '../../redux/userSlice';
+import {updateTokenThunk} from '../../redux/tokenSlice';
+import {saveLoginScheme, showMessage} from '../../services/misc';
 import {LOGIN_SCHEME} from '../../definitions/user';
 
 const LoginOTP = () => {
@@ -77,15 +77,10 @@ const LoginOTP = () => {
         otp: otp.toString(),
         phone: +intermidiatePhone,
       })
-        .then(response => {
+        .then(({data}) => {
           dispatch(loadingUpdate(false));
-          if (response && response.data) {
-            dispatch(userDetailUpdate(response.data.data));
-            dispatch(updateToken(response.data.token));
-            dispatch(updateRefreshToken(response.data.refreshToken));
-            dispatch(userRegLogState({value: 0, phone: undefined}));
-            console.log(response.data.refreshToken);
-            saveRefreshToken(response.data.refreshToken);
+          if (data.success) {
+            dispatch(updateTokenThunk(data));
             saveLoginScheme(LOGIN_SCHEME.OTP_BASED);
           }
         })
