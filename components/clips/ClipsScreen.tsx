@@ -12,7 +12,7 @@ function ClipsScreen(props: Props) {
     props.navigation.push(PATH_FULLSCREEN, params);
   };
 
-  const videoUrl = 'http://3.6.92.237:8080/mixkit-countryside-meadow-4075.mp4';
+  const videoUrl = 'https://trailsbuddy-1.s3.ap-south-1.amazonaws.com/movie.mp4';
   const posterUrl = 'http://3.6.92.237:8080/poster1.png';
 
   return (

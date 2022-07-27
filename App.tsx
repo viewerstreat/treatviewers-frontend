@@ -10,6 +10,7 @@ import Splash from './components/splash/Splash';
 import FullscreenVideo from './components/fullscreen/FullscreenVideo';
 import {VideoParams} from './components/clips/VideoPlayer';
 import {COLOR_DARK_BROWN, PATH_FULLSCREEN, PATH_HOME, PATH_SPLASH} from './utils/constants';
+
 export type RootStackParamList = {
   [PATH_SPLASH]: undefined;
   [PATH_HOME]: undefined;
