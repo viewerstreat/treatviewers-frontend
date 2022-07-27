@@ -8,4 +8,5 @@ export const Url = {
   FetchContest: 'api/v1/contest',
   FaviouritesUrl: 'api/v1/favourite',
   SocialLogin: 'api/v1/user/login',
+  GetClip: 'api/v1/clip',
 };
