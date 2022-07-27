@@ -37,12 +37,10 @@ const renewGoogleSignin = async (dispatch: AppDispatch) => {
 const renewFbSignin = async (dispatch: AppDispatch) => {
   try {
     const fbToken = await getFbToken();
-    console.log('fbToken is', fbToken);
     if (!fbToken) {
       return;
     }
     const {data} = await RenewToken({loginScheme: LOGIN_SCHEME.FACEBOOK, fbToken});
-    console.log('data is', data);
     if (data.success) {
       dispatch(updateTokenThunk(data));
     }
@@ -59,9 +57,7 @@ const renewLogin = async (dispatch: AppDispatch) => {
     if (!refreshToken) {
       return;
     }
-    console.log(refreshToken);
     const {data} = await RenewToken({loginScheme: LOGIN_SCHEME.OTP_BASED, refreshToken});
-    console.log(data);
     if (data.success) {
       dispatch(updateTokenThunk(data));
     }

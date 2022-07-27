@@ -1,11 +1,11 @@
-import {StyleSheet, ImageBackground} from 'react-native';
 import React from 'react';
-import LoginForm from './LoginForm';
-import LoginOTP from './LoginOTP';
+import {StyleSheet, ImageBackground} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
-import Registration from './Registration';
 import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
 import {userRegLogState} from '../../redux/userSlice';
+import LoginForm from './LoginForm';
+import LoginOTP from './LoginOTP';
+import Registration from './Registration';
 
 const Login = () => {
   const dispatch = useAppDispatch();

@@ -1,21 +1,20 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {COLOR_GREY, COLOR_WHITE} from '../../utils/constants';
+import {useFocusEffect} from '@react-navigation/native';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import {useFocusEffect} from '@react-navigation/native';
-import {OTP_TIMER} from '../../utils/config';
-import {RootState} from '../../redux/store';
 import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
+import {COLOR_GREY, COLOR_WHITE} from '../../utils/constants';
+import {OTP_TIMER} from '../../utils/config';
+import {LOGIN_SCHEME} from '../../definitions/user';
 import {GenerateOTP, VerifyOTP} from '../../services/backend';
 import {errorUpdate, loadingUpdate, userRegLogState} from '../../redux/userSlice';
 import {updateTokenThunk} from '../../redux/tokenSlice';
 import {saveLoginScheme, showMessage} from '../../services/misc';
-import {LOGIN_SCHEME} from '../../definitions/user';
 
 const LoginOTP = () => {
   const dispatch = useAppDispatch();
-  const {intermidiatePhone} = useAppSelector((state: RootState) => state.user);
+  const {intermidiatePhone} = useAppSelector(state => state.user);
   const [otp, setOtp] = useState<string>();
   const [timer, setTimer] = useState<number>(0);
 

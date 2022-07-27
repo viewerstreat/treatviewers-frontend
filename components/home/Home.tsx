@@ -21,30 +21,27 @@ import ClipsScreen from '../clips/ClipsScreen';
 import Login from '../login/Login';
 import ProfileContainer from '../profile/ProfileContainer';
 import {useAppSelector} from '../../redux/useTypedSelectorHook';
-import {RootState} from '../../redux/store';
 import SpinnerView from '../spinner';
 
 import RNUpiPayment from 'react-native-upi-pay';
+import {getRandom} from '../../utils/utils';
+import {showMessage} from '../../services/misc';
 
 function SettingsScreen() {
-  // function failureCallback() {
-  //   console.log('failureCallback');
-  // }
-  // vpa: '7980420791@ibl',
   function pay() {
     RNUpiPayment.initializePayment(
       {
         vpa: '7980420791@ibl',
         payeeName: 'Sibaprasad Maiti',
         amount: '1',
-        transactionRef: '0013-312-110',
+        transactionRef: `${getRandom(1000, 9999)}-${getRandom(101, 999)}-${getRandom(101, 999)}`,
         transactionNote: 'Trailsbuddy transaction',
       },
-      data => {
-        console.log('success', data);
+      _data => {
+        showMessage('success!');
       },
-      data => {
-        console.log('failure', data);
+      _data => {
+        showMessage('failure');
       },
     );
   }
@@ -88,7 +85,7 @@ const getScreenOptions = ({route}: {route: any}) => ({
 });
 
 function Home() {
-  const {userDetail} = useAppSelector((state: RootState) => state.user);
+  const {userDetail} = useAppSelector(state => state.user);
 
   return (
     <>

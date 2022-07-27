@@ -51,3 +51,7 @@ export const isValidEmail = (email: string): boolean => {
   const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
   return reg.test(email);
 };
+
+export const getRandom = (min = 0, max = 100): number => {
+  return Math.floor(Math.random() * max) + min;
+};

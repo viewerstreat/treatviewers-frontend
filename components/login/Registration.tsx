@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useAppDispatch, useAppSelector} from '../../redux/useTypedSelectorHook';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import {errorUpdate, loadingUpdate, userRegLogState} from '../../redux/userSlice';
+import {loadingUpdate, userRegLogState} from '../../redux/userSlice';
 import {CreateUser} from '../../services/backend';
 import {showMessage} from '../../services/misc';
 import {isValidEmail} from '../../utils/utils';
@@ -26,16 +26,16 @@ const Registration = () => {
 
     dispatch(loadingUpdate(true));
     try {
-      console.log({name: data.name, phone: data.phone, email: data.email});
       await CreateUser({name: data.name, phone: data.phone, email: data.email});
       dispatch(loadingUpdate(false));
       dispatch(userRegLogState({value: 1, phone: data.phone}));
     } catch (err: any) {
-      console.log(err);
-      console.log(err?.response?.data?.message);
       dispatch(loadingUpdate(false));
-      dispatch(errorUpdate(err?.response?.data?.message));
-      showMessage('Not able to signup.');
+      let msg = 'Not able to signup.';
+      if (err?.response?.status === 400) {
+        msg = err?.response?.data?.message || msg;
+      }
+      showMessage(msg);
     }
   };
 
