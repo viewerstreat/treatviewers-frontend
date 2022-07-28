@@ -8,6 +8,7 @@ import {store} from './redux/store';
 import Home from './components/home/Home';
 import Splash from './components/splash/Splash';
 import FullscreenVideo from './components/fullscreen/FullscreenVideo';
+import QuizLanding from './components/quiz/landing';
 import {
   COLOR_DARK_BROWN,
   PATH_FULLSCREEN,
@@ -15,7 +16,6 @@ import {
   PATH_QUIZ_LANDING,
   PATH_SPLASH,
 } from './utils/constants';
-import QuizLanding from './components/home/quiz/landing';
 import {RootStackParamList} from './definitions/navigation';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();

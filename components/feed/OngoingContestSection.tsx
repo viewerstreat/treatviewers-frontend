@@ -5,8 +5,8 @@ import InviteFriend from './InviteFriend';
 import OngoingContestCard from './OngoingContestCard';
 import {RootState} from '../../redux/store';
 import {useAppSelector} from '../../redux/useTypedSelectorHook';
-import {OngoingContestsData} from '../../redux/ongoingContestsSlice';
 import {COLOR_WHITE} from '../../utils/constants';
+import {OngoingContestsData} from '../../definitions/contest';
 
 function OngoingContestHeaderSection() {
   return <Text style={styles.h1Txt}>Ongoing Contests</Text>;
