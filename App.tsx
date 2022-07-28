@@ -8,7 +8,7 @@ import {store} from './redux/store';
 import Home from './components/home/Home';
 import Splash from './components/splash/Splash';
 import FullscreenVideo from './components/fullscreen/FullscreenVideo';
-import QuizLanding from './components/quiz/landing';
+import QuizLanding from './components/quiz/QuizLanding';
 import {
   COLOR_DARK_BROWN,
   PATH_FULLSCREEN,

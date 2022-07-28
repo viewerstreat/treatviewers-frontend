@@ -6,6 +6,14 @@ export interface QuizParams {
   entryFee?: string;
 }
 
+export enum PLAY_STATUS {
+  INIT = 'INIT',
+  PAID = 'PAID',
+  STARTED = 'STARTED',
+  FINISHED = 'FINISHED',
+  ENDED = 'ENDED',
+}
+
 export interface PlayTrackerSchema {
   userId: number;
   contestId: string;
