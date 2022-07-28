@@ -18,3 +18,7 @@ export type MovieResponseSchema = {
   data: MovieSchema[];
   message: string;
 };
+
+export interface MovieDetailsRouteParams {
+  _id: string;
+}

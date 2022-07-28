@@ -5,15 +5,7 @@ import OngoingContestSection from './OngoingContestSection';
 import {COLOR_BROWN, COLOR_RED, PATH_FEED_SCREEN, PATH_MOVIE_DETAILS} from '../../utils/constants';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MovieDetails from '../movie/MovieDetails';
-
-export interface MovieDetailsRouteParams {
-  _id: string;
-}
-
-export type FeedStackParamList = {
-  [PATH_FEED_SCREEN]: undefined;
-  [PATH_MOVIE_DETAILS]: MovieDetailsRouteParams;
-};
+import {FeedStackParamList} from '../../definitions/navigation';
 
 const FeedStack = createNativeStackNavigator<FeedStackParamList>();
 const noHeader = () => null;

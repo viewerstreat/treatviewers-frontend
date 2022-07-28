@@ -1,17 +1,38 @@
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import React from 'react';
-import {StyleSheet, Text, ToastAndroid, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import {OngoingContestsData} from '../../redux/ongoingContestsSlice';
-import {COLOR_BLACK, COLOR_BROWN, COLOR_WHITE} from '../../utils/constants';
+import {OngoingContestsData} from '../../definitions/contest';
+import {RootStackParamList} from '../../definitions/navigation';
+import {useAppSelector} from '../../redux/useTypedSelectorHook';
+import {showMessage} from '../../services/misc';
+import {COLOR_BLACK, COLOR_BROWN, COLOR_WHITE, PATH_QUIZ_LANDING} from '../../utils/constants';
 
 interface OngoingContestCardProps {
   data: OngoingContestsData;
 }
 
+type NavProps = StackNavigationProp<RootStackParamList, 'Home'>;
+
 function OngoingContestCard(props: OngoingContestCardProps) {
+  const navigation = useNavigation<NavProps>();
+  const {userDetail} = useAppSelector(state => state.user);
   const onClick = () => {
-    console.log('onClick pressed');
-    ToastAndroid.showWithGravity(`Card No ${props.data.key}`, ToastAndroid.SHORT, ToastAndroid.TOP);
+    console.log('onClick pressed', props.data.key);
+    if (userDetail?.id) {
+      navigation.navigate(PATH_QUIZ_LANDING, {
+        contestId: props.data.key,
+        title: props.data.title,
+        entryFee: props.data.entryFee,
+        topPrize: props.data.topPrize,
+        prizeRatio: props.data.prizeRatio,
+      });
+      return;
+    }
+    // TODO: Implement a better way to redirect user to login screen
+    // when not already logged in
+    showMessage('To enter quiz you please login first');
   };
   return (
     <View style={styles.card}>

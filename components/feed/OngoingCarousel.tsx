@@ -7,7 +7,7 @@ import {OngoingCarouselData} from '../../redux/ongoingCarouselSlice';
 import {RootState} from '../../redux/store';
 import {useAppSelector} from '../../redux/useTypedSelectorHook';
 import {COLOR_RED, COLOR_WHITE, PATH_MOVIE_DETAILS} from '../../utils/constants';
-import {FeedStackParamList} from './FeedScreen';
+import {FeedStackParamList} from '../../definitions/navigation';
 
 const {width: screenWidth} = Dimensions.get('window');
 type Props = StackNavigationProp<FeedStackParamList, 'FeedScreen'>;

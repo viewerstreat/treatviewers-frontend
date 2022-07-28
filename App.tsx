@@ -8,14 +8,15 @@ import {store} from './redux/store';
 import Home from './components/home/Home';
 import Splash from './components/splash/Splash';
 import FullscreenVideo from './components/fullscreen/FullscreenVideo';
-import {VideoParams} from './components/clips/VideoPlayer';
-import {COLOR_DARK_BROWN, PATH_FULLSCREEN, PATH_HOME, PATH_SPLASH} from './utils/constants';
-
-export type RootStackParamList = {
-  [PATH_SPLASH]: undefined;
-  [PATH_HOME]: undefined;
-  [PATH_FULLSCREEN]: VideoParams;
-};
+import {
+  COLOR_DARK_BROWN,
+  PATH_FULLSCREEN,
+  PATH_HOME,
+  PATH_QUIZ_LANDING,
+  PATH_SPLASH,
+} from './utils/constants';
+import QuizLanding from './components/home/quiz/landing';
+import {RootStackParamList} from './definitions/navigation';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const noHeader = () => null;
@@ -33,6 +34,11 @@ export default function App() {
               name={PATH_FULLSCREEN}
               options={{header: noHeader}}
               component={FullscreenVideo}
+            />
+            <RootStack.Screen
+              name={PATH_QUIZ_LANDING}
+              options={{header: noHeader}}
+              component={QuizLanding}
             />
           </RootStack.Navigator>
         </View>

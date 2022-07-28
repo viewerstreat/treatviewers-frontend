@@ -9,4 +9,9 @@ export const Url = {
   FaviouritesUrl: 'api/v1/favourite',
   SocialLogin: 'api/v1/user/login',
   GetClip: 'api/v1/clip',
+  GetPlayTracker: 'api/v1/playTracker',
+  PayForContest: 'api/v1/wallet/payContest',
+  GetNextQues: 'api/v1/playTracker/getNextQues',
+  AnswerAQues: 'api/v1/playTracker/answer',
+  FinishPlay: 'api/v1/playTracker/finish',
 };

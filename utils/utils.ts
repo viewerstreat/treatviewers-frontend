@@ -55,3 +55,12 @@ export const isValidEmail = (email: string): boolean => {
 export const getRandom = (min = 0, max = 100): number => {
   return Math.floor(Math.random() * max) + min;
 };
+
+type numOrUndefined = number | undefined;
+export const getRatio = (numerator: numOrUndefined, denomonator: numOrUndefined): string => {
+  if (numerator && denomonator && numerator > 0 && denomonator > 0) {
+    return `${numerator}:${denomonator}`;
+  }
+
+  return '';
+};

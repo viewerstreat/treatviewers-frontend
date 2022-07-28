@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {FeedStackParamList} from '../feed/FeedScreen';
+import {FeedStackParamList} from '../../definitions/navigation';
 
 type Props = NativeStackScreenProps<FeedStackParamList, 'MovieDetails'>;
 function MovieDetails(props: Props) {

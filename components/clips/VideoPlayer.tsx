@@ -2,14 +2,8 @@ import React, {useState, useRef} from 'react';
 import {View, Platform} from 'react-native';
 import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
 import Video, {OnLoadData, OnProgressData} from 'react-native-video';
+import {VideoParams} from '../../definitions/video';
 import {COLOR_RED} from '../../utils/constants';
-
-export interface VideoParams {
-  isLocalAsset: boolean;
-  videoUrl?: string;
-  localVideo?: any;
-  posterUrl: string;
-}
 
 interface VideoPlayerProps {
   videoParams: VideoParams;

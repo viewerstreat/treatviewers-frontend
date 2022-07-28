@@ -24,3 +24,13 @@ export type ContestResponseSchema = {
   message: string;
   data: ContestSchema[];
 };
+
+export interface OngoingContestsData {
+  key: string;
+  title: string;
+  sponsoredBy: string;
+  topPrize: string;
+  prizeRatio: string;
+  entryFee: string;
+  timeRemaining: string;
+}

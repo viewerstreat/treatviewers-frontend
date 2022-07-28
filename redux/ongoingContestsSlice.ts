@@ -1,17 +1,8 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {OngoingContestsData} from '../definitions/contest';
 import {FetchContests} from '../services/backend';
 import {INR_SYMBOL} from '../utils/constants';
-import {getTimeRemaining} from '../utils/utils';
-
-export interface OngoingContestsData {
-  key: string;
-  title: string;
-  sponsoredBy: string;
-  topPrize: string;
-  prizeRatio: string;
-  entryFee: string;
-  timeRemaining: string;
-}
+import {getRatio, getTimeRemaining} from '../utils/utils';
 
 export interface OngoingContestsState {
   values: OngoingContestsData[];
@@ -23,14 +14,6 @@ const initialState: OngoingContestsState = {
   values: [],
   loading: false,
   error: false,
-};
-
-const getRatio = (numerator: number | undefined, denomonator: number | undefined): string => {
-  if (numerator && denomonator && numerator > 0 && denomonator > 0) {
-    return `${numerator}:${denomonator}`;
-  }
-
-  return '';
 };
 
 export const loadContests = createAsyncThunk('ongoingContests/load', async () => {

@@ -12,6 +12,7 @@ import {
 import {MovieResponseSchema} from '../definitions/movie';
 import {ContestResponseSchema} from '../definitions/contest';
 import {GetClipResponse} from '../definitions/clip';
+import {GetQuesResponse, PlayTrackerResponse} from '../definitions/quiz';
 
 export const serviceClient = new RestService({baseURL: baseURL});
 const getClient = () => serviceClient.client;
@@ -47,6 +48,11 @@ export const FetchContests = () => {
   return getClient().get<ContestResponseSchema>(Url.FetchContest);
 };
 
+export const FetchContestById = (contestId: string) => {
+  const url = `${Url.FetchContest}?_id=${contestId}`;
+  return getClient().get<ContestResponseSchema>(url);
+};
+
 export const SocialLogin = (payload: LoginPayload) => {
   return getClient().post<LoginResponseSchema>(Url.SocialLogin, payload);
 };
@@ -54,4 +60,30 @@ export const SocialLogin = (payload: LoginPayload) => {
 export const FetchClips = () => {
   let url = Url.GetClip + '?pageSize=1';
   return getClient().get<GetClipResponse>(url);
+};
+
+export const GetPlayTracker = (contestId: string) => {
+  let url = `${Url.GetPlayTracker}?contestId=${contestId}`;
+  return getClient().get<PlayTrackerResponse>(url);
+};
+
+export const PayForContest = (contestId: string) => {
+  return getClient().post<{success: boolean; message: string}>(Url.PayForContest, {contestId});
+};
+
+export const GetNextQues = (contestId: string) => {
+  let url = `${Url.GetNextQues}?contestId=${contestId}`;
+  return getClient().get<GetQuesResponse>(url);
+};
+
+export const SaveAnswer = (contestId: string, questionNo: number, selectedOptionId: number) => {
+  return getClient().post<PlayTrackerResponse>(Url.AnswerAQues, {
+    contestId,
+    questionNo,
+    selectedOptionId,
+  });
+};
+
+export const FinishPlay = (contestId: string) => {
+  return getClient().post<PlayTrackerResponse>(Url.FinishPlay, {contestId});
 };
