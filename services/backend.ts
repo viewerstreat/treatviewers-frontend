@@ -11,6 +11,7 @@ import {
 } from '../definitions/user';
 import {MovieResponseSchema} from '../definitions/movie';
 import {ContestResponseSchema} from '../definitions/contest';
+import {GetClipResponse} from '../definitions/clip';
 
 export const serviceClient = new RestService({baseURL: baseURL});
 const getClient = () => serviceClient.client;
@@ -48,4 +49,9 @@ export const FetchContests = () => {
 
 export const SocialLogin = (payload: LoginPayload) => {
   return getClient().post<LoginResponseSchema>(Url.SocialLogin, payload);
+};
+
+export const FetchClips = () => {
+  let url = Url.GetClip + '?pageSize=1';
+  return getClient().get<GetClipResponse>(url);
 };

@@ -1,4 +1,5 @@
 import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit';
+import clipsSlice from './clipsSlice';
 import ongoingCarouselSlice from './ongoingCarouselSlice';
 import ongoingContestsSlice from './ongoingContestsSlice';
 import tokenSlice from './tokenSlice';
@@ -9,6 +10,7 @@ export const store = configureStore({
     ongoingCarousel: ongoingCarouselSlice.reducer,
     user: UserSlice.reducer,
     token: tokenSlice.reducer,
+    clips: clipsSlice.reducer,
   },
 });
 
