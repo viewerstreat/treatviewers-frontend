@@ -67,8 +67,13 @@ export const GetPlayTracker = (contestId: string) => {
   return getClient().get<PlayTrackerResponse>(url);
 };
 
+export const StartPlay = (contestId: string) => {
+  let url = `${Url.StartPlay}`;
+  return getClient().post<PlayTrackerResponse>(url, {contestId});
+};
+
 export const PayForContest = (contestId: string) => {
-  return getClient().post<{success: boolean; message: string}>(Url.PayForContest, {contestId});
+  return getClient().post<PlayTrackerResponse>(Url.PayForContest, {contestId});
 };
 
 export const GetNextQues = (contestId: string) => {

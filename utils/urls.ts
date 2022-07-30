@@ -10,6 +10,7 @@ export const Url = {
   SocialLogin: 'api/v1/user/login',
   GetClip: 'api/v1/clip',
   GetPlayTracker: 'api/v1/playTracker',
+  StartPlay: 'api/v1/playTracker/start',
   PayForContest: 'api/v1/wallet/payContest',
   GetNextQues: 'api/v1/playTracker/getNextQues',
   AnswerAQues: 'api/v1/playTracker/answer',

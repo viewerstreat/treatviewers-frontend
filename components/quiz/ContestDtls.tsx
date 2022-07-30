@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {StyleSheet, Text, View, Dimensions, Alert, TouchableOpacity} from 'react-native';
 import {PRIZE_SELECTION} from '../../definitions/contest';
 import {BtnState, PLAY_STATUS} from '../../definitions/quiz';
 import {
@@ -16,6 +15,7 @@ import Loader from './Loader';
 type StrOrUndefined = string | undefined;
 type NumOrUndefined = number | undefined;
 interface ContestProps {
+  showContest: boolean;
   loading: boolean;
   title: string;
   prizeValue: NumOrUndefined;
@@ -31,6 +31,9 @@ interface ContestProps {
 
 const windowHeight = Dimensions.get('window').height;
 const currTime = () => new Date().getTime();
+const PAY_CONFIRM_TITLE = 'PAYMENT CONFIRMATION';
+const getPayConfirmMsg = (entryFee: number) =>
+  `Amount ${INR_SYMBOL}${entryFee} will be deducted from your wallet.`;
 
 function ContestDtls(props: ContestProps) {
   const [btnState, setBtnState] = useState<BtnState>('START');
@@ -68,22 +71,40 @@ function ContestDtls(props: ContestProps) {
   };
 
   const btnClick = () => {
+    console.log('btnClick');
     if (disabled) {
       return;
     }
+    if (btnState === 'PAY') {
+      Alert.alert(
+        PAY_CONFIRM_TITLE,
+        getPayConfirmMsg(props.entryFee || 0),
+        [
+          {
+            text: 'PAY',
+            onPress: () => props.onclick(btnState),
+          },
+        ],
+        {
+          cancelable: true,
+        },
+      );
+      return;
+    }
+
     props.onclick(btnState);
   };
 
   const renderEntryFee = () => {
     if (props.entryFee) {
-      return (
-        <>
-          Entry Fee: `${INR_SYMBOL}${props.entryFee}`
-        </>
-      );
+      return <>Entry Fee: {`${INR_SYMBOL}${props.entryFee}`}</>;
     }
 
-    return <Text style={styles.free}>FREE</Text>;
+    return (
+      <>
+        Entry Fee: <Text style={styles.free}>FREE</Text>
+      </>
+    );
   };
 
   const renderPrizeRatio = () => {
@@ -112,6 +133,10 @@ function ContestDtls(props: ContestProps) {
       </View>
     );
   };
+
+  if (!props.showContest) {
+    return <></>;
+  }
 
   return (
     <View style={styles.wrapper}>

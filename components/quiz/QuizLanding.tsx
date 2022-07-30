@@ -7,6 +7,7 @@ import {
   GetPlayTracker,
   GetWalletBalance,
   PayForContest,
+  StartPlay,
 } from '../../services/backend';
 import {showMessage} from '../../services/misc';
 import {COLOR_BROWN} from '../../utils/constants';
@@ -17,8 +18,9 @@ import TopSection from './TopSection';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'QuizLanding'>;
 function QuizLanding(props: Props) {
-  const [showBackBtn] = useState(true);
-  const [showTimer] = useState(false);
+  const [showBackBtn, setShowBackBtn] = useState(true);
+  const [showTimer, setShowTimer] = useState(false);
+  const [showContest, setShowContest] = useState(true);
   const [loading, setLoading] = useState(true);
   const [contest, setContest] = useState<ContestSchema | null>(null);
   const [playTracker, setPlayTracker] = useState<PlayTrackerSchema | null>(null);
@@ -75,6 +77,7 @@ function QuizLanding(props: Props) {
       return;
     }
     try {
+      setLoading(true);
       if (state === 'PAY') {
         {
           const {data} = await GetWalletBalance();
@@ -87,9 +90,25 @@ function QuizLanding(props: Props) {
         if (!data.success) {
           throw new Error('Unknown error');
         }
+        showMessage('Payment successful!');
+        setPlayTracker(data.data);
+        setShowBackBtn(true);
+        setShowTimer(false);
+        setShowContest(true);
+        return;
       }
+      const {data} = await StartPlay(contest._id);
+      if (!data.success) {
+        throw new Error('Unknown error');
+      }
+      setPlayTracker(data.data);
+      setShowBackBtn(false);
+      setShowTimer(true);
+      setShowContest(false);
     } catch (err) {
       showMessage('Unable to process request at this time');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -106,6 +125,7 @@ function QuizLanding(props: Props) {
       <ScrollView style={styles.wrapper}>
         <ContestDtls
           loading={loading}
+          showContest={showContest}
           title={props.route.params.title}
           prizeValue={contest?.prizeValue}
           entryFee={contest?.entryFee}

@@ -23,13 +23,13 @@ function TimerText(props: {time: number}) {
   const ss = secs > 9 ? secs : '0' + secs;
   if (hours > 0) {
     return (
-      <Text>
+      <Text style={styles.bigTxt}>
         {hs}:{ms}:{ss}
       </Text>
     );
   }
   return (
-    <Text>
+    <Text style={styles.bigTxt}>
       {ms}:{ss}
     </Text>
   );
@@ -74,9 +74,11 @@ function TopSection(props: TopSectionProps) {
       return <></>;
     }
     return (
-      <View>
-        <Text>{getRemaining()} remaining</Text>
-        <View>
+      <View style={styles.row}>
+        <Text style={styles.txt}>
+          <Text style={styles.bigTxt}>{getRemaining()}</Text> remaining
+        </Text>
+        <View style={[styles.row, styles.leftAuto]}>
           <OctiIcon name="clock" size={30} color={COLOR_WHITE} />
           <TimerText time={time} />
         </View>
@@ -99,6 +101,19 @@ const styles = StyleSheet.create({
   img: {
     height: 25,
     width: 35,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  leftAuto: {marginLeft: 'auto'},
+  txt: {
+    fontSize: 16,
+    color: COLOR_WHITE,
+  },
+  bigTxt: {
+    fontSize: 20,
+    color: COLOR_WHITE,
   },
 });
 
