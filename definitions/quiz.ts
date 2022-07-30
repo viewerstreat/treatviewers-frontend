@@ -18,11 +18,11 @@ export interface PlayTrackerSchema {
   userId: number;
   contestId: string;
   status: string;
-  walletTransactionId: string;
   currQuestionNo: number;
   totalQuestions: number;
   totalAnswered: number;
   score?: number;
+  startTs?: number;
 }
 
 export interface PlayTrackerResponse {
@@ -44,3 +44,5 @@ export interface GetQuesResponse {
     options: OptionSchema[];
   };
 }
+
+export type BtnState = 'START' | 'RESUME' | 'PAY';

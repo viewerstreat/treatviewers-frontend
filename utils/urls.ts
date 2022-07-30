@@ -14,4 +14,5 @@ export const Url = {
   GetNextQues: 'api/v1/playTracker/getNextQues',
   AnswerAQues: 'api/v1/playTracker/answer',
   FinishPlay: 'api/v1/playTracker/finish',
+  WalletBalance: 'api/v1/wallet/getBalance',
 };

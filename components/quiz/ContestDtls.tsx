@@ -1,60 +1,116 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {PLAY_STATUS} from '../../definitions/quiz';
-import {COLOR_BLACK, COLOR_GREY, COLOR_RED, COLOR_WHITE, INR_SYMBOL} from '../../utils/constants';
+import {PRIZE_SELECTION} from '../../definitions/contest';
+import {BtnState, PLAY_STATUS} from '../../definitions/quiz';
+import {
+  COLOR_BLACK,
+  COLOR_RED,
+  COLOR_RED_GREYED,
+  COLOR_WHITE,
+  INR_SYMBOL,
+} from '../../utils/constants';
 import {getRatio} from '../../utils/utils';
 import Loader from './Loader';
 
+type StrOrUndefined = string | undefined;
+type NumOrUndefined = number | undefined;
 interface ContestProps {
   loading: boolean;
   title: string;
-  prizeValue: number | undefined;
-  entryFee: number | undefined;
-  prizeRatioNum: number | undefined;
-  prizeRatioDen: number | undefined;
-  playStatus: string | undefined;
-  endTime: number | undefined;
-  onclick: () => void;
+  prizeValue: NumOrUndefined;
+  entryFee: NumOrUndefined;
+  prizeSelection: StrOrUndefined;
+  topWinnersCount: NumOrUndefined;
+  prizeRatioNum: NumOrUndefined;
+  prizeRatioDen: NumOrUndefined;
+  playStatus: StrOrUndefined;
+  endTime: NumOrUndefined;
+  onclick: (state: BtnState) => void;
 }
 
-function ContestDtls(props: ContestProps) {
-  const getBtnText = (): string => {
-    if (props.playStatus === PLAY_STATUS.INIT && props.entryFee && props.entryFee > 0) {
-      return `Pay ${INR_SYMBOL}${props.entryFee}`;
-    }
-    if (props.playStatus === PLAY_STATUS.INIT && !props.entryFee) {
-      return 'Play';
-    }
-    if (props.playStatus === PLAY_STATUS.PAID) {
-      return 'Play';
-    }
-    if (props.playStatus === PLAY_STATUS.STARTED) {
-      return 'Resume';
-    }
-    if (props.playStatus === PLAY_STATUS.FINISHED || props.playStatus === PLAY_STATUS.ENDED) {
-      return 'Play';
-    }
-    return '';
-  };
+const windowHeight = Dimensions.get('window').height;
+const currTime = () => new Date().getTime();
 
-  const currTime = () => new Date().getTime();
-  const isDisabled = (): boolean => {
-    if (
-      props.playStatus === PLAY_STATUS.ENDED ||
-      props.playStatus === PLAY_STATUS.FINISHED ||
-      (props.endTime && props.endTime < currTime())
-    ) {
-      return true;
+function ContestDtls(props: ContestProps) {
+  const [btnState, setBtnState] = useState<BtnState>('START');
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    switch (props.playStatus) {
+      case PLAY_STATUS.INIT:
+        setBtnState(props.entryFee && props.entryFee > 0 ? 'PAY' : 'START');
+        setDisabled(!!(props.endTime && props.endTime <= currTime()));
+        break;
+
+      case PLAY_STATUS.PAID:
+        setBtnState('START');
+        setDisabled(!!(props.endTime && props.endTime <= currTime()));
+        break;
+
+      case PLAY_STATUS.STARTED:
+        setBtnState('RESUME');
+        setDisabled(!!(props.endTime && props.endTime <= currTime()));
+        break;
+
+      default:
+        setBtnState('START');
+        setDisabled(true);
     }
-    return false;
+  }, [props.endTime, props.entryFee, props.playStatus]);
+
+  const getBtnText = (): string => {
+    return btnState === 'PAY'
+      ? `Pay ${INR_SYMBOL}${props.entryFee}`
+      : btnState === 'RESUME'
+      ? 'Resume'
+      : 'Play';
   };
 
   const btnClick = () => {
-    if (isDisabled()) {
+    if (disabled) {
       return;
     }
-    props.onclick();
+    props.onclick(btnState);
+  };
+
+  const renderEntryFee = () => {
+    if (props.entryFee) {
+      return (
+        <>
+          Entry Fee: `${INR_SYMBOL}${props.entryFee}`
+        </>
+      );
+    }
+
+    return <Text style={styles.free}>FREE</Text>;
+  };
+
+  const renderPrizeRatio = () => {
+    if (props.prizeSelection === PRIZE_SELECTION.RATIO_BASED) {
+      return (
+        <Text style={styles.smallTxt}>
+          Winner Ratio: {getRatio(props.prizeRatioNum, props.prizeRatioDen)}
+        </Text>
+      );
+    }
+    return <Text style={styles.smallTxt}>No of Winners: {props.topWinnersCount}</Text>;
+  };
+
+  const renderButtons = () => {
+    return (
+      <View style={styles.btnWrapper}>
+        {props.loading ? (
+          <Loader loading={props.loading} />
+        ) : (
+          <TouchableOpacity
+            onPress={btnClick}
+            style={[styles.btn, {backgroundColor: disabled ? COLOR_RED_GREYED : COLOR_RED}]}>
+            <Text style={styles.btnTxt}>{getBtnText()}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
   };
 
   return (
@@ -64,30 +120,10 @@ function ContestDtls(props: ContestProps) {
         <Text style={styles.smallTxt}>
           Prize Value: {props.prizeValue ? `${INR_SYMBOL}${props.prizeValue}` : ''}
         </Text>
-        <Text style={styles.smallTxt}>
-          Entry Fee:{' '}
-          {props.entryFee ? (
-            `${INR_SYMBOL}${props.entryFee}`
-          ) : (
-            <Text style={styles.free}>FREE</Text>
-          )}
-        </Text>
-        <Text style={styles.smallTxt}>
-          Prize Ratio: {getRatio(props.prizeRatioNum, props.prizeRatioDen)}
-        </Text>
+        <Text style={styles.smallTxt}>{renderEntryFee()}</Text>
+        <>{renderPrizeRatio()}</>
       </View>
-
-      <View style={styles.btnWrapper}>
-        {props.loading ? (
-          <Loader loading={props.loading} />
-        ) : (
-          <TouchableOpacity
-            onPress={btnClick}
-            style={[styles.btn, {backgroundColor: isDisabled() ? COLOR_GREY : COLOR_RED}]}>
-            <Text style={styles.btnTxt}>{getBtnText()}</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      <>{renderButtons()}</>
     </View>
   );
 }
@@ -96,6 +132,7 @@ const styles = StyleSheet.create({
   wrapper: {
     padding: 30,
     backgroundColor: COLOR_WHITE,
+    minHeight: windowHeight * 0.6,
   },
   titleStyle: {
     width: '90%',
@@ -115,7 +152,7 @@ const styles = StyleSheet.create({
     color: COLOR_BLACK,
   },
   free: {
-    fontSize: 20,
+    fontSize: 16,
     color: COLOR_RED,
     fontWeight: '600',
   },

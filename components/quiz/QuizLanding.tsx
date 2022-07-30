@@ -2,18 +2,23 @@ import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../definitions/navigation';
-import {FetchContestById, GetPlayTracker} from '../../services/backend';
+import {
+  FetchContestById,
+  GetPlayTracker,
+  GetWalletBalance,
+  PayForContest,
+} from '../../services/backend';
 import {showMessage} from '../../services/misc';
 import {COLOR_BROWN} from '../../utils/constants';
-import BackButton from './BackButton';
-import Loader from './Loader';
 import ContestDtls from './ContestDtls';
 import {ContestSchema} from '../../definitions/contest';
-import {PlayTrackerSchema} from '../../definitions/quiz';
+import {BtnState, PlayTrackerSchema} from '../../definitions/quiz';
+import TopSection from './TopSection';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'QuizLanding'>;
 function QuizLanding(props: Props) {
   const [showBackBtn] = useState(true);
+  const [showTimer] = useState(false);
   const [loading, setLoading] = useState(true);
   const [contest, setContest] = useState<ContestSchema | null>(null);
   const [playTracker, setPlayTracker] = useState<PlayTrackerSchema | null>(null);
@@ -26,9 +31,7 @@ function QuizLanding(props: Props) {
         return;
       }
       setContest(data.data[0]);
-    } catch (err: any) {
-      console.log(err);
-      console.log(err?.response?.data);
+    } catch (err) {
       showMessage('Not able to get contest details');
     }
   };
@@ -40,9 +43,7 @@ function QuizLanding(props: Props) {
         showMessage('Not able to get play tracker');
       }
       setPlayTracker(data.data);
-    } catch (err: any) {
-      console.log(err);
-      console.log(err?.response?.data);
+    } catch (err) {
       showMessage('Not able to get play tracker');
     }
   };
@@ -64,29 +65,58 @@ function QuizLanding(props: Props) {
   }, []);
 
   const onClickBackBtn = () => {
-    console.log('onClickBackBtn');
+    props.navigation.pop();
   };
 
-  const onClickPlay = () => {
-    console.log('onClickPlay');
+  const onClickPlay = async (state: BtnState) => {
+    console.log('onClickPlay', state);
+    if (!contest?._id) {
+      showMessage('Invalid');
+      return;
+    }
+    try {
+      if (state === 'PAY') {
+        {
+          const {data} = await GetWalletBalance();
+          if (!data.success || data.balance < (contest?.entryFee || 0)) {
+            showMessage('Insufficient balance');
+            return;
+          }
+        }
+        const {data} = await PayForContest(contest._id);
+        if (!data.success) {
+          throw new Error('Unknown error');
+        }
+      }
+    } catch (err) {
+      showMessage('Unable to process request at this time');
+    }
   };
 
   return (
     <View style={styles.container}>
-      <BackButton onclick={onClickBackBtn} showBtn={showBackBtn} />
+      <TopSection
+        showBack={showBackBtn}
+        showTimer={showTimer}
+        onClickBack={onClickBackBtn}
+        totalQuestions={playTracker?.totalQuestions}
+        totalAnswered={playTracker?.totalAnswered}
+        playStartTs={playTracker?.startTs}
+      />
       <ScrollView style={styles.wrapper}>
         <ContestDtls
           loading={loading}
           title={props.route.params.title}
           prizeValue={contest?.prizeValue}
           entryFee={contest?.entryFee}
+          prizeSelection={contest?.prizeSelection}
+          topWinnersCount={contest?.topWinnersCount}
           prizeRatioNum={contest?.prizeRatioNumerator}
           prizeRatioDen={contest?.prizeRatioDenominator}
           endTime={contest?.endTime}
           playStatus={playTracker?.status}
           onclick={onClickPlay}
         />
-        <Loader loading={loading} />
       </ScrollView>
     </View>
   );
@@ -99,7 +129,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   wrapper: {
-    marginTop: 30,
     flex: 1,
   },
 });

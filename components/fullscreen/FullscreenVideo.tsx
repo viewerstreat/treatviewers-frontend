@@ -5,7 +5,7 @@ import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
 import Video, {OnLoadData, OnProgressData} from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import {COLOR_RED} from '../../utils/constants';
-import {RootStackParamList} from '../../App';
+import {RootStackParamList} from '../../definitions/navigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Fullscreen'>;
 

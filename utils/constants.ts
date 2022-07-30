@@ -8,6 +8,7 @@ export const COLOR_BLACK = '#363636';
 export const COLOR_DARK_BROWN = '#300D13';
 export const COLOR_LIGHT_BROWN = '#8A5E63';
 export const COLOR_GREEN = '#4CAF50';
+export const COLOR_RED_GREYED = '#EA3333A3';
 
 export const INR_SYMBOL = '₹';
 export const KEY_REFRESH_TOKEN = 'REFRESH_TOKEN';

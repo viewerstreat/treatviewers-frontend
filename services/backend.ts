@@ -87,3 +87,7 @@ export const SaveAnswer = (contestId: string, questionNo: number, selectedOption
 export const FinishPlay = (contestId: string) => {
   return getClient().post<PlayTrackerResponse>(Url.FinishPlay, {contestId});
 };
+
+export const GetWalletBalance = () => {
+  return getClient().get<{success: boolean; balance: number}>(Url.WalletBalance);
+};
