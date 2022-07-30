@@ -7,6 +7,7 @@ import {
   GetPlayTracker,
   GetWalletBalance,
   PayForContest,
+  SaveAnswer,
   StartPlay,
 } from '../../services/backend';
 import {showMessage} from '../../services/misc';
@@ -15,12 +16,15 @@ import ContestDtls from './ContestDtls';
 import {ContestSchema} from '../../definitions/contest';
 import {BtnState, PlayTrackerSchema} from '../../definitions/quiz';
 import TopSection from './TopSection';
+import Question from './Question';
+import ProgressIndicator from './ProgressIndicator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'QuizLanding'>;
 function QuizLanding(props: Props) {
   const [showBackBtn, setShowBackBtn] = useState(true);
   const [showTimer, setShowTimer] = useState(false);
   const [showContest, setShowContest] = useState(true);
+  const [showQuestion, setShowQuestion] = useState(false);
   const [loading, setLoading] = useState(true);
   const [contest, setContest] = useState<ContestSchema | null>(null);
   const [playTracker, setPlayTracker] = useState<PlayTrackerSchema | null>(null);
@@ -105,8 +109,39 @@ function QuizLanding(props: Props) {
       setShowBackBtn(false);
       setShowTimer(true);
       setShowContest(false);
+      const tq = playTracker?.totalQuestions || 0;
+      const ta = playTracker?.totalAnswered || 0;
+      if (ta < tq) {
+        setShowQuestion(true);
+      }
     } catch (err) {
       showMessage('Unable to process request at this time');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const submitAnswer = async (questionNo: number, optionId: number) => {
+    console.log('submitAnswer on landing', optionId);
+    setLoading(true);
+    try {
+      if (!contest?._id) {
+        return;
+      }
+      const {data} = await SaveAnswer(contest._id, questionNo, optionId);
+      if (!data) {
+        throw new Error('Unknown error');
+      }
+      setPlayTracker(data.data);
+      console.log(data.data);
+      const tq = data.data.totalQuestions;
+      const ta = data.data.totalAnswered;
+      console.log({tq, ta});
+      if (ta < tq) {
+        setShowQuestion(true);
+      }
+    } catch (err) {
+      showMessage('Not able to save answer');
     } finally {
       setLoading(false);
     }
@@ -122,6 +157,11 @@ function QuizLanding(props: Props) {
         totalAnswered={playTracker?.totalAnswered}
         playStartTs={playTracker?.startTs}
       />
+      <ProgressIndicator
+        show={showTimer}
+        totalQ={playTracker?.totalQuestions}
+        totalA={playTracker?.totalAnswered}
+      />
       <ScrollView style={styles.wrapper}>
         <ContestDtls
           loading={loading}
@@ -136,6 +176,12 @@ function QuizLanding(props: Props) {
           endTime={contest?.endTime}
           playStatus={playTracker?.status}
           onclick={onClickPlay}
+        />
+        <Question
+          showQuestion={showQuestion}
+          contestId={contest?._id}
+          currQuestionNo={playTracker?.currQuestionNo}
+          submitAnswer={submitAnswer}
         />
       </ScrollView>
     </View>

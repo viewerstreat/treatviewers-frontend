@@ -33,6 +33,7 @@ export interface PlayTrackerResponse {
 export interface OptionSchema {
   optionId: number;
   optionText: string;
+  isSelected?: boolean;
 }
 
 export interface GetQuesResponse {

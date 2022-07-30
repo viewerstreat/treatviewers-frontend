@@ -23,13 +23,13 @@ function TimerText(props: {time: number}) {
   const ss = secs > 9 ? secs : '0' + secs;
   if (hours > 0) {
     return (
-      <Text style={styles.bigTxt}>
+      <Text style={[styles.bigTxt, styles.timerTxt]}>
         {hs}:{ms}:{ss}
       </Text>
     );
   }
   return (
-    <Text style={styles.bigTxt}>
+    <Text style={[styles.bigTxt, styles.timerTxt]}>
       {ms}:{ss}
     </Text>
   );
@@ -114,6 +114,9 @@ const styles = StyleSheet.create({
   bigTxt: {
     fontSize: 20,
     color: COLOR_WHITE,
+  },
+  timerTxt: {
+    marginLeft: 10,
   },
 });
 
