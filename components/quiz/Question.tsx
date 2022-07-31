@@ -51,13 +51,11 @@ function Question(props: QuestionProps) {
     if (!qNo) {
       return;
     }
-    console.log('submitAnswer called here');
     const selected = options.filter(e => e.isSelected);
     if (selected.length < 1) {
       showMessage('Please select an answer');
       return;
     }
-    console.log(selected[0].optionId);
     props.submitAnswer(qNo, selected[0].optionId);
   };
 

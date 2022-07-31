@@ -14,18 +14,22 @@ import {showMessage} from '../../services/misc';
 import {COLOR_BROWN} from '../../utils/constants';
 import ContestDtls from './ContestDtls';
 import {ContestSchema} from '../../definitions/contest';
-import {BtnState, PlayTrackerSchema} from '../../definitions/quiz';
+import {BtnState, PlayTrackerSchema, PLAY_STATUS} from '../../definitions/quiz';
 import TopSection from './TopSection';
 import Question from './Question';
 import ProgressIndicator from './ProgressIndicator';
+import Score from './Score';
+import Details from './Details';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'QuizLanding'>;
 function QuizLanding(props: Props) {
   const [showBackBtn, setShowBackBtn] = useState(true);
   const [showTimer, setShowTimer] = useState(false);
-  const [showContest, setShowContest] = useState(true);
+  const [showContest, setShowContest] = useState(false);
   const [showQuestion, setShowQuestion] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [showScore, setShowScore] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [contest, setContest] = useState<ContestSchema | null>(null);
   const [playTracker, setPlayTracker] = useState<PlayTrackerSchema | null>(null);
 
@@ -49,6 +53,12 @@ function QuizLanding(props: Props) {
         showMessage('Not able to get play tracker');
       }
       setPlayTracker(data.data);
+      if (data.data.status !== PLAY_STATUS.FINISHED) {
+        setShowContest(true);
+      } else {
+        setShowBackBtn(false);
+        setShowScore(true);
+      }
     } catch (err) {
       showMessage('Not able to get play tracker');
     }
@@ -133,18 +143,27 @@ function QuizLanding(props: Props) {
         throw new Error('Unknown error');
       }
       setPlayTracker(data.data);
-      console.log(data.data);
       const tq = data.data.totalQuestions;
       const ta = data.data.totalAnswered;
-      console.log({tq, ta});
       if (ta < tq) {
         setShowQuestion(true);
+      } else {
+        setShowQuestion(false);
+        setShowTimer(false);
       }
     } catch (err) {
       showMessage('Not able to save answer');
     } finally {
       setLoading(false);
     }
+  };
+
+  const onViewDetails = () => {
+    setShowDetails(true);
+    setShowScore(false);
+    setShowBackBtn(true);
+    setShowContest(false);
+    setShowQuestion(false);
   };
 
   return (
@@ -182,6 +201,22 @@ function QuizLanding(props: Props) {
           contestId={contest?._id}
           currQuestionNo={playTracker?.currQuestionNo}
           submitAnswer={submitAnswer}
+        />
+        <Score
+          showScore={showScore}
+          playStatus={playTracker?.status}
+          score={playTracker?.score}
+          startTs={playTracker?.startTs}
+          finishTs={playTracker?.finishTs}
+          total={playTracker?.totalQuestions}
+          onViewDetails={onViewDetails}
+          onBackToFeed={onClickBackBtn}
+        />
+
+        <Details
+          showDetails={showDetails}
+          answers={playTracker?.answers || []}
+          onBack={onClickBackBtn}
         />
       </ScrollView>
     </View>

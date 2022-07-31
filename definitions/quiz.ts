@@ -14,6 +14,17 @@ export enum PLAY_STATUS {
   ENDED = 'ENDED',
 }
 
+export interface AnswerSchema {
+  questionNo: number;
+  questionText: string;
+  options: {
+    optionId: number;
+    optionText: string;
+    isCorrect: boolean;
+  }[];
+  selectedOptionId: number;
+}
+
 export interface PlayTrackerSchema {
   userId: number;
   contestId: string;
@@ -23,6 +34,8 @@ export interface PlayTrackerSchema {
   totalAnswered: number;
   score?: number;
   startTs?: number;
+  finishTs?: number;
+  answers: AnswerSchema[];
 }
 
 export interface PlayTrackerResponse {
